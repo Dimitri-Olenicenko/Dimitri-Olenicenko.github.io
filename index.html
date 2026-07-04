@@ -3,13 +3,37 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Dmitrijs Olenicenko — Strategy · Data · Operations</title>
-<meta name="description" content="Strategy, data and operations. Eight years across financial services, SaaS platforms and technology consulting, four countries, one method: complexity in, clarity out.">
+<title>Dmitrijs Olenicenko — Data · Finance · Strategy</title>
+<meta name="description" content="A numbers person before anything else. Data and finance across 15+ industries, eight years, four countries — one method: complexity in, clarity out.">
 <meta name="author" content="Dmitrijs Olenicenko">
-<meta property="og:title" content="Dmitrijs Olenicenko — Strategy · Data · Operations">
+<meta property="og:title" content="Dmitrijs Olenicenko — Data · Finance · Strategy">
 <meta property="og:description" content="To know thyself is the beginning of wisdom. The work, the projects and the person behind them.">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://dimitri-olenicenko.github.io/assets/dimitri.jpg">
+<meta property="og:url" content="https://dimitri-olenicenko.github.io/">
+<meta name="theme-color" content="#0d1b2a">
+<link rel="canonical" href="https://dimitri-olenicenko.github.io/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='29' fill='none' stroke='%23c9a84c' stroke-width='2.5'/%3E%3Ctext x='32' y='42' font-family='Georgia,serif' font-size='27' fill='%230d1b2a' text-anchor='middle'%3EDO%3C/text%3E%3C/svg%3E">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Dmitrijs Olenicenko",
+  "jobTitle": "Chief Data Officer",
+  "worksFor": { "@type": "Organization", "name": "Naviora Group", "url": "https://naviora.group" },
+  "email": "mailto:dmitrijs.olenicenko@gmail.com",
+  "telephone": ["+971504540013", "+37129889963"],
+  "url": "https://dimitri-olenicenko.github.io/",
+  "image": "https://dimitri-olenicenko.github.io/assets/dimitri.jpg",
+  "address": { "@type": "PostalAddress", "addressLocality": "Dubai", "addressCountry": "AE" },
+  "sameAs": [
+    "https://www.linkedin.com/in/dmitrijsolenicenko/",
+    "https://www.instagram.com/shatzs/"
+  ],
+  "knowsAbout": ["Data Analytics", "Financial Modelling", "Business Intelligence", "Data Architecture", "Financial Analysis", "Strategy", "Operations"],
+  "knowsLanguage": ["English", "Russian", "Latvian"]
+}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -74,7 +98,7 @@ main,header,footer{position:relative;z-index:2}
 .kicker{font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:var(--violet);font-weight:600;margin-bottom:18px}
 h1{font-family:var(--serif);font-weight:500;font-size:clamp(40px,5.6vw,66px);letter-spacing:.04em;line-height:1.06}
 .role{margin-top:14px;font-size:13px;letter-spacing:.34em;text-transform:uppercase;color:var(--ink-soft)}
-.role b{color:var(--blue);font-weight:600}.role i{color:var(--violet);font-style:normal;font-weight:600}
+.role b{color:var(--blue);font-weight:600}.role i{color:var(--violet);font-style:normal;font-weight:600}.role em{color:var(--gold);font-style:normal;font-weight:600}
 .heroLead{margin-top:26px;font-size:17px;color:var(--ink-soft);line-height:1.8;max-width:480px}
 .heroLead strong{color:var(--ink);font-weight:600}
 .quote{margin-top:26px;font-family:var(--serif);font-style:italic;font-size:20px;color:var(--ink-soft);max-width:440px}
@@ -182,6 +206,18 @@ section{padding:30px 0}
 .liveCard.v{border-left-color:var(--violet)}.liveCard.v .u{color:var(--violet)}
 .liveCard.g{border-left-color:var(--gold)}.liveCard.g .u{color:var(--gold)}
 
+/* institutional capabilities */
+.caps{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px;margin-top:10px}
+.capCard{border:1px solid rgba(35,26,79,.1);border-left:3px solid var(--blue);border-radius:14px;padding:22px 24px;background:var(--white);transition:transform .3s, box-shadow .3s}
+.capCard:hover{transform:translateY(-4px);box-shadow:var(--shadow-lift)}
+.capCard h4{font-family:var(--serif);font-size:21px;font-weight:600}
+.capCard .k{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--blue);font-weight:600}
+.capCard p{font-size:13.5px;color:var(--ink-soft);margin-top:8px}
+.capCard.v{border-left-color:var(--violet)}.capCard.v .k{color:var(--violet)}
+.capCard.g{border-left-color:var(--gold)}.capCard.g .k{color:var(--gold)}
+.capsCta{margin-top:26px;padding:22px 28px;border-radius:14px;background:linear-gradient(120deg,var(--violet-pale),var(--gold-pale));display:flex;align-items:center;gap:20px;flex-wrap:wrap;justify-content:space-between}
+.capsCta .t{font-family:var(--serif);font-size:20px;color:var(--ink);font-style:italic}
+
 /* photos & pdf buttons */
 .photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px;margin-top:14px}
 .photos img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:12px;cursor:zoom-in;transition:transform .35s ease, box-shadow .35s;box-shadow:var(--shadow)}
@@ -203,6 +239,25 @@ section{padding:30px 0}
 .recs .rec{border:1px solid rgba(35,26,79,.12);border-radius:12px;overflow:hidden;cursor:zoom-in;background:var(--mist);transition:transform .3s, box-shadow .3s}
 .recs .rec:hover{transform:translateY(-4px);box-shadow:var(--shadow-lift)}
 .recs img{width:100%;aspect-ratio:3/4;object-fit:cover;object-position:top;display:block}
+
+/* contact */
+.contactGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin-top:12px}
+.cCard{display:block;text-decoration:none;border:1px solid rgba(35,26,79,.1);border-radius:14px;padding:20px 22px;background:var(--white);transition:transform .3s, box-shadow .3s;cursor:pointer;position:relative}
+.cCard:hover{transform:translateY(-4px);box-shadow:var(--shadow-lift)}
+.cCard .lbl{font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-dim)}
+.cCard .val{font-family:var(--serif);font-size:20px;font-weight:600;color:var(--ink);margin-top:6px;word-break:break-word}
+.cCard .hint{font-size:11.5px;color:var(--ink-dim);margin-top:6px;letter-spacing:.08em}
+.cCard.e{border-left:3px solid var(--gold)}
+.cCard.u{border-left:3px solid var(--blue)}
+.cCard.l{border-left:3px solid var(--violet)}
+.cCard .copied{position:absolute;top:12px;right:14px;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--violet);opacity:0;transition:opacity .3s}
+.cCard .copied.on{opacity:1}
+.contactBtns{margin-top:24px;display:flex;gap:12px;flex-wrap:wrap}
+.wa{display:inline-flex;align-items:center;gap:8px;text-decoration:none;padding:12px 24px;border-radius:999px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;background:#e9f9ef;color:#1d7a45;border:1px solid #bfe8cf;transition:all .3s}
+.wa:hover{background:#25D366;color:#fff;border-color:#25D366;transform:translateY(-2px)}
+.fContacts{margin-top:26px;display:flex;gap:10px 26px;justify-content:center;flex-wrap:wrap;font-size:13.5px;letter-spacing:.05em}
+.fContacts a{color:rgba(248,246,241,.85);text-decoration:none;transition:color .25s}
+.fContacts a:hover{color:var(--gold-light)}
 
 /* lightbox */
 #lb{position:fixed;inset:0;z-index:900;background:rgba(20,14,44,.92);display:none;align-items:center;justify-content:center;padding:4vmin;cursor:zoom-out}
@@ -243,12 +298,14 @@ footer .sig{margin-top:36px;font-family:var(--serif);font-style:italic;color:rgb
 <nav id="topbar" aria-label="Sections">
   <span class="tn">D·O</span>
   <a href="#overview">Overview</a>
+  <a href="#capabilities">Capabilities</a>
   <a href="#cv">CV</a>
   <a href="#portfolio">Portfolio</a>
   <a href="#projects">Projects</a>
   <a href="#speaking">Speaking</a>
   <a href="#recommendations">Letters</a>
-  <a href="#beyond" class="keep">Beyond</a>
+  <a href="#beyond">Beyond</a>
+  <a href="#contact" class="keep">Contact</a>
 </nav>
 
 <!-- ═════════ INTRO: proton + neutron → Metatron ═════════ -->
@@ -267,18 +324,20 @@ footer .sig{margin-top:36px;font-family:var(--serif);font-style:italic;color:rgb
     <div>
       <div class="kicker rv">Chief Data Officer · Naviora Group — Dubai</div>
       <h1 class="rv">Dmitrijs<br>Olenicenko</h1>
-      <div class="role rv"><b>Strategy</b> · Data · <i>Operations</i></div>
+      <div class="role rv"><b>Data</b> · <em>Finance</em> · <i>Strategy</i></div>
       <div class="goldline rv"></div>
-      <p class="heroLead rv">I look for the causal thread inside complex systems, then turn it into something people can act on. Eight years, four countries, one method: <strong>complexity in, clarity out.</strong></p>
+      <p class="heroLead rv">A numbers person before anything else. I find the causal thread inside complex systems — P&amp;Ls, markets, data pipelines — and turn it into decisions people can act on. Eight years, four countries, <strong>15+ industries</strong>, one method: <strong>complexity in, clarity out.</strong></p>
       <p class="quote rv">“To know thyself is the beginning of wisdom.”<small>— Socrates</small></p>
       <div class="chips rv">
         <span class="chip">Dubai · Riga · Worldwide</span>
         <span class="chip">8+ years international</span>
+        <span class="chip">15+ industries</span>
         <span class="chip">52 countries</span>
       </div>
       <div class="heroBtns rv">
         <a class="btn solid" href="https://www.linkedin.com/in/dmitrijsolenicenko/" target="_blank" rel="noopener">LinkedIn</a>
         <a class="btn ghost" href="#overview">Explore ↓</a>
+        <a class="btn ghost" href="#contact">Contact</a>
       </div>
     </div>
     <div class="photoWrap rv">
@@ -306,18 +365,50 @@ footer .sig{margin-top:36px;font-family:var(--serif);font-style:italic;color:rgb
         <span class="chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
       </div>
       <div class="blockBody"><div class="blockInner">
-        <p class="lead">Strategy, data and operations is the formal answer. The honest one: for eight years my job has been to walk into complexity and hand back structure. Regulatory requirements become specifications engineers can build from. Messy operational data becomes insight a board can decide on. An ambiguous initiative gets an owner, a sequence, and a finish line. I have done this across financial services, SaaS platform development and technology consulting, in <strong>four countries and three languages</strong>.</p>
-        <p class="lead">The range is deliberate: Deloitte audit rooms in Riga, three years inside the reporting engine of a Swedish enterprise, restaurant P&amp;Ls in Dubai, a national statistics bureau, and now three business lines at Naviora Group. Different industries, same underlying work — <strong>finding the causal relationships between processes and structure</strong>, with one goal: the most efficient and fair way for everyone involved.</p>
+        <p class="lead">Data, finance and strategy is the formal answer. The honest one: <strong>I am a numbers person before anything else.</strong> Give me a ledger, a dataset or a market and I will find what it is actually saying. For eight years that has been the job — regulatory requirements become specifications engineers can build from, messy operational data becomes insight a board can decide on, an ambiguous initiative gets an owner, a sequence and a finish line. Across financial services, SaaS platform development and technology consulting, in <strong>four countries and three languages</strong>.</p>
+        <p class="lead">The range is deliberate — projects in <strong>more than 15 industries</strong>: Deloitte audit rooms in Riga, three years inside the reporting engine of a Swedish enterprise, food production, cybersecurity, real estate funds, restaurant P&amp;Ls in Dubai, a national statistics bureau, and now three business lines at Naviora Group. Different industries, same underlying work — <strong>finding the causal relationships between processes and structure</strong>, with one goal: the most efficient and fair way for everyone involved. The numbers are how I get there; they are the one language every business speaks.</p>
         <p class="lead">Beyond the CV, I am the architect of the <strong>New Era</strong> ecosystem: an institutional-grade investment operating system, a product studio, and the live platform <a href="https://neifcapital.com">neifcapital.com</a> — designed and built end-to-end by one person, from data architecture and risk analytics to the running production system. The career and the projects tell one story: <strong>complexity in, clarity out.</strong></p>
       </div></div>
     </div>
   </section>
 
-  <!-- 02 · CV -->
+  <!-- 02 · INSTITUTIONAL CAPABILITIES -->
+  <section>
+    <div class="block gold open rv" id="capabilities">
+      <div class="blockHead" data-toggle>
+        <span class="num">02</span>
+        <div><h2>What I Do at Institutional Level</h2><div class="sub">data rooms · valuation · the numbers behind decisions</div></div>
+        <span class="chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
+      </div>
+      <div class="blockBody"><div class="blockInner">
+        <p class="lead">The work below is not theory — every capability here has shipped: for factory shareholders, fund managers, Swedish enterprise controllers, Dubai investors and a national statistics bureau.</p>
+        <div class="caps" style="margin-top:18px">
+          <div class="capCard"><span class="k">Deals</span><h4>Data Rooms &amp; Due Diligence</h4>
+            <p>Investment-grade data rooms built end-to-end: ProForma, sensitivity heat maps, exit and market-liquidity analysis, price validation, demand research — organised so an investment committee can decide and an auditor can trace every number to its source.</p></div>
+          <div class="capCard g"><span class="k">Valuation</span><h4>Evaluation &amp; Investment Memos</h4>
+            <p>DCF, comparables and scenario modelling; risk evaluation frameworks and investment memorandums written bear-case-first, to the standard of the audit rooms I trained in — analysis that survives sceptical questioning, not pitches.</p></div>
+          <div class="capCard"><span class="k">Finance</span><h4>Financial Modelling &amp; Reporting</h4>
+            <p>Three-statement models, cash-flow forecasting, plan-vs-actual discipline, unit economics — and the reporting infrastructure around them that owners and boards actually use, from a two-restaurant group to enterprise scale.</p></div>
+          <div class="capCard v"><span class="k">Analytics</span><h4>BI &amp; Analytics Platforms</h4>
+            <p>Production Power BI ecosystems across 15+ industries: general-ledger-to-invoice drill-downs, row-level security per manager, daily-refresh intelligence — built once, used every day by hundreds of people.</p></div>
+          <div class="capCard v"><span class="k">Architecture</span><h4>Data Architecture &amp; Governance</h4>
+            <p>From the sovereign lakehouse design for Latvia's national statistics bureau to a live investment platform: pipelines, quality gates, disclosure control, documentation — data an institution can put its name on.</p></div>
+          <div class="capCard g"><span class="k">Delivery</span><h4>Zero to Running System</h4>
+            <p>Requirements, specification, build, production — the whole arc, personally. neifcapital.com is the standing proof: an institutional investment operating system designed and shipped end-to-end by one person.</p></div>
+        </div>
+        <div class="capsCta">
+          <span class="t">A number that doesn't add up, a deal that needs a second pair of eyes, or a data function to build?</span>
+          <a class="btn solid" href="#contact">Talk to me</a>
+        </div>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- 03 · CV -->
   <section>
     <div class="block blue open rv" id="cv">
       <div class="blockHead" data-toggle>
-        <span class="num">02</span>
+        <span class="num">03</span>
         <div><h2>Curriculum Vitae</h2><div class="sub">7 roles · 4 countries · one throughline</div></div>
         <span class="chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
       </div>
@@ -386,11 +477,11 @@ footer .sig{margin-top:36px;font-family:var(--serif);font-style:italic;color:rgb
     </div>
   </section>
 
-  <!-- 03 · BI PORTFOLIO -->
+  <!-- 04 · BI PORTFOLIO -->
   <section>
     <div class="block blue open rv" id="portfolio">
       <div class="blockHead" data-toggle>
-        <span class="num">03</span>
+        <span class="num">04</span>
         <div><h2>Business Intelligence Portfolio</h2><div class="sub">8 production Power BI systems · click any screen to zoom</div></div>
         <span class="chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
       </div>
@@ -432,11 +523,11 @@ footer .sig{margin-top:36px;font-family:var(--serif);font-style:italic;color:rgb
     </div>
   </section>
 
-  <!-- 04 · LIVE PROJECTS -->
+  <!-- 05 · LIVE PROJECTS -->
   <section>
     <div class="block blue open rv" id="projects">
       <div class="blockHead" data-toggle>
-        <span class="num">04</span>
+        <span class="num">05</span>
         <div><h2>Live Projects &amp; Builds</h2><div class="sub">systems running in the world right now</div></div>
         <span class="chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
       </div>
@@ -463,11 +554,11 @@ footer .sig{margin-top:36px;font-family:var(--serif);font-style:italic;color:rgb
     </div>
   </section>
 
-  <!-- 05 · SPEAKING & TEACHING -->
+  <!-- 06 · SPEAKING & TEACHING -->
   <section>
     <div class="block violet open rv" id="speaking">
       <div class="blockHead" data-toggle>
-        <span class="num">05</span>
+        <span class="num">06</span>
         <div><h2>Speaking &amp; Teaching</h2><div class="sub">sharing what the work taught me</div></div>
         <span class="chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
       </div>
@@ -486,11 +577,11 @@ footer .sig{margin-top:36px;font-family:var(--serif);font-style:italic;color:rgb
     </div>
   </section>
 
-  <!-- 06 · RECOMMENDATIONS -->
+  <!-- 07 · RECOMMENDATIONS -->
   <section>
     <div class="block gold open rv" id="recommendations">
       <div class="blockHead" data-toggle>
-        <span class="num">06</span>
+        <span class="num">07</span>
         <div><h2>Recommendations</h2><div class="sub">four letters · click to read</div></div>
         <span class="chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
       </div>
@@ -506,11 +597,11 @@ footer .sig{margin-top:36px;font-family:var(--serif);font-style:italic;color:rgb
     </div>
   </section>
 
-  <!-- 07 · BEYOND THE WORK -->
+  <!-- 08 · BEYOND THE WORK -->
   <section>
     <div class="block violet open rv" id="beyond">
       <div class="blockHead" data-toggle>
-        <span class="num">07</span>
+        <span class="num">08</span>
         <div><h2>Beyond the Work</h2><div class="sub">the character behind the numbers</div></div>
         <span class="chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
       </div>
@@ -532,6 +623,44 @@ footer .sig{margin-top:36px;font-family:var(--serif);font-style:italic;color:rgb
     </div>
   </section>
 
+  <!-- 09 · CONTACT -->
+  <section>
+    <div class="block gold open rv" id="contact">
+      <div class="blockHead" data-toggle>
+        <span class="num">09</span>
+        <div><h2>Contact</h2><div class="sub">two time zones, always reachable</div></div>
+        <span class="chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
+      </div>
+      <div class="blockBody"><div class="blockInner">
+        <p class="lead">For roles, projects, partnerships, or a good conversation about data and strategy — write first, call second. Based in Dubai, rooted in Riga, working worldwide.</p>
+        <div class="contactGrid">
+          <div class="cCard e" data-copy="dmitrijs.olenicenko@gmail.com" role="button" tabindex="0" aria-label="Copy email address">
+            <span class="copied">copied ✓</span>
+            <div class="lbl">Email</div>
+            <div class="val">dmitrijs.olenicenko@gmail.com</div>
+            <div class="hint">click to copy · or <a href="mailto:dmitrijs.olenicenko@gmail.com" style="color:var(--gold)">open mail</a></div>
+          </div>
+          <a class="cCard u" href="tel:+971504540013">
+            <div class="lbl">UAE · Dubai</div>
+            <div class="val">+971 50 454 0013</div>
+            <div class="hint">call · GST (UTC+4)</div>
+          </a>
+          <a class="cCard l" href="tel:+37129889963">
+            <div class="lbl">Latvia · Riga</div>
+            <div class="val">+371 29 889 963</div>
+            <div class="hint">call · EET (UTC+2/3)</div>
+          </a>
+        </div>
+        <div class="contactBtns">
+          <a class="wa" href="https://wa.me/971504540013" target="_blank" rel="noopener">WhatsApp</a>
+          <a class="btn solid" href="assets/dmitrijs-olenicenko-cv.pdf" target="_blank" rel="noopener">Download CV</a>
+          <a class="btn ghost" href="assets/dmitrijs-olenicenko.vcf" download>Save contact card</a>
+          <a class="btn ghost" href="https://www.linkedin.com/in/dmitrijsolenicenko/" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+      </div></div>
+    </div>
+  </section>
+
 </main>
 
 <!-- lightbox -->
@@ -545,6 +674,11 @@ footer .sig{margin-top:36px;font-family:var(--serif);font-style:italic;color:rgb
       <a href="https://www.linkedin.com/in/dmitrijsolenicenko/" target="_blank" rel="noopener">LinkedIn</a>
       <a class="ig" href="https://www.instagram.com/shatzs/" target="_blank" rel="noopener">Instagram</a>
       <a href="https://neifcapital.com" target="_blank" rel="noopener">NEIF Capital</a>
+    </div>
+    <div class="fContacts">
+      <a href="mailto:dmitrijs.olenicenko@gmail.com">dmitrijs.olenicenko@gmail.com</a>
+      <a href="tel:+971504540013">UAE +971 50 454 0013</a>
+      <a href="tel:+37129889963">LV +371 29 889 963</a>
     </div>
     <div class="sig">“Complexity in — clarity out.”</div>
   </div>
@@ -766,6 +900,15 @@ document.querySelectorAll('[data-toggle]').forEach(h=>{
   h.addEventListener('click',()=>set(!block.classList.contains('open')));
   new ResizeObserver(()=>{ if(block.classList.contains('open')) body.style.maxHeight=body.scrollHeight+'px'; })
     .observe(body.querySelector('.blockInner'));
+});
+
+/* click-to-copy email */
+document.querySelectorAll('[data-copy]').forEach(el=>{
+  const fire=()=>{ navigator.clipboard.writeText(el.getAttribute('data-copy')).then(()=>{
+    const c=el.querySelector('.copied'); c.classList.add('on'); setTimeout(()=>c.classList.remove('on'),1800);
+  }).catch(()=>{ location.href='mailto:'+el.getAttribute('data-copy'); }); };
+  el.addEventListener('click',e=>{ if(!e.target.closest('a')) fire(); });
+  el.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();fire();} });
 });
 
 /* read-more on BI cards */
