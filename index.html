@@ -91,10 +91,11 @@ main,header,footer{position:relative;z-index:2}
 
 /* ═════ HERO — photo woven in ═════ */
 #hero{position:relative;min-height:96vh;display:flex;align-items:center;padding:80px 0 40px;overflow:hidden;background:linear-gradient(180deg,var(--white) 0%,var(--bone) 100%)}
-#heroGeo{position:absolute;top:50%;right:-6%;transform:translateY(-52%);width:min(94vmin,760px);height:min(94vmin,760px);opacity:.13;pointer-events:none}
+#heroGeo{position:absolute;top:50%;right:2%;transform:translateY(-52%);width:min(94vmin,760px);height:min(94vmin,760px);pointer-events:none;z-index:2;animation:geoPulse 9s ease-in-out infinite}
+@keyframes geoPulse{0%,100%{opacity:.12}50%{opacity:.2}}
 #heroGeo line,#heroGeo circle{stroke:var(--gold);stroke-width:.8;fill:none}
 #arcCanvas{position:absolute;inset:0;pointer-events:none;z-index:3}
-.heroGrid{display:grid;grid-template-columns:1.04fr .96fr;gap:40px;align-items:center;width:100%;position:relative;z-index:4}
+.heroGrid{display:grid;grid-template-columns:minmax(0,660px);gap:40px;align-items:center;width:100%;position:relative;z-index:4}
 .kicker{font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:var(--violet);font-weight:600;margin-bottom:18px}
 h1{font-family:var(--serif);font-weight:500;font-size:clamp(40px,5.6vw,66px);letter-spacing:.04em;line-height:1.06}
 .role{margin-top:14px;font-size:13px;letter-spacing:.34em;text-transform:uppercase;color:var(--ink-soft)}
@@ -111,30 +112,27 @@ h1{font-family:var(--serif);font-weight:500;font-size:clamp(40px,5.6vw,66px);let
 .btn.solid:hover{transform:translateY(-2px);box-shadow:0 12px 34px var(--violet-glow)}
 .btn.ghost{border-color:rgba(13,27,42,.2);color:var(--ink)}
 .btn.ghost:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-2px)}
-/* the photo — feathered, colour-woven, geometry passing over it */
-.photoWrap{position:relative;justify-self:center;width:min(46vw,480px);max-width:94%}
-.photoWrap .halo{position:absolute;inset:-13%;background:
-  radial-gradient(60% 55% at 50% 42%, rgba(228,201,122,.32), transparent 70%),
-  radial-gradient(55% 60% at 62% 70%, var(--violet-glow), transparent 72%);filter:blur(6px);pointer-events:none}
-.photoWrap img.hero{position:relative;width:100%;aspect-ratio:4/5.1;object-fit:cover;object-position:52% 30%;display:block;border-radius:46% 46% 40% 40% / 34% 34% 52% 52%;
-  -webkit-mask-image:radial-gradient(ellipse 74% 66% at 50% 46%, #000 55%, rgba(0,0,0,.55) 74%, transparent 96%);
-          mask-image:radial-gradient(ellipse 74% 66% at 50% 46%, #000 55%, rgba(0,0,0,.55) 74%, transparent 96%);
-  filter:saturate(1.06) contrast(1.02)}
-.photoWrap .tint{position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:
-  linear-gradient(200deg, rgba(124,92,255,.12), transparent 42%),
-  linear-gradient(20deg, rgba(201,168,76,.14), transparent 46%);
-  -webkit-mask-image:radial-gradient(ellipse 74% 66% at 50% 46%, #000 55%, rgba(0,0,0,.55) 74%, transparent 96%);
-          mask-image:radial-gradient(ellipse 74% 66% at 50% 46%, #000 55%, rgba(0,0,0,.55) 74%, transparent 96%)}
-.photoWrap .orbit{position:absolute;inset:-7% -9%;pointer-events:none}
-.photoWrap .orbit ellipse{fill:none;stroke:var(--gold);stroke-width:1;opacity:.55;stroke-dasharray:6 9}
-.photoWrap .orbit .v{stroke:var(--violet);opacity:.4;stroke-dasharray:2 10}
-.photoWrap .cap{position:absolute;left:50%;bottom:-8px;transform:translateX(-50%);white-space:nowrap;font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--ink-dim)}
+/* the photo — full-height atmosphere on the right, feathered into the page */
+.photoPanel{position:absolute;top:0;right:0;bottom:0;width:min(56vw,840px);z-index:1;pointer-events:none}
+.photoPanel img{width:100%;height:100%;object-fit:cover;object-position:50% 24%;display:block;
+  -webkit-mask-image:radial-gradient(118% 98% at 88% 40%, #000 50%, rgba(0,0,0,.6) 70%, transparent 95%);
+          mask-image:radial-gradient(118% 98% at 88% 40%, #000 50%, rgba(0,0,0,.6) 70%, transparent 95%);
+  filter:saturate(1.05) contrast(1.01)}
+.photoPanel .ptint{position:absolute;inset:0;background:
+  linear-gradient(90deg, var(--bone) 0%, rgba(248,246,241,.4) 18%, transparent 52%),
+  linear-gradient(0deg, rgba(248,246,241,.92) 0%, rgba(248,246,241,.25) 14%, transparent 32%),
+  linear-gradient(250deg, rgba(124,92,255,.10), transparent 46%)}
+.photoPanel .pcap{position:absolute;right:28px;bottom:14px;font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--ink-dim)}
 .scrollCue{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);z-index:4;font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--ink-dim);animation:cue 2.4s ease-in-out infinite}
 @keyframes cue{0%,100%{transform:translate(-50%,0);opacity:.55}50%{transform:translate(-50%,7px);opacity:1}}
+@media (max-width:1150px){.photoPanel{width:50vw}}
 @media (max-width:920px){
-  #hero{min-height:0;padding:96px 0 46px}
+  #hero{min-height:0;padding:88px 0 46px;flex-direction:column;justify-content:flex-start}
   .heroGrid{grid-template-columns:1fr;gap:8px}
-  .photoWrap{width:min(78vw,380px);order:-1;margin-bottom:10px}
+  .photoPanel{position:relative;inset:auto;width:min(92vw,440px);height:60vw;max-height:430px;margin:0 auto -6px;pointer-events:none}
+  .photoPanel img{-webkit-mask-image:radial-gradient(100% 96% at 50% 42%, #000 52%, rgba(0,0,0,.55) 72%, transparent 96%);mask-image:radial-gradient(100% 96% at 50% 42%, #000 52%, rgba(0,0,0,.55) 72%, transparent 96%);object-position:50% 28%}
+  .photoPanel .ptint{background:linear-gradient(0deg, rgba(248,246,241,.9) 0%, transparent 28%)}
+  .photoPanel .pcap{display:none}
   .heroLead,.quote{max-width:none}
   #heroGeo{right:-30%;opacity:.09}
 }
@@ -318,6 +316,11 @@ footer .sig{margin-top:36px;font-family:var(--serif);font-style:italic;color:rgb
 
 <!-- ═════════ HERO ═════════ -->
 <header id="hero">
+  <div class="photoPanel rv">
+    <img src="assets/dimitri.jpg" alt="Dmitrijs Olenicenko at sunset on Palm Jumeirah, Dubai">
+    <div class="ptint"></div>
+    <div class="pcap">Palm Jumeirah · golden hour</div>
+  </div>
   <svg id="heroGeo" viewBox="0 0 400 400" aria-hidden="true"></svg>
   <canvas id="arcCanvas"></canvas>
   <div class="wrap heroGrid">
@@ -339,16 +342,6 @@ footer .sig{margin-top:36px;font-family:var(--serif);font-style:italic;color:rgb
         <a class="btn ghost" href="#overview">Explore ↓</a>
         <a class="btn ghost" href="#contact">Contact</a>
       </div>
-    </div>
-    <div class="photoWrap rv">
-      <div class="halo"></div>
-      <img class="hero" src="assets/dimitri.jpg" alt="Dmitrijs Olenicenko at sunset on the Palm, Dubai">
-      <div class="tint"></div>
-      <svg class="orbit" viewBox="0 0 100 125" preserveAspectRatio="none" aria-hidden="true">
-        <ellipse cx="50" cy="57" rx="47" ry="55"/>
-        <ellipse class="v" cx="50" cy="60" rx="42" ry="50" transform="rotate(-8 50 60)"/>
-      </svg>
-      <div class="cap">Palm Jumeirah · golden hour</div>
     </div>
   </div>
   <div class="scrollCue">scroll</div>
@@ -833,12 +826,12 @@ const geoPts = buildMetatron(document.getElementById('heroGeo'), false);
   });
 })();
 
-/* ═══════ AMBIENT LAYER 2: gold energy arcs across the hero geometry ═══════ */
+/* ═══════ AMBIENT LAYER 2: the living Metatron — arcs, constellation hover, click ripples ═══════ */
 (function(){
   if(REDUCED) return;
   const hero=document.getElementById('hero'), cv=document.getElementById('arcCanvas'),
         geo=document.getElementById('heroGeo'), ctx=cv.getContext('2d');
-  let W,H, arcs=[], nextAt=performance.now()+2400;
+  let W,H, arcs=[], ripples=[], nextAt=performance.now()+2000, hm={x:-1e4,y:-1e4};
   const size=()=>{W=cv.width=hero.clientWidth;H=cv.height=hero.clientHeight};
   size(); addEventListener('resize',size);
   function nodePx(){
@@ -860,20 +853,62 @@ const geoPts = buildMetatron(document.getElementById('heroGeo'), false);
     const a=pts[Math.random()*pts.length|0]; let b=pts[Math.random()*pts.length|0], guard=0;
     while(b===a&&guard++<8)b=pts[Math.random()*pts.length|0];
     fire(a[0],a[1],b[0],b[1]);
+    if(Math.random()<.4){ let c=pts[Math.random()*pts.length|0]; if(c!==b) fire(b[0],b[1],c[0],c[1]); }
   }
+  hero.addEventListener('mousemove',e=>{
+    const h=hero.getBoundingClientRect(); hm.x=e.clientX-h.left; hm.y=e.clientY-h.top;
+  });
+  hero.addEventListener('mouseleave',()=>{hm.x=-1e4;hm.y=-1e4;});
   hero.addEventListener('click',e=>{
     if(e.target.closest('a'))return;
     const h=hero.getBoundingClientRect(), pts=nodePx(),
           x=e.clientX-h.left, y=e.clientY-h.top;
-    let best=pts[0],bd=1e12;
-    pts.forEach(p=>{const d=(p[0]-x)**2+(p[1]-y)**2; if(d<bd){bd=d;best=p;}});
+    let bi=0,bd=1e12;
+    pts.forEach((p,i)=>{const d=(p[0]-x)**2+(p[1]-y)**2; if(d<bd){bd=d;bi=i;}});
+    const best=pts[bi];
     fire(x,y,best[0],best[1]); fire(x,y,best[0],best[1]);
+    ripples.push({i:bi,born:performance.now(),life:800});
   });
   function tick(ts){
     requestAnimationFrame(tick);
-    if(!arcs.length&&ts<nextAt)return;
     ctx.clearRect(0,0,W,H);
-    if(ts>=nextAt){fireRandom(); nextAt=ts+5200+Math.random()*5600;}
+    if(ts>=nextAt){fireRandom(); nextAt=ts+3800+Math.random()*4600;}
+    const pts=nodePx();
+
+    /* constellation hover: the geometry brightens around the cursor */
+    let bi=-1,bd=1e12;
+    pts.forEach((p,i)=>{const d=(p[0]-hm.x)**2+(p[1]-hm.y)**2; if(d<bd){bd=d;bi=i;}});
+    const R=170;
+    if(bi>=0&&bd<R*R){
+      const p=pts[bi], g=1-Math.sqrt(bd)/R, pulse=.75+.25*Math.sin(ts/300);
+      ctx.lineWidth=.9;
+      pts.forEach((q,i)=>{ if(i===bi)return;
+        ctx.strokeStyle='rgba(201,168,76,'+(g*.3*pulse)+')';
+        ctx.beginPath();ctx.moveTo(p[0],p[1]);ctx.lineTo(q[0],q[1]);ctx.stroke(); });
+      const halo=ctx.createRadialGradient(p[0],p[1],0,p[0],p[1],46*g+12);
+      halo.addColorStop(0,'rgba(228,201,122,'+(g*.6*pulse)+')');
+      halo.addColorStop(1,'rgba(228,201,122,0)');
+      ctx.fillStyle=halo;ctx.beginPath();ctx.arc(p[0],p[1],46*g+12,0,7);ctx.fill();
+      ctx.fillStyle='rgba(201,168,76,'+(g*.95)+')';
+      ctx.beginPath();ctx.arc(p[0],p[1],3.2,0,7);ctx.fill();
+      pts.forEach(q=>{ ctx.fillStyle='rgba(124,92,255,'+(g*.4*pulse)+')';
+        ctx.beginPath();ctx.arc(q[0],q[1],2,0,7);ctx.fill(); });
+    }
+
+    /* click ripples: the struck node flashes its whole web */
+    ripples=ripples.filter(r=>ts-r.born<r.life);
+    ripples.forEach(r=>{
+      const k=(ts-r.born)/r.life, p=pts[r.i];
+      ctx.strokeStyle='rgba(228,201,122,'+((1-k)*.55)+')';
+      ctx.lineWidth=1.2;
+      ctx.beginPath();ctx.arc(p[0],p[1],20+k*150,0,7);ctx.stroke();
+      ctx.lineWidth=.9;
+      pts.forEach((q,i)=>{ if(i===r.i)return;
+        ctx.strokeStyle='rgba(201,168,76,'+((1-k)*.5)+')';
+        ctx.beginPath();ctx.moveTo(p[0],p[1]);ctx.lineTo(q[0],q[1]);ctx.stroke(); });
+    });
+
+    /* lightning arcs */
     arcs=arcs.filter(a=>ts-a.born<a.life);
     arcs.forEach(a=>{
       const k=1-(ts-a.born)/a.life;
