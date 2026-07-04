@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dmitrijs Olenicenko — Strategy · Data · Operations</title>
+<meta name="description" content="Strategy, data and operations professional. 8+ years across financial services, SaaS platform development and technology consulting. Portfolio, CV and the story behind the work.">
+<meta name="author" content="Dmitrijs Olenicenko">
+<meta property="og:title" content="Dmitrijs Olenicenko — Strategy · Data · Operations">
+<meta property="og:description" content="To know thyself is the beginning of wisdom. Portfolio, experience and character of Dmitrijs Olenicenko.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="assets/dimitri.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --white:#ffffff; --bone:#f8f6f1; --mist:#eef1f6;
+  --ink:#0d1b2a; --ink-soft:#3c4a5c; --ink-dim:#71809296;
+  --gold:#c9a84c; --gold-light:#e4c97a; --gold-pale:#f3ead2;
+  --blue:#2f6dd0; --blue-deep:#1e4fa3; --blue-pale:#eaf1fc; --blue-glow:rgba(47,109,208,.22);
+  --violet:#7c5cff; --violet-deep:#5b3fd4; --violet-pale:#f1edfd; --violet-glow:rgba(124,92,255,.20);
+  --serif:'Cormorant Garamond',Georgia,serif; --sans:'Inter',-apple-system,sans-serif;
+  --shadow:0 10px 40px rgba(13,27,42,.08); --shadow-lift:0 18px 60px rgba(13,27,42,.13);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);color:var(--ink);background:var(--white);line-height:1.65;font-weight:400;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+::selection{background:var(--gold-pale);color:var(--ink)}
+
+/* ————— INTRO OVERLAY: proton + neutron → Metatron ————— */
+#intro{position:fixed;inset:0;z-index:1000;background:radial-gradient(1200px 800px at 50% 45%, #fff 0%, var(--bone) 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:opacity 1.1s ease}
+#intro.done{opacity:0;pointer-events:none}
+#introCanvas{position:absolute;inset:0;width:100%;height:100%}
+#metatron{position:relative;width:min(64vmin,460px);height:min(64vmin,460px);opacity:0;transition:opacity .8s ease}
+#metatron.show{opacity:1}
+#metatron line,#metatron circle{stroke:var(--gold);stroke-width:1.1;fill:none;vector-effect:non-scaling-stroke}
+#introHint{position:absolute;bottom:6vh;left:0;right:0;text-align:center;font-size:11px;letter-spacing:.35em;text-transform:uppercase;color:var(--ink-dim);opacity:.75}
+#introName{position:absolute;top:9vh;left:0;right:0;text-align:center;font-family:var(--serif);font-size:clamp(17px,2.6vw,24px);letter-spacing:.42em;text-transform:uppercase;color:var(--ink-soft);opacity:0;transition:opacity 1.2s ease .2s}
+#introName.show{opacity:.9}
+
+/* ————— PAGE ————— */
+.wrap{max-width:1060px;margin:0 auto;padding:0 22px}
+.goldline{width:64px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:26px auto}
+
+/* hero */
+#hero{position:relative;padding:96px 0 62px;text-align:center;background:
+  radial-gradient(700px 460px at 30% 12%, var(--blue-glow), transparent 65%),
+  radial-gradient(700px 460px at 72% 20%, var(--violet-glow), transparent 65%),
+  linear-gradient(180deg,var(--white) 0%,var(--bone) 100%)}
+#heroGeo{position:absolute;top:50%;left:50%;transform:translate(-50%,-56%);width:min(88vmin,640px);height:min(88vmin,640px);opacity:.10;pointer-events:none}
+#heroGeo line,#heroGeo circle{stroke:var(--gold);stroke-width:.8;fill:none}
+.portrait{position:relative;width:230px;height:230px;margin:0 auto 30px}
+.portrait .ring{position:absolute;inset:-14px;border-radius:50%;background:conic-gradient(from 210deg, var(--blue), var(--gold), var(--violet), var(--blue));-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 2.5px),#000 calc(100% - 2px));mask:radial-gradient(farthest-side,transparent calc(100% - 2.5px),#000 calc(100% - 2px));animation:slowspin 26s linear infinite;opacity:.85}
+@keyframes slowspin{to{transform:rotate(360deg)}}
+.portrait .glow{position:absolute;inset:-46px;border-radius:50%;background:radial-gradient(circle, rgba(201,168,76,.16), transparent 62%);pointer-events:none}
+.portrait img,.portrait .mono{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block;box-shadow:var(--shadow-lift)}
+.portrait .mono{display:none;align-items:center;justify-content:center;background:linear-gradient(140deg,var(--blue-pale),var(--violet-pale));font-family:var(--serif);font-size:74px;color:var(--ink);letter-spacing:.04em}
+h1{font-family:var(--serif);font-weight:500;font-size:clamp(34px,6vw,58px);letter-spacing:.06em}
+.role{margin-top:10px;font-size:12.5px;letter-spacing:.34em;text-transform:uppercase;color:var(--ink-soft)}
+.role b{color:var(--blue);font-weight:600}.role i{color:var(--violet);font-style:normal;font-weight:600}
+.quote{max-width:520px;margin:30px auto 0;font-family:var(--serif);font-style:italic;font-size:20px;color:var(--ink-soft)}
+.quote small{display:block;margin-top:8px;font-family:var(--sans);font-style:normal;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold)}
+.chips{margin-top:30px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.chip{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;padding:8px 16px;border:1px solid rgba(13,27,42,.14);border-radius:999px;color:var(--ink-soft);background:rgba(255,255,255,.7);backdrop-filter:blur(4px)}
+
+/* sections & expandable blocks */
+section{padding:34px 0}
+.block{background:var(--white);border:1px solid rgba(13,27,42,.09);border-radius:18px;box-shadow:var(--shadow);margin:22px 0;overflow:hidden;transition:box-shadow .35s ease, transform .35s ease}
+.block:hover{box-shadow:var(--shadow-lift)}
+.block.blue{border-top:3px solid var(--blue)}
+.block.violet{border-top:3px solid var(--violet)}
+.block.gold{border-top:3px solid var(--gold)}
+.blockHead{display:flex;align-items:center;gap:18px;padding:26px 30px;cursor:pointer;user-select:none}
+.blockHead .num{font-family:var(--serif);font-size:15px;color:var(--gold);min-width:30px}
+.blockHead h2{font-family:var(--serif);font-weight:500;font-size:clamp(21px,3vw,28px);letter-spacing:.03em;flex:1}
+.blockHead .sub{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-dim);margin-top:3px}
+.blockHead .chev{width:34px;height:34px;border-radius:50%;border:1px solid rgba(13,27,42,.15);display:flex;align-items:center;justify-content:center;transition:transform .45s cubic-bezier(.6,0,.2,1), background .3s;flex:none}
+.blockHead .chev svg{width:13px;height:13px;stroke:var(--ink-soft);fill:none;stroke-width:2}
+.block.open .chev{transform:rotate(180deg)}
+.block.blue.open .chev{background:var(--blue-pale)}
+.block.violet.open .chev{background:var(--violet-pale)}
+.block.gold.open .chev{background:var(--gold-pale)}
+.blockBody{max-height:0;opacity:0;overflow:hidden;transition:max-height .8s cubic-bezier(.6,0,.2,1), opacity .55s ease}
+.block.open .blockBody{opacity:1}
+.blockInner{padding:4px 30px 34px}
+.lead{font-size:16.5px;color:var(--ink-soft);line-height:1.85}
+.lead strong{color:var(--ink);font-weight:600}
+
+/* CV timeline */
+.tl{position:relative;margin-top:8px}
+.tl::before{content:"";position:absolute;left:7px;top:6px;bottom:6px;width:1px;background:linear-gradient(180deg,var(--blue),var(--violet))}
+.job{position:relative;padding:0 0 30px 38px}
+.job:last-child{padding-bottom:4px}
+.job::before{content:"";position:absolute;left:2px;top:7px;width:11px;height:11px;border-radius:50%;background:var(--white);border:2px solid var(--blue)}
+.job.violetDot::before{border-color:var(--violet)}
+.job h3{font-family:var(--serif);font-size:21px;font-weight:600}
+.job .meta{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-dim);margin:3px 0 10px}
+.job .meta b{color:var(--blue);font-weight:600}
+.job ul{list-style:none}
+.job li{position:relative;padding:3px 0 3px 20px;color:var(--ink-soft);font-size:14.5px}
+.job li::before{content:"—";position:absolute;left:0;color:var(--gold)}
+
+/* BI gallery */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:20px;margin-top:10px}
+.card{border:1px solid rgba(13,27,42,.1);border-radius:14px;overflow:hidden;background:var(--white);transition:transform .35s ease, box-shadow .35s ease;display:flex;flex-direction:column}
+.card:hover{transform:translateY(-5px);box-shadow:var(--shadow-lift)}
+.card .shot{position:relative;aspect-ratio:16/9.4;overflow:hidden;cursor:zoom-in;background:var(--mist)}
+.card .shot img{width:100%;height:100%;object-fit:cover;object-position:top;transition:transform .6s ease}
+.card:hover .shot img{transform:scale(1.045)}
+.card .shot .zoom{position:absolute;right:10px;bottom:10px;background:rgba(13,27,42,.65);color:#fff;font-size:10px;letter-spacing:.15em;text-transform:uppercase;padding:5px 10px;border-radius:999px;opacity:0;transition:opacity .3s}
+.card:hover .shot .zoom{opacity:1}
+.card .body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:8px;flex:1}
+.card h4{font-family:var(--serif);font-size:19px;font-weight:600}
+.card .tag{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--blue);font-weight:600}
+.card p{font-size:13.5px;color:var(--ink-soft);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;transition:none}
+.card.open p{display:block;-webkit-line-clamp:unset}
+.card .more{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);cursor:pointer;margin-top:auto;padding-top:6px}
+.card .more:hover{color:var(--blue-deep)}
+
+/* live projects */
+.live{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin-top:8px}
+.liveCard{display:block;text-decoration:none;color:var(--ink);border:1px solid rgba(13,27,42,.1);border-left:3px solid var(--blue);border-radius:12px;padding:20px 22px;transition:transform .3s,box-shadow .3s;background:var(--white)}
+.liveCard:hover{transform:translateY(-4px);box-shadow:var(--shadow-lift)}
+.liveCard h4{font-family:var(--serif);font-size:20px;font-weight:600}
+.liveCard .u{font-size:11px;letter-spacing:.12em;color:var(--blue);text-transform:lowercase}
+.liveCard p{font-size:13px;color:var(--ink-soft);margin-top:8px}
+.liveCard.v{border-left-color:var(--violet)}.liveCard.v .u{color:var(--violet)}
+.liveCard.g{border-left-color:var(--gold)}.liveCard.g .u{color:var(--gold)}
+
+/* photo rows */
+.photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-top:14px}
+.photos img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:12px;cursor:zoom-in;transition:transform .35s ease, box-shadow .35s;box-shadow:var(--shadow)}
+.photos img:hover{transform:scale(1.03);box-shadow:var(--shadow-lift)}
+.pdfBtn{display:inline-flex;align-items:center;gap:10px;margin:16px 12px 0 0;padding:11px 22px;border-radius:999px;border:1px solid var(--blue);color:var(--blue);text-decoration:none;font-size:12px;letter-spacing:.16em;text-transform:uppercase;transition:all .3s}
+.pdfBtn:hover{background:var(--blue);color:#fff}
+.pdfBtn.v{border-color:var(--violet);color:var(--violet)}.pdfBtn.v:hover{background:var(--violet);color:#fff}
+.takeaway{margin-top:22px;padding:20px 26px;border-left:3px solid var(--gold);background:var(--gold-pale);border-radius:0 12px 12px 0;font-family:var(--serif);font-style:italic;font-size:19px;color:var(--ink)}
+
+/* facts / beyond work */
+.facts{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:16px;margin-top:10px}
+.fact{border:1px solid rgba(13,27,42,.1);border-radius:14px;padding:22px;background:linear-gradient(160deg,var(--white),var(--violet-pale));text-align:center}
+.fact .big{font-family:var(--serif);font-size:40px;font-weight:600;color:var(--violet-deep);line-height:1.1}
+.fact .lbl{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);margin-top:6px}
+.fact .note{font-size:12.5px;color:var(--ink-dim);margin-top:6px}
+
+/* recommendations */
+.recs{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-top:12px}
+.recs .rec{border:1px solid rgba(13,27,42,.12);border-radius:12px;overflow:hidden;cursor:zoom-in;background:var(--mist);transition:transform .3s, box-shadow .3s}
+.recs .rec:hover{transform:translateY(-4px);box-shadow:var(--shadow-lift)}
+.recs img{width:100%;aspect-ratio:3/4;object-fit:cover;object-position:top;display:block}
+
+/* lightbox */
+#lb{position:fixed;inset:0;z-index:900;background:rgba(13,27,42,.9);display:none;align-items:center;justify-content:center;padding:4vmin;cursor:zoom-out}
+#lb.on{display:flex}
+#lb img{max-width:94vw;max-height:88vh;border-radius:8px;box-shadow:0 30px 90px rgba(0,0,0,.5)}
+#lb .cap{position:absolute;bottom:3vh;left:0;right:0;text-align:center;color:#fff;font-size:13px;letter-spacing:.1em;opacity:.85}
+
+/* footer */
+footer{margin-top:60px;padding:64px 0 46px;background:linear-gradient(180deg,var(--bone),var(--mist));text-align:center}
+.social{display:flex;gap:14px;justify-content:center;margin-top:22px}
+.social a{display:flex;align-items:center;gap:9px;text-decoration:none;color:var(--ink);border:1px solid rgba(13,27,42,.16);padding:11px 22px;border-radius:999px;font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;transition:all .3s;background:var(--white)}
+.social a:hover{border-color:var(--blue);color:var(--blue);transform:translateY(-2px)}
+.social a.ig:hover{border-color:var(--violet);color:var(--violet)}
+footer .sig{margin-top:34px;font-family:var(--serif);font-style:italic;color:var(--ink-dim);font-size:15px}
+
+/* reveal on scroll */
+.rv{opacity:0;transform:translateY(26px);transition:opacity .9s ease, transform .9s cubic-bezier(.5,0,.2,1)}
+.rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion: reduce){
+  *{animation:none!important;transition:none!important}
+  .rv{opacity:1;transform:none}
+}
+@media (max-width:640px){
+  .blockHead{padding:20px 18px}.blockInner{padding:2px 18px 26px}
+  .portrait{width:186px;height:186px}
+}
+</style>
+</head>
+<body>
+
+<!-- ═════════ INTRO: proton + neutron → Metatron ═════════ -->
+<div id="intro" aria-label="Intro animation — click to skip">
+  <canvas id="introCanvas"></canvas>
+  <div id="introName">Dmitrijs&nbsp;Olenicenko</div>
+  <svg id="metatron" viewBox="0 0 400 400" aria-hidden="true"></svg>
+  <div id="introHint">click to enter</div>
+</div>
+
+<!-- ═════════ HERO ═════════ -->
+<header id="hero">
+  <svg id="heroGeo" viewBox="0 0 400 400" aria-hidden="true"></svg>
+  <div class="wrap">
+    <div class="portrait rv">
+      <div class="glow"></div><div class="ring"></div>
+      <img src="assets/dimitri.jpg" alt="Dmitrijs Olenicenko" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="mono">DO</div>
+    </div>
+    <h1 class="rv">Dmitrijs Olenicenko</h1>
+    <div class="role rv"><b>Strategy</b> · Data · <i>Operations</i></div>
+    <div class="goldline"></div>
+    <p class="quote rv">“To know thyself is the beginning of wisdom.”<small>— Socrates</small></p>
+    <div class="chips rv">
+      <span class="chip">Dubai · Riga · Worldwide</span>
+      <span class="chip">8+ years international</span>
+      <span class="chip">52 countries</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- 01 · OVERVIEW -->
+  <section>
+    <div class="block blue open rv" id="overview">
+      <div class="blockHead" data-toggle>
+        <span class="num">01</span>
+        <div><h2>Overview</h2><div class="sub">who I am, in one honest paragraph</div></div>
+        <span class="chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
+      </div>
+      <div class="blockBody"><div class="blockInner">
+        <p class="lead">Strategy, data and operations professional with <strong>8+ years of international experience</strong> across financial services, SaaS platform development and technology consulting. Track record of translating complex business and regulatory requirements into structured specifications, driving cross-functional initiatives end-to-end and producing data-driven insights for senior stakeholders.</p>
+        <p class="lead" style="margin-top:14px">Experienced in working across compliance, product and engineering functions in fast-moving, ambiguous environments — from early-stage platform builds to established enterprise operations. <strong>The person looking for the causal relationships between all processes and structure — with one goal: to find the most efficient and fair way.</strong></p>
+        <p class="lead" style="margin-top:14px">Beyond the CV: architect of the <strong>New Era</strong> ecosystem — an institutional-grade investment operating system, a product studio, and the live platform <a href="https://neifcapital.com" style="color:var(--blue)">neifcapital.com</a> — built end-to-end by one person, from data architecture and risk analytics to the running production system. The career and the projects tell one story: complexity in, clarity out.</p>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- 02 · CV -->
+  <section>
+    <div class="block blue rv" id="cv">
+      <div class="blockHead" data-toggle>
+        <span class="num">02</span>
+        <div><h2>Curriculum Vitae</h2><div class="sub">press to open · 7 roles · 4 countries</div></div>
+        <span class="chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
+      </div>
+      <div class="blockBody"><div class="blockInner">
+        <div class="tl">
+          <div class="job">
+            <h3>Chief Data Officer — Naviora Group</h3>
+            <div class="meta"><b>Jul 2025 – Present</b> · Dubai, UAE · Full-time</div>
+            <ul>
+              <li>Lead end-to-end delivery of three new business initiatives — Analytical Consulting, Data Room formation and the Placement SaaS platform — from requirements definition through go-to-market sequencing, revenue modelling and phased implementation.</li>
+              <li>Coordinate commercial, product and engineering stakeholders; translate business objectives into structured, unambiguous specifications and maintain delivery momentum without direct authority over all contributing teams.</li>
+              <li>Develop advanced financial models, investment memorandums and risk evaluation frameworks for investor and client decision-making — due diligence, return scenarios and asset-level analysis across a commercial real-estate and asset-management portfolio.</li>
+              <li>Define product and data requirements for Placement, a PropTech analytics platform for commercial investors and agencies across the UAE.</li>
+            </ul>
+          </div>
+          <div class="job">
+            <h3>Chief Financial Officer — Besar Restaurant</h3>
+            <div class="meta"><b>Aug 2024 – Apr 2025</b> · Dubai, UAE</div>
+            <ul>
+              <li>Designed and maintained the financial reporting infrastructure — P&amp;L, cash-flow forecasting, plan-vs-actual — across two restaurant operations, data validated through Syrve/Iiko.</li>
+              <li>Established structured operational workflows and automation opportunities, improving reporting accuracy and cutting manual reconciliation time.</li>
+              <li>Managed alignment across ownership, operations and external contractors.</li>
+            </ul>
+          </div>
+          <div class="job">
+            <h3>Financial Analyst — Nest Finders Real Estate</h3>
+            <div class="meta"><b>Feb 2024 – Aug 2024</b> · Dubai, UAE · Part-time</div>
+            <ul>
+              <li>Built an independent data-analysis tool for the Dubai real-estate market, aggregating primary market sources (Property Monitor / DXB Interact-grade) into investment-grade insights.</li>
+              <li>Delivered structured reports on off-plan and secondary valuations, ROI assessments and portfolio recommendations — raw datasets into decision-ready outputs.</li>
+            </ul>
+          </div>
+          <div class="job">
+            <h3>Business Intelligence Analyst — Atea Global Services</h3>
+            <div class="meta"><b>Jan 2021 – Feb 2024</b> · Sweden · Remote</div>
+            <ul>
+              <li>Embedded BI consultant to senior Swedish management, working alongside 40 Business Controllers — operational and financial data into executive-level performance reporting.</li>
+              <li>Identified variances, diagnosed root causes and produced recommendations on resource allocation and sales-team effectiveness.</li>
+              <li>Built and maintained the BI reporting infrastructure across multiple stakeholder groups; applied continuous-improvement methodology that reduced manual reporting overhead for the whole controller team.</li>
+            </ul>
+          </div>
+          <div class="job">
+            <h3>Business Development Manager — OROCON</h3>
+            <div class="meta"><b>Mar 2020 – Nov 2020</b> · Latvia</div>
+            <ul>
+              <li>Structured market research into expansion business cases for leadership; user and site data turned into requirements for new platform modules.</li>
+            </ul>
+          </div>
+          <div class="job">
+            <h3>Audit Analyst · Associate Financial Advisor — Deloitte</h3>
+            <div class="meta"><b>2019 – Mar 2020</b> · Latvia</div>
+            <ul>
+              <li>Audit procedures across a portfolio of Latvian companies — internal control systems, regulatory compliance, accounting standards.</li>
+              <li>Multi-year assessments of financial statements to audit-grade precision; contributed to M&amp;A due-diligence engagements.</li>
+            </ul>
+          </div>
+          <div class="job violetDot">
+            <h3>Executive Sales Representative — Southwestern Advantage</h3>
+            <div class="meta"><b>2018</b> · United States</div>
+            <ul>
+              <li>Door-to-door, cold-call and social sales across 13 cities in Utah — pitched over 3,400 Americans in 4 months. The school of resilience everything else was built on.</li>
+            </ul>
+          </div>
+        </div>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- 03 · BI PORTFOLIO -->
+  <section>
+    <div class="block blue rv" id="portfolio">
+      <div class="blockHead" data-toggle>
+        <span class="num">03</span>
+        <div><h2>Business Intelligence Portfolio</h2><div class="sub">press to open · 8 production Power BI systems · click any screen to zoom</div></div>
+        <span class="chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
+      </div>
+      <div class="blockBody"><div class="blockInner">
+        <div class="grid">
+          <div class="card"><div class="shot" data-lb="assets/bi-food-production.png" data-cap="Food Production — shareholder performance app"><img src="assets/bi-food-production.png" alt="Food Production report" loading="lazy"><span class="zoom">zoom</span></div>
+            <div class="body"><span class="tag">4 reports · 5–7 pages each</span><h4>Food Production</h4>
+            <p>Built for a group managing four food-production factories: a shareholder app showing Revenue, Cost, Gross Profit and margins with full production cost — raw materials, salaries, utilities, marketing. Products needing price adjustment or cost reduction are flagged in red; deeper sections give factory directors cost drill-downs, margin-enhancement scenarios (1–20% price moves), invoice detail, and key product and customer analysis.</p><span class="more" data-more>read more</span></div></div>
+
+          <div class="card"><div class="shot" data-lb="assets/bi-cybersecurity.png" data-cap="Cybersecurity — daily breach & license intelligence"><img src="assets/bi-cybersecurity.png" alt="Cybersecurity report" loading="lazy"><span class="zoom">zoom</span></div>
+            <div class="body"><span class="tag">8 pages · daily refresh</span><h4>Cybersecurity</h4>
+            <p>For a cybersecurity-license vendor: a daily intelligence view of breach attempts and vulnerable areas — for the company and per client. Client-specific risk analysis powers tailored solutions; license-expiration and breach-frequency views arm the sales team to renew proactively and upsell stronger packages.</p><span class="more" data-more>read more</span></div></div>
+
+          <div class="card"><div class="shot" data-lb="assets/bi-bpm.png" data-cap="Business Process Management — 11 processes under control"><img src="assets/bi-bpm.png" alt="BPM report" loading="lazy"><span class="zoom">zoom</span></div>
+            <div class="body"><span class="tag">12 reports · 2–3 pages each</span><h4>Business Process Management</h4>
+            <p>Eleven business processes measured against 30-day targets — incidents and reaction, requests and completion, customer experience, change speed. Colour-coded thresholds (below 100% / 80%); each process gets its own report with reaction speed, resolution time, rolled-back changes, overdue cases, and the people involved — so the BPM team catches issues per country the moment they appear.</p><span class="more" data-more>read more</span></div></div>
+
+          <div class="card"><div class="shot" data-lb="assets/bi-business-fields.png" data-cap="Business Fields — P&L drill-down to every invoice"><img src="assets/bi-business-fields.png" alt="Business Fields report" loading="lazy"><span class="zoom">zoom</span></div>
+            <div class="body"><span class="tag">4 pages · 30+ P&L accounts</span><h4>Business Fields P&amp;L</h4>
+            <p>Connected straight to the General Ledger: navigate every transaction from the highest level down to the individual invoice — with links per Account, Field of Business, Region, Department, Customer and Employee. Select any field and the full transaction detail appears: financial account, agreement, invoice number and link, department, customer, amount. Custom reports on any level.</p><span class="more" data-more>read more</span></div></div>
+
+          <div class="card"><div class="shot" data-lb="assets/bi-sales-teams.png" data-cap="Sales Teams Performance — targets, regions, security levels"><img src="assets/bi-sales-teams.png" alt="Sales Teams report" loading="lazy"><span class="zoom">zoom</span></div>
+            <div class="body"><span class="tag">5 pages · row-level security</span><h4>Sales Teams Performance</h4>
+            <p>Sales performance by field of business — region, office, manager and department against targets and prior year. Filter to individual salespeople by name or code; drill into product, service and consultant breakdowns. Built on security levels so every manager sees exactly their own field of responsibility.</p><span class="more" data-more>read more</span></div></div>
+
+          <div class="card"><div class="shot" data-lb="assets/bi-balance-pl-cashflow.png" data-cap="Balance Sheet · P&L · Cash Flow — the controller's monthly view"><img src="assets/bi-balance-pl-cashflow.png" alt="Balance sheet report" loading="lazy"><span class="zoom">zoom</span></div>
+            <div class="body"><span class="tag">3 pages · actuals / forecast / budget / PY</span><h4>Balance Sheet · P&amp;L · Cash Flow</h4>
+            <p>The three statements over time, fully customisable: Actuals, Forecast, Budget and Previous Year, by region and department, in any timeframe — the high-level monthly business read for Business Controllers.</p><span class="more" data-more>read more</span></div></div>
+
+          <div class="card"><div class="shot" data-lb="assets/bi-real-estate-fund.png" data-cap="Real Estate Fund — Latvia & France rental portfolio"><img src="assets/bi-real-estate-fund.png" alt="Real estate fund report" loading="lazy"><span class="zoom">zoom</span></div>
+            <div class="body"><span class="tag">5 pages · Excel ETL</span><h4>Real Estate Fund</h4>
+            <p>For an investment fund renting apartments in Latvia and France (long-term + Airbnb): a monthly-updated ETL in Excel feeding one shared view — rented units, per-flat revenue and expenses (taxes, utilities, repairs), contract durations, invoice records, tenant details, and photo/video tours of every property.</p><span class="more" data-more>read more</span></div></div>
+
+          <div class="card"><div class="shot" data-lb="assets/bi-360-customers.png" data-cap="360° View — profit vs the true cost of serving each customer"><img src="assets/bi-360-customers.png" alt="360 customers report" loading="lazy"><span class="zoom">zoom</span></div>
+            <div class="body"><span class="tag">2 reports · 3 pages each</span><h4>360° of the Most Profitable Customers</h4>
+            <p>Gross profit per customer against the true Total Input to serve them — twelve variables including salespeople dedicated, delivery workforce, support cases, manufacturers required and contract-renewal churn. Five further pages compare clients across variables and unpack each relationship — so attention flows to the customers genuinely in the green zone of profit vs effort.</p><span class="more" data-more>read more</span></div></div>
+        </div>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- 04 · LIVE PROJECTS -->
+  <section>
+    <div class="block blue rv" id="projects">
+      <div class="blockHead" data-toggle>
+        <span class="num">04</span>
+        <div><h2>Live Projects &amp; Builds</h2><div class="sub">press to open · systems running in the world right now</div></div>
+        <span class="chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
+      </div>
+      <div class="blockBody"><div class="blockInner">
+        <div class="live">
+          <a class="liveCard" href="https://neifcapital.com" target="_blank" rel="noopener">
+            <h4>New Era Investment Fund</h4><span class="u">neifcapital.com</span>
+            <p>An institutional investment operating system — risk analytics, valuation engines, GIPS/ILPA-grade reporting — exposed as a live platform where clients connect their own AI to the fund's intelligence. Architecture, data, engineering and product: built end-to-end.</p>
+          </a>
+          <a class="liveCard v" href="https://jiangyushan.online" target="_blank" rel="noopener">
+            <h4>Jiang Yu Shan</h4><span class="u">jiangyushan.online</span>
+            <p>Membership, content and commerce platform for a Grandmaster of traditional Chinese martial arts — from static design to a full production Phoenix platform with members' rooms, courses and payments.</p>
+          </a>
+          <a class="liveCard" href="https://www.naviora.ae" target="_blank" rel="noopener">
+            <h4>Naviora Group</h4><span class="u">naviora · dubai</span>
+            <p>As Chief Data Officer: analytical consulting, data-room formation and the Placement PropTech SaaS — three business lines from requirements to revenue model.</p>
+          </a>
+          <a class="liveCard g" href="assets/csp-data-architecture.pdf" target="_blank" rel="noopener">
+            <h4>Central Statistical Bureau of Latvia</h4><span class="u">government data architecture</span>
+            <p>Remodelling the data architecture of Latvia's national statistics agency — a sovereign on-premise lakehouse design under GSBPM/SDMX standards with fail-closed disclosure control. Open the presentation →</p>
+          </a>
+        </div>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- 05 · SPEAKING & TEACHING -->
+  <section>
+    <div class="block violet rv" id="speaking">
+      <div class="blockHead" data-toggle>
+        <span class="num">05</span>
+        <div><h2>Speaking &amp; Teaching</h2><div class="sub">press to open · sharing what the work taught me</div></div>
+        <span class="chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
+      </div>
+      <div class="blockBody"><div class="blockInner">
+        <p class="lead">Lecture at the <strong>University of Latvia Innovation &amp; Acceleration Center</strong> — pre-incubation program in cooperation with Latvenergo and Sadales Tīkls. How entrepreneurs turn ideas into sustainable businesses: market validation and customer research, go-to-market and customer acquisition, financial modelling and unit economics, AI as a tool for faster decision-making, and data-driven risk management.</p>
+        <div class="takeaway">“Vision creates direction — but evidence validates the path.”</div>
+        <div class="photos">
+          <img src="assets/lu-1.jpg" alt="Lecture at University of Latvia" data-lb="assets/lu-1.jpg" data-cap="University of Latvia — Innovation & Acceleration Center" loading="lazy">
+          <img src="assets/lu-2.jpg" alt="Lecture audience" data-lb="assets/lu-2.jpg" data-cap="Pre-incubation program with Latvenergo & Sadales Tīkls" loading="lazy">
+          <img src="assets/lu-3.jpg" alt="Presenting" data-lb="assets/lu-3.jpg" data-cap="From idea to sustainable business" loading="lazy">
+          <img src="assets/lu-4.jpg" alt="Discussion" data-lb="assets/lu-4.jpg" data-cap="Q&A with future founders" loading="lazy">
+        </div>
+        <a class="pdfBtn v" href="assets/lu-lecture-business-solution-development.pdf" target="_blank" rel="noopener">Open the lecture deck (PDF)</a>
+        <a class="pdfBtn" href="assets/csp-data-architecture.pdf" target="_blank" rel="noopener">CSP data-architecture presentation (PDF)</a>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- 06 · RECOMMENDATIONS -->
+  <section>
+    <div class="block gold rv" id="recommendations">
+      <div class="blockHead" data-toggle>
+        <span class="num">06</span>
+        <div><h2>Recommendations</h2><div class="sub">press to open · four letters · click to read</div></div>
+        <span class="chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
+      </div>
+      <div class="blockBody"><div class="blockInner">
+        <p class="lead">Words from the people I have worked with — offered unprompted, kept with gratitude.</p>
+        <div class="recs">
+          <div class="rec" data-lb="assets/rec-1.png" data-cap="Recommendation letter 1"><img src="assets/rec-1.png" alt="Recommendation letter 1" loading="lazy"></div>
+          <div class="rec" data-lb="assets/rec-2.png" data-cap="Recommendation letter 2"><img src="assets/rec-2.png" alt="Recommendation letter 2" loading="lazy"></div>
+          <div class="rec" data-lb="assets/rec-3.png" data-cap="Recommendation letter 3"><img src="assets/rec-3.png" alt="Recommendation letter 3" loading="lazy"></div>
+          <div class="rec" data-lb="assets/rec-4.png" data-cap="Recommendation letter 4"><img src="assets/rec-4.png" alt="Recommendation letter 4" loading="lazy"></div>
+        </div>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- 07 · BEYOND THE WORK -->
+  <section>
+    <div class="block violet rv" id="beyond">
+      <div class="blockHead" data-toggle>
+        <span class="num">07</span>
+        <div><h2>Beyond the Work</h2><div class="sub">press to open · the character behind the numbers</div></div>
+        <span class="chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
+      </div>
+      <div class="blockBody"><div class="blockInner">
+        <div class="facts">
+          <div class="fact"><div class="big">52</div><div class="lbl">Countries</div><div class="note">and counting — the world as the classroom</div></div>
+          <div class="fact"><div class="big">150+</div><div class="lbl">Dives · PADI Divemaster</div><div class="note">sand-wreck lover · certified lifeguard</div></div>
+          <div class="fact"><div class="big">13</div><div class="lbl">US cities in 4 months</div><div class="note">3,400+ door-to-door pitches at 21</div></div>
+          <div class="fact"><div class="big">∞</div><div class="lbl">Curiosity</div><div class="note">rooms with Tony Robbins, Oskar Hartmann, Pavel Gitelman</div></div>
+        </div>
+        <div class="photos" style="margin-top:20px">
+          <img src="assets/diving-1.jpg" alt="Diving" data-lb="assets/diving-1.jpg" data-cap="PADI Divemaster — 150+ dives across the world" loading="lazy">
+          <img src="assets/diving-2.jpg" alt="Diving a wreck" data-lb="assets/diving-2.jpg" data-cap="Sand-wreck lover" loading="lazy">
+          <img src="assets/diving-3.jpg" alt="Underwater" data-lb="assets/diving-3.jpg" data-cap="Where the noise stops" loading="lazy">
+          <img src="assets/speaking.jpg" alt="Speaking at an event" data-lb="assets/speaking.jpg" data-cap="Never off — always in the arena" loading="lazy">
+        </div>
+        <p class="lead" style="margin-top:20px">The same pattern runs through all of it: go where it is uncomfortable, learn the system from the inside, find the causal thread — whether that is a balance sheet, a data pipeline, a wreck forty metres down, or a street in a city where nobody knows your name.</p>
+      </div></div>
+    </div>
+  </section>
+
+</main>
+
+<!-- lightbox -->
+<div id="lb" role="dialog" aria-label="Image viewer"><img src="" alt=""><div class="cap"></div></div>
+
+<footer>
+  <div class="wrap">
+    <div style="font-family:var(--serif);font-size:26px;letter-spacing:.08em">Dmitrijs Olenicenko</div>
+    <div class="goldline"></div>
+    <div class="social">
+      <a href="https://www.linkedin.com/in/dmitrijsolenicenko/" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="ig" href="https://www.instagram.com/shatzs/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://neifcapital.com" target="_blank" rel="noopener">NEIF Capital</a>
+    </div>
+    <div class="sig">“Complexity in — clarity out.”</div>
+  </div>
+</footer>
+
+<script>
+/* ═══════ Metatron's Cube geometry (13 circles + all connecting lines) ═══════ */
+function buildMetatron(svg, animate){
+  const cx=200, cy=200, r=52, cr=26;
+  const pts=[[cx,cy]];
+  for(let i=0;i<6;i++){const a=Math.PI/2+i*Math.PI/3; pts.push([cx+r*Math.cos(a), cy-r*Math.sin(a)]);}
+  for(let i=0;i<6;i++){const a=Math.PI/2+i*Math.PI/3; pts.push([cx+2*r*Math.cos(a), cy-2*r*Math.sin(a)]);}
+  const ns='http://www.w3.org/2000/svg'; let elems=[];
+  for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){
+    const l=document.createElementNS(ns,'line');
+    l.setAttribute('x1',pts[i][0]);l.setAttribute('y1',pts[i][1]);
+    l.setAttribute('x2',pts[j][0]);l.setAttribute('y2',pts[j][1]);
+    svg.appendChild(l); elems.push(l);
+  }
+  pts.forEach(p=>{const c=document.createElementNS(ns,'circle');
+    c.setAttribute('cx',p[0]);c.setAttribute('cy',p[1]);c.setAttribute('r',cr);
+    svg.appendChild(c); elems.push(c);});
+  if(animate){elems.forEach((el,i)=>{
+    const len = el.tagName==='circle' ? 2*Math.PI*cr : Math.hypot(el.getAttribute('x2')-el.getAttribute('x1'), el.getAttribute('y2')-el.getAttribute('y1'));
+    el.style.strokeDasharray=len; el.style.strokeDashoffset=len;
+    el.style.transition=`stroke-dashoffset 1.5s cubic-bezier(.4,0,.2,1) ${i*14}ms`;
+  });}
+  return elems;
+}
+
+/* ═══════ INTRO: proton (blue) + neutron (violet) collide → Metatron ═══════ */
+(function(){
+  const intro=document.getElementById('intro'), cv=document.getElementById('introCanvas'),
+        met=document.getElementById('metatron'), name=document.getElementById('introName');
+  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const seen=sessionStorage.getItem('do_intro');
+  let finished=false;
+  function finish(fast){
+    if(finished)return; finished=true;
+    sessionStorage.setItem('do_intro','1');
+    intro.classList.add('done');
+    setTimeout(()=>intro.remove(), fast?250:1150);
+    document.querySelectorAll('#hero .rv').forEach((el,i)=>setTimeout(()=>el.classList.add('in'),120*i));
+  }
+  if(reduced||seen){ finish(true); return; }
+
+  const ctx=cv.getContext('2d'); let W,H,t0=null,phase=0,burst=[];
+  function size(){W=cv.width=innerWidth*devicePixelRatio;H=cv.height=innerHeight*devicePixelRatio;}
+  size(); addEventListener('resize',size);
+  const P={x:-.18,c:'#2f6dd0',glow:'rgba(47,109,208,',s:'+'},
+        N={x:1.18,c:'#7c5cff',glow:'rgba(124,92,255,',s:''};
+  [P,N].forEach(p=>{p.trail=[];});
+  const DUR=2600;
+
+  function draw(ts){
+    if(!t0)t0=ts; const el=ts-t0; ctx.clearRect(0,0,W,H);
+    const cx=W/2, cy=H*0.46, R=Math.max(10,Math.min(W,H)*0.016);
+    if(phase===0){
+      const k=Math.min(1,el/DUR), e=0.14*k+0.86*k*k*k*k;         // slow drift, then gravitational rush into collision
+      const wob=Math.sin(el/130)* (1-k)*H*0.045;
+      P.px=W*(P.x+( .5-P.x)*e); P.py=cy+wob;
+      N.px=W*(N.x+( .5-N.x)*e); N.py=cy-wob;
+      [P,N].forEach(p=>{
+        p.trail.push([p.px,p.py]); if(p.trail.length>26)p.trail.shift();
+        p.trail.forEach((q,i)=>{const a=i/p.trail.length*0.35;
+          ctx.beginPath();ctx.arc(q[0],q[1],R*(0.3+0.7*i/p.trail.length),0,7);
+          ctx.fillStyle=p.glow+a+')';ctx.fill();});
+        const g=ctx.createRadialGradient(p.px,p.py,0,p.px,p.py,R*3.2);
+        g.addColorStop(0,p.glow+'0.55)');g.addColorStop(1,p.glow+'0)');
+        ctx.beginPath();ctx.arc(p.px,p.py,R*3.2,0,7);ctx.fillStyle=g;ctx.fill();
+        ctx.beginPath();ctx.arc(p.px,p.py,R,0,7);ctx.fillStyle=p.c;ctx.fill();
+        if(p.s){ctx.fillStyle='#fff';ctx.font=`600 ${R*1.3}px Inter`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(p.s,p.px,p.py+R*0.05);}
+      });
+      if(k>=1){phase=1;t0=ts;
+        for(let i=0;i<90;i++){const a=Math.random()*7,v=(0.25+Math.random()*1)*Math.min(W,H)*0.0009;
+          burst.push({x:cx,y:cy,vx:Math.cos(a)*v,vy:Math.sin(a)*v,l:1,c:Math.random()<.5?P:N});}
+      }
+    } else if(phase===1){
+      const k=Math.min(1,el/900);
+      const fl=ctx.createRadialGradient(cx,cy,0,cx,cy,Math.min(W,H)*(0.05+k*0.5));
+      fl.addColorStop(0,'rgba(255,255,255,'+(0.95*(1-k))+')');
+      fl.addColorStop(0.4,'rgba(228,201,122,'+(0.5*(1-k))+')');
+      fl.addColorStop(1,'rgba(255,255,255,0)');
+      ctx.fillStyle=fl;ctx.fillRect(0,0,W,H);
+      burst.forEach(b=>{b.x+=b.vx*16;b.y+=b.vy*16;b.vx*=.97;b.vy*=.97;b.l-=.012;
+        if(b.l>0){ctx.beginPath();ctx.arc(b.x,b.y,Math.max(0.5,R*0.5*b.l),0,7);
+          ctx.fillStyle=b.c.glow+(b.l*0.8)+')';ctx.fill();}});
+      if(el>350&&!met.dataset.on){met.dataset.on=1;met.classList.add('show');name.classList.add('show');
+        requestAnimationFrame(()=>requestAnimationFrame(()=>{
+          met.querySelectorAll('line,circle').forEach(e=>e.style.strokeDashoffset=0);}));}
+      if(el>3300){finish();return;}
+    }
+    if(!finished)requestAnimationFrame(draw);
+  }
+  buildMetatron(met,true);
+  requestAnimationFrame(draw);
+  intro.addEventListener('click',()=>finish(true));
+})();
+
+/* hero backdrop geometry (static, faint) */
+buildMetatron(document.getElementById('heroGeo'), false);
+
+/* ═══════ expandable blocks ═══════ */
+document.querySelectorAll('[data-toggle]').forEach(h=>{
+  const block=h.closest('.block'), body=block.querySelector('.blockBody');
+  function set(open){
+    block.classList.toggle('open',open);
+    body.style.maxHeight=open? body.scrollHeight+'px':'0px';
+  }
+  if(block.classList.contains('open')) set(true);
+  h.addEventListener('click',()=>set(!block.classList.contains('open')));
+  // keep expanded height fluid (images loading, read-more)
+  new ResizeObserver(()=>{ if(block.classList.contains('open')) body.style.maxHeight=body.scrollHeight+'px'; })
+    .observe(body.querySelector('.blockInner'));
+});
+
+/* read-more on BI cards */
+document.querySelectorAll('[data-more]').forEach(m=>{
+  m.addEventListener('click',()=>{
+    const card=m.closest('.card'), open=card.classList.toggle('open');
+    m.textContent=open?'show less':'read more';
+  });
+});
+
+/* ═══════ lightbox ═══════ */
+const lb=document.getElementById('lb'), lbImg=lb.querySelector('img'), lbCap=lb.querySelector('.cap');
+document.querySelectorAll('[data-lb]').forEach(el=>{
+  el.addEventListener('click',()=>{
+    lbImg.src=el.getAttribute('data-lb'); lbCap.textContent=el.getAttribute('data-cap')||'';
+    lb.classList.add('on'); document.body.style.overflow='hidden';
+  });
+});
+lb.addEventListener('click',()=>{lb.classList.remove('on');lbImg.src='';document.body.style.overflow='';});
+addEventListener('keydown',e=>{if(e.key==='Escape'&&lb.classList.contains('on'))lb.click();});
+
+/* ═══════ reveal on scroll ═══════ */
+const io=new IntersectionObserver(es=>es.forEach(e=>{
+  if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}
+}),{threshold:.12});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
