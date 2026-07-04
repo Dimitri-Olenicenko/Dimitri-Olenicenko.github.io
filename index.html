@@ -4,29 +4,51 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Dmitrijs Olenicenko — Strategy · Data · Operations</title>
-<meta name="description" content="Strategy, data and operations professional. 8+ years across financial services, SaaS platform development and technology consulting. Portfolio, CV and the story behind the work.">
+<meta name="description" content="Strategy, data and operations. Eight years across financial services, SaaS platforms and technology consulting, four countries, one method: complexity in, clarity out.">
 <meta name="author" content="Dmitrijs Olenicenko">
 <meta property="og:title" content="Dmitrijs Olenicenko — Strategy · Data · Operations">
-<meta property="og:description" content="To know thyself is the beginning of wisdom. Portfolio, experience and character of Dmitrijs Olenicenko.">
+<meta property="og:description" content="To know thyself is the beginning of wisdom. The work, the projects and the person behind them.">
 <meta property="og:type" content="website">
-<meta property="og:image" content="assets/dimitri.jpg">
+<meta property="og:image" content="https://dimitri-olenicenko.github.io/assets/dimitri.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --white:#ffffff; --bone:#f8f6f1; --mist:#eef1f6;
+  --white:#ffffff; --bone:#f8f6f1; --mist:#eef0f7;
   --ink:#0d1b2a; --ink-soft:#3c4a5c; --ink-dim:#71809296;
   --gold:#c9a84c; --gold-light:#e4c97a; --gold-pale:#f3ead2;
   --blue:#2f6dd0; --blue-deep:#1e4fa3; --blue-pale:#eaf1fc; --blue-glow:rgba(47,109,208,.22);
-  --violet:#7c5cff; --violet-deep:#5b3fd4; --violet-pale:#f1edfd; --violet-glow:rgba(124,92,255,.20);
+  --violet:#7c5cff; --violet-deep:#5b3fd4; --violet-ink:#231a4f; --violet-pale:#f0ecfe; --violet-glow:rgba(124,92,255,.26);
   --serif:'Cormorant Garamond',Georgia,serif; --sans:'Inter',-apple-system,sans-serif;
-  --shadow:0 10px 40px rgba(13,27,42,.08); --shadow-lift:0 18px 60px rgba(13,27,42,.13);
+  --shadow:0 10px 40px rgba(13,27,42,.08); --shadow-lift:0 18px 60px rgba(35,26,79,.16);
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{font-family:var(--sans);color:var(--ink);background:var(--white);line-height:1.65;font-weight:400;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-::selection{background:var(--gold-pale);color:var(--ink)}
+::selection{background:var(--violet-pale);color:var(--ink)}
+
+/* ————— ambient layers ————— */
+#auras{position:fixed;inset:0;z-index:0;pointer-events:none;background:
+  radial-gradient(900px 620px at 12% -4%, var(--violet-glow), transparent 62%),
+  radial-gradient(820px 560px at 88% 12%, var(--blue-glow), transparent 60%),
+  radial-gradient(700px 700px at 80% 78%, rgba(124,92,255,.13), transparent 65%),
+  radial-gradient(600px 500px at 8% 86%, rgba(201,168,76,.10), transparent 60%)}
+#dust,#dustFront{position:fixed;inset:0;pointer-events:none}
+#dust{z-index:1}
+#dustFront{z-index:5}
+main,header,footer{position:relative;z-index:2}
+
+/* progress bar */
+#prog{position:fixed;top:0;left:0;height:2.5px;width:0;z-index:60;background:linear-gradient(90deg,var(--gold),var(--violet));box-shadow:0 0 10px var(--violet-glow)}
+
+/* topbar */
+#topbar{position:fixed;top:0;left:0;right:0;z-index:55;display:flex;align-items:center;gap:26px;padding:14px 30px;background:rgba(255,255,255,.82);backdrop-filter:blur(12px);border-bottom:1px solid rgba(124,92,255,.12);transform:translateY(-110%);transition:transform .5s cubic-bezier(.5,0,.2,1)}
+#topbar.on{transform:none}
+#topbar .tn{font-family:var(--serif);font-size:18px;letter-spacing:.1em;margin-right:auto}
+#topbar a{text-decoration:none;color:var(--ink-soft);font-size:11px;letter-spacing:.16em;text-transform:uppercase;transition:color .25s}
+#topbar a:hover{color:var(--violet)}
+@media (max-width:900px){#topbar a{display:none}#topbar a.keep{display:inline}}
 
 /* ————— INTRO OVERLAY: proton + neutron → Metatron ————— */
 #intro{position:fixed;inset:0;z-index:1000;background:radial-gradient(1200px 800px at 50% 45%, #fff 0%, var(--bone) 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:opacity 1.1s ease}
@@ -40,42 +62,71 @@ body{font-family:var(--sans);color:var(--ink);background:var(--white);line-heigh
 #introName.show{opacity:.9}
 
 /* ————— PAGE ————— */
-.wrap{max-width:1060px;margin:0 auto;padding:0 22px}
-.goldline{width:64px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:26px auto}
+.wrap{max-width:1180px;margin:0 auto;padding:0 26px}
+.goldline{width:74px;height:1.5px;background:linear-gradient(90deg,transparent,var(--gold) 35%,var(--violet) 65%,transparent);margin:26px 0}
 
-/* hero */
-#hero{position:relative;padding:96px 0 62px;text-align:center;background:
-  radial-gradient(700px 460px at 30% 12%, var(--blue-glow), transparent 65%),
-  radial-gradient(700px 460px at 72% 20%, var(--violet-glow), transparent 65%),
-  linear-gradient(180deg,var(--white) 0%,var(--bone) 100%)}
-#heroGeo{position:absolute;top:50%;left:50%;transform:translate(-50%,-56%);width:min(88vmin,640px);height:min(88vmin,640px);opacity:.10;pointer-events:none}
+/* ═════ HERO — photo woven in ═════ */
+#hero{position:relative;min-height:96vh;display:flex;align-items:center;padding:80px 0 40px;overflow:hidden;background:linear-gradient(180deg,var(--white) 0%,var(--bone) 100%)}
+#heroGeo{position:absolute;top:50%;right:-6%;transform:translateY(-52%);width:min(94vmin,760px);height:min(94vmin,760px);opacity:.13;pointer-events:none}
 #heroGeo line,#heroGeo circle{stroke:var(--gold);stroke-width:.8;fill:none}
-.portrait{position:relative;width:230px;height:230px;margin:0 auto 30px}
-.portrait .ring{position:absolute;inset:-14px;border-radius:50%;background:conic-gradient(from 210deg, var(--blue), var(--gold), var(--violet), var(--blue));-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 2.5px),#000 calc(100% - 2px));mask:radial-gradient(farthest-side,transparent calc(100% - 2.5px),#000 calc(100% - 2px));animation:slowspin 26s linear infinite;opacity:.85}
-@keyframes slowspin{to{transform:rotate(360deg)}}
-.portrait .glow{position:absolute;inset:-46px;border-radius:50%;background:radial-gradient(circle, rgba(201,168,76,.16), transparent 62%);pointer-events:none}
-.portrait img,.portrait .mono{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block;box-shadow:var(--shadow-lift)}
-.portrait .mono{display:none;align-items:center;justify-content:center;background:linear-gradient(140deg,var(--blue-pale),var(--violet-pale));font-family:var(--serif);font-size:74px;color:var(--ink);letter-spacing:.04em}
-h1{font-family:var(--serif);font-weight:500;font-size:clamp(34px,6vw,58px);letter-spacing:.06em}
-.role{margin-top:10px;font-size:12.5px;letter-spacing:.34em;text-transform:uppercase;color:var(--ink-soft)}
+#arcCanvas{position:absolute;inset:0;pointer-events:none;z-index:3}
+.heroGrid{display:grid;grid-template-columns:1.04fr .96fr;gap:40px;align-items:center;width:100%;position:relative;z-index:4}
+.kicker{font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:var(--violet);font-weight:600;margin-bottom:18px}
+h1{font-family:var(--serif);font-weight:500;font-size:clamp(40px,5.6vw,66px);letter-spacing:.04em;line-height:1.06}
+.role{margin-top:14px;font-size:13px;letter-spacing:.34em;text-transform:uppercase;color:var(--ink-soft)}
 .role b{color:var(--blue);font-weight:600}.role i{color:var(--violet);font-style:normal;font-weight:600}
-.quote{max-width:520px;margin:30px auto 0;font-family:var(--serif);font-style:italic;font-size:20px;color:var(--ink-soft)}
-.quote small{display:block;margin-top:8px;font-family:var(--sans);font-style:normal;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold)}
-.chips{margin-top:30px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
-.chip{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;padding:8px 16px;border:1px solid rgba(13,27,42,.14);border-radius:999px;color:var(--ink-soft);background:rgba(255,255,255,.7);backdrop-filter:blur(4px)}
+.heroLead{margin-top:26px;font-size:17px;color:var(--ink-soft);line-height:1.8;max-width:480px}
+.heroLead strong{color:var(--ink);font-weight:600}
+.quote{margin-top:26px;font-family:var(--serif);font-style:italic;font-size:20px;color:var(--ink-soft);max-width:440px}
+.quote small{display:block;margin-top:6px;font-family:var(--sans);font-style:normal;font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold)}
+.chips{margin-top:28px;display:flex;gap:10px;flex-wrap:wrap}
+.chip{font-size:11px;letter-spacing:.13em;text-transform:uppercase;padding:8px 15px;border:1px solid rgba(124,92,255,.22);border-radius:999px;color:var(--ink-soft);background:rgba(255,255,255,.72);backdrop-filter:blur(4px)}
+.heroBtns{margin-top:30px;display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:9px;text-decoration:none;padding:12px 26px;border-radius:999px;font-size:12px;letter-spacing:.16em;text-transform:uppercase;transition:all .3s;border:1px solid transparent}
+.btn.solid{background:linear-gradient(120deg,var(--violet-deep),var(--violet));color:#fff;box-shadow:0 8px 26px var(--violet-glow)}
+.btn.solid:hover{transform:translateY(-2px);box-shadow:0 12px 34px var(--violet-glow)}
+.btn.ghost{border-color:rgba(13,27,42,.2);color:var(--ink)}
+.btn.ghost:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-2px)}
+/* the photo — feathered, colour-woven, geometry passing over it */
+.photoWrap{position:relative;justify-self:center;width:min(46vw,480px);max-width:94%}
+.photoWrap .halo{position:absolute;inset:-13%;background:
+  radial-gradient(60% 55% at 50% 42%, rgba(228,201,122,.32), transparent 70%),
+  radial-gradient(55% 60% at 62% 70%, var(--violet-glow), transparent 72%);filter:blur(6px);pointer-events:none}
+.photoWrap img.hero{position:relative;width:100%;aspect-ratio:4/5.1;object-fit:cover;object-position:52% 30%;display:block;border-radius:46% 46% 40% 40% / 34% 34% 52% 52%;
+  -webkit-mask-image:radial-gradient(ellipse 74% 66% at 50% 46%, #000 55%, rgba(0,0,0,.55) 74%, transparent 96%);
+          mask-image:radial-gradient(ellipse 74% 66% at 50% 46%, #000 55%, rgba(0,0,0,.55) 74%, transparent 96%);
+  filter:saturate(1.06) contrast(1.02)}
+.photoWrap .tint{position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:
+  linear-gradient(200deg, rgba(124,92,255,.12), transparent 42%),
+  linear-gradient(20deg, rgba(201,168,76,.14), transparent 46%);
+  -webkit-mask-image:radial-gradient(ellipse 74% 66% at 50% 46%, #000 55%, rgba(0,0,0,.55) 74%, transparent 96%);
+          mask-image:radial-gradient(ellipse 74% 66% at 50% 46%, #000 55%, rgba(0,0,0,.55) 74%, transparent 96%)}
+.photoWrap .orbit{position:absolute;inset:-7% -9%;pointer-events:none}
+.photoWrap .orbit ellipse{fill:none;stroke:var(--gold);stroke-width:1;opacity:.55;stroke-dasharray:6 9}
+.photoWrap .orbit .v{stroke:var(--violet);opacity:.4;stroke-dasharray:2 10}
+.photoWrap .cap{position:absolute;left:50%;bottom:-8px;transform:translateX(-50%);white-space:nowrap;font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--ink-dim)}
+.scrollCue{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);z-index:4;font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--ink-dim);animation:cue 2.4s ease-in-out infinite}
+@keyframes cue{0%,100%{transform:translate(-50%,0);opacity:.55}50%{transform:translate(-50%,7px);opacity:1}}
+@media (max-width:920px){
+  #hero{min-height:0;padding:96px 0 46px}
+  .heroGrid{grid-template-columns:1fr;gap:8px}
+  .photoWrap{width:min(78vw,380px);order:-1;margin-bottom:10px}
+  .heroLead,.quote{max-width:none}
+  #heroGeo{right:-30%;opacity:.09}
+}
 
-/* sections & expandable blocks */
-section{padding:34px 0}
-.block{background:var(--white);border:1px solid rgba(13,27,42,.09);border-radius:18px;box-shadow:var(--shadow);margin:22px 0;overflow:hidden;transition:box-shadow .35s ease, transform .35s ease}
+/* ═════ sections — visible by default ═════ */
+section{padding:30px 0}
+.block{background:rgba(255,255,255,.92);backdrop-filter:blur(3px);border:1px solid rgba(35,26,79,.09);border-radius:20px;box-shadow:var(--shadow);margin:26px 0;overflow:hidden;transition:box-shadow .35s ease}
 .block:hover{box-shadow:var(--shadow-lift)}
 .block.blue{border-top:3px solid var(--blue)}
 .block.violet{border-top:3px solid var(--violet)}
 .block.gold{border-top:3px solid var(--gold)}
-.blockHead{display:flex;align-items:center;gap:18px;padding:26px 30px;cursor:pointer;user-select:none}
+.blockHead{display:flex;align-items:center;gap:18px;padding:28px 34px 20px;cursor:pointer;user-select:none}
 .blockHead .num{font-family:var(--serif);font-size:15px;color:var(--gold);min-width:30px}
-.blockHead h2{font-family:var(--serif);font-weight:500;font-size:clamp(21px,3vw,28px);letter-spacing:.03em;flex:1}
+.blockHead h2{font-family:var(--serif);font-weight:500;font-size:clamp(23px,3vw,31px);letter-spacing:.03em;flex:1}
 .blockHead .sub{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-dim);margin-top:3px}
-.blockHead .chev{width:34px;height:34px;border-radius:50%;border:1px solid rgba(13,27,42,.15);display:flex;align-items:center;justify-content:center;transition:transform .45s cubic-bezier(.6,0,.2,1), background .3s;flex:none}
+.blockHead .chev{width:34px;height:34px;border-radius:50%;border:1px solid rgba(35,26,79,.15);display:flex;align-items:center;justify-content:center;transition:transform .45s cubic-bezier(.6,0,.2,1), background .3s;flex:none}
 .blockHead .chev svg{width:13px;height:13px;stroke:var(--ink-soft);fill:none;stroke-width:2}
 .block.open .chev{transform:rotate(180deg)}
 .block.blue.open .chev{background:var(--blue-pale)}
@@ -83,86 +134,91 @@ section{padding:34px 0}
 .block.gold.open .chev{background:var(--gold-pale)}
 .blockBody{max-height:0;opacity:0;overflow:hidden;transition:max-height .8s cubic-bezier(.6,0,.2,1), opacity .55s ease}
 .block.open .blockBody{opacity:1}
-.blockInner{padding:4px 30px 34px}
+.blockInner{padding:2px 34px 36px}
 .lead{font-size:16.5px;color:var(--ink-soft);line-height:1.85}
 .lead strong{color:var(--ink);font-weight:600}
+.lead a{color:var(--blue)}
+.lead+.lead{margin-top:14px}
 
 /* CV timeline */
 .tl{position:relative;margin-top:8px}
-.tl::before{content:"";position:absolute;left:7px;top:6px;bottom:6px;width:1px;background:linear-gradient(180deg,var(--blue),var(--violet))}
+.tl::before{content:"";position:absolute;left:7px;top:6px;bottom:6px;width:1.5px;background:linear-gradient(180deg,var(--blue),var(--violet))}
 .job{position:relative;padding:0 0 30px 38px}
 .job:last-child{padding-bottom:4px}
 .job::before{content:"";position:absolute;left:2px;top:7px;width:11px;height:11px;border-radius:50%;background:var(--white);border:2px solid var(--blue)}
 .job.violetDot::before{border-color:var(--violet)}
-.job h3{font-family:var(--serif);font-size:21px;font-weight:600}
+.job h3{font-family:var(--serif);font-size:22px;font-weight:600}
 .job .meta{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-dim);margin:3px 0 10px}
 .job .meta b{color:var(--blue);font-weight:600}
+.job.violetDot .meta b{color:var(--violet)}
 .job ul{list-style:none}
 .job li{position:relative;padding:3px 0 3px 20px;color:var(--ink-soft);font-size:14.5px}
 .job li::before{content:"—";position:absolute;left:0;color:var(--gold)}
 
 /* BI gallery */
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:20px;margin-top:10px}
-.card{border:1px solid rgba(13,27,42,.1);border-radius:14px;overflow:hidden;background:var(--white);transition:transform .35s ease, box-shadow .35s ease;display:flex;flex-direction:column}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:22px;margin-top:10px}
+.card{border:1px solid rgba(35,26,79,.1);border-radius:16px;overflow:hidden;background:var(--white);transition:transform .35s ease, box-shadow .35s ease;display:flex;flex-direction:column}
 .card:hover{transform:translateY(-5px);box-shadow:var(--shadow-lift)}
 .card .shot{position:relative;aspect-ratio:16/9.4;overflow:hidden;cursor:zoom-in;background:var(--mist)}
 .card .shot img{width:100%;height:100%;object-fit:cover;object-position:top;transition:transform .6s ease}
 .card:hover .shot img{transform:scale(1.045)}
-.card .shot .zoom{position:absolute;right:10px;bottom:10px;background:rgba(13,27,42,.65);color:#fff;font-size:10px;letter-spacing:.15em;text-transform:uppercase;padding:5px 10px;border-radius:999px;opacity:0;transition:opacity .3s}
+.card .shot .zoom{position:absolute;right:10px;bottom:10px;background:rgba(35,26,79,.68);color:#fff;font-size:10px;letter-spacing:.15em;text-transform:uppercase;padding:5px 10px;border-radius:999px;opacity:0;transition:opacity .3s}
 .card:hover .shot .zoom{opacity:1}
-.card .body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:8px;flex:1}
-.card h4{font-family:var(--serif);font-size:19px;font-weight:600}
-.card .tag{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--blue);font-weight:600}
-.card p{font-size:13.5px;color:var(--ink-soft);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;transition:none}
+.card .body{padding:16px 20px 18px;display:flex;flex-direction:column;gap:8px;flex:1}
+.card h4{font-family:var(--serif);font-size:20px;font-weight:600}
+.card .tag{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--violet);font-weight:600}
+.card p{font-size:13.5px;color:var(--ink-soft);display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
 .card.open p{display:block;-webkit-line-clamp:unset}
 .card .more{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);cursor:pointer;margin-top:auto;padding-top:6px}
-.card .more:hover{color:var(--blue-deep)}
+.card .more:hover{color:var(--violet)}
 
 /* live projects */
-.live{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin-top:8px}
-.liveCard{display:block;text-decoration:none;color:var(--ink);border:1px solid rgba(13,27,42,.1);border-left:3px solid var(--blue);border-radius:12px;padding:20px 22px;transition:transform .3s,box-shadow .3s;background:var(--white)}
+.live{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px;margin-top:8px}
+.liveCard{display:block;text-decoration:none;color:var(--ink);border:1px solid rgba(35,26,79,.1);border-left:3px solid var(--blue);border-radius:14px;padding:22px 24px;transition:transform .3s,box-shadow .3s;background:var(--white)}
 .liveCard:hover{transform:translateY(-4px);box-shadow:var(--shadow-lift)}
-.liveCard h4{font-family:var(--serif);font-size:20px;font-weight:600}
+.liveCard h4{font-family:var(--serif);font-size:21px;font-weight:600}
 .liveCard .u{font-size:11px;letter-spacing:.12em;color:var(--blue);text-transform:lowercase}
 .liveCard p{font-size:13px;color:var(--ink-soft);margin-top:8px}
 .liveCard.v{border-left-color:var(--violet)}.liveCard.v .u{color:var(--violet)}
 .liveCard.g{border-left-color:var(--gold)}.liveCard.g .u{color:var(--gold)}
 
-/* photo rows */
-.photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-top:14px}
+/* photos & pdf buttons */
+.photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px;margin-top:14px}
 .photos img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:12px;cursor:zoom-in;transition:transform .35s ease, box-shadow .35s;box-shadow:var(--shadow)}
 .photos img:hover{transform:scale(1.03);box-shadow:var(--shadow-lift)}
 .pdfBtn{display:inline-flex;align-items:center;gap:10px;margin:16px 12px 0 0;padding:11px 22px;border-radius:999px;border:1px solid var(--blue);color:var(--blue);text-decoration:none;font-size:12px;letter-spacing:.16em;text-transform:uppercase;transition:all .3s}
 .pdfBtn:hover{background:var(--blue);color:#fff}
 .pdfBtn.v{border-color:var(--violet);color:var(--violet)}.pdfBtn.v:hover{background:var(--violet);color:#fff}
-.takeaway{margin-top:22px;padding:20px 26px;border-left:3px solid var(--gold);background:var(--gold-pale);border-radius:0 12px 12px 0;font-family:var(--serif);font-style:italic;font-size:19px;color:var(--ink)}
+.takeaway{margin-top:22px;padding:20px 26px;border-left:3px solid var(--gold);background:linear-gradient(100deg,var(--gold-pale),var(--violet-pale));border-radius:0 12px 12px 0;font-family:var(--serif);font-style:italic;font-size:19px;color:var(--ink)}
 
-/* facts / beyond work */
-.facts{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:16px;margin-top:10px}
-.fact{border:1px solid rgba(13,27,42,.1);border-radius:14px;padding:22px;background:linear-gradient(160deg,var(--white),var(--violet-pale));text-align:center}
-.fact .big{font-family:var(--serif);font-size:40px;font-weight:600;color:var(--violet-deep);line-height:1.1}
+/* facts */
+.facts{display:grid;grid-template-columns:repeat(auto-fill,minmax(225px,1fr));gap:16px;margin-top:10px}
+.fact{border:1px solid rgba(35,26,79,.1);border-radius:14px;padding:24px;background:linear-gradient(160deg,var(--white),var(--violet-pale));text-align:center}
+.fact .big{font-family:var(--serif);font-size:42px;font-weight:600;color:var(--violet-deep);line-height:1.1}
 .fact .lbl{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);margin-top:6px}
 .fact .note{font-size:12.5px;color:var(--ink-dim);margin-top:6px}
 
 /* recommendations */
-.recs{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-top:12px}
-.recs .rec{border:1px solid rgba(13,27,42,.12);border-radius:12px;overflow:hidden;cursor:zoom-in;background:var(--mist);transition:transform .3s, box-shadow .3s}
+.recs{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px;margin-top:12px}
+.recs .rec{border:1px solid rgba(35,26,79,.12);border-radius:12px;overflow:hidden;cursor:zoom-in;background:var(--mist);transition:transform .3s, box-shadow .3s}
 .recs .rec:hover{transform:translateY(-4px);box-shadow:var(--shadow-lift)}
 .recs img{width:100%;aspect-ratio:3/4;object-fit:cover;object-position:top;display:block}
 
 /* lightbox */
-#lb{position:fixed;inset:0;z-index:900;background:rgba(13,27,42,.9);display:none;align-items:center;justify-content:center;padding:4vmin;cursor:zoom-out}
+#lb{position:fixed;inset:0;z-index:900;background:rgba(20,14,44,.92);display:none;align-items:center;justify-content:center;padding:4vmin;cursor:zoom-out}
 #lb.on{display:flex}
 #lb img{max-width:94vw;max-height:88vh;border-radius:8px;box-shadow:0 30px 90px rgba(0,0,0,.5)}
 #lb .cap{position:absolute;bottom:3vh;left:0;right:0;text-align:center;color:#fff;font-size:13px;letter-spacing:.1em;opacity:.85}
 
-/* footer */
-footer{margin-top:60px;padding:64px 0 46px;background:linear-gradient(180deg,var(--bone),var(--mist));text-align:center}
-.social{display:flex;gap:14px;justify-content:center;margin-top:22px}
-.social a{display:flex;align-items:center;gap:9px;text-decoration:none;color:var(--ink);border:1px solid rgba(13,27,42,.16);padding:11px 22px;border-radius:999px;font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;transition:all .3s;background:var(--white)}
-.social a:hover{border-color:var(--blue);color:var(--blue);transform:translateY(-2px)}
-.social a.ig:hover{border-color:var(--violet);color:var(--violet)}
-footer .sig{margin-top:34px;font-family:var(--serif);font-style:italic;color:var(--ink-dim);font-size:15px}
+/* footer — the dark close */
+footer{margin-top:70px;padding:80px 0 56px;background:linear-gradient(155deg,var(--ink) 20%,var(--violet-ink) 100%);text-align:center;color:var(--bone)}
+footer .fname{font-family:var(--serif);font-size:30px;letter-spacing:.1em}
+footer .goldline{margin:26px auto}
+.social{display:flex;gap:14px;justify-content:center;margin-top:6px;flex-wrap:wrap}
+.social a{display:flex;align-items:center;gap:9px;text-decoration:none;color:var(--bone);border:1px solid rgba(248,246,241,.28);padding:11px 24px;border-radius:999px;font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;transition:all .3s;background:rgba(255,255,255,.04)}
+.social a:hover{border-color:var(--gold);color:var(--gold-light);transform:translateY(-2px)}
+.social a.ig:hover{border-color:var(--violet);color:#b3a1ff}
+footer .sig{margin-top:36px;font-family:var(--serif);font-style:italic;color:rgba(248,246,241,.65);font-size:16px}
 
 /* reveal on scroll */
 .rv{opacity:0;transform:translateY(26px);transition:opacity .9s ease, transform .9s cubic-bezier(.5,0,.2,1)}
@@ -170,14 +226,30 @@ footer .sig{margin-top:34px;font-family:var(--serif);font-style:italic;color:var
 @media (prefers-reduced-motion: reduce){
   *{animation:none!important;transition:none!important}
   .rv{opacity:1;transform:none}
+  #dust,#dustFront{display:none}
 }
 @media (max-width:640px){
-  .blockHead{padding:20px 18px}.blockInner{padding:2px 18px 26px}
-  .portrait{width:186px;height:186px}
+  .blockHead{padding:22px 20px 14px}.blockInner{padding:2px 20px 28px}
 }
 </style>
 </head>
 <body>
+
+<div id="auras"></div>
+<canvas id="dust"></canvas>
+<canvas id="dustFront"></canvas>
+<div id="prog"></div>
+
+<nav id="topbar" aria-label="Sections">
+  <span class="tn">D·O</span>
+  <a href="#overview">Overview</a>
+  <a href="#cv">CV</a>
+  <a href="#portfolio">Portfolio</a>
+  <a href="#projects">Projects</a>
+  <a href="#speaking">Speaking</a>
+  <a href="#recommendations">Letters</a>
+  <a href="#beyond" class="keep">Beyond</a>
+</nav>
 
 <!-- ═════════ INTRO: proton + neutron → Metatron ═════════ -->
 <div id="intro" aria-label="Intro animation — click to skip">
@@ -190,48 +262,63 @@ footer .sig{margin-top:34px;font-family:var(--serif);font-style:italic;color:var
 <!-- ═════════ HERO ═════════ -->
 <header id="hero">
   <svg id="heroGeo" viewBox="0 0 400 400" aria-hidden="true"></svg>
-  <div class="wrap">
-    <div class="portrait rv">
-      <div class="glow"></div><div class="ring"></div>
-      <img src="assets/dimitri.jpg" alt="Dmitrijs Olenicenko" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-      <div class="mono">DO</div>
+  <canvas id="arcCanvas"></canvas>
+  <div class="wrap heroGrid">
+    <div>
+      <div class="kicker rv">Chief Data Officer · Naviora Group — Dubai</div>
+      <h1 class="rv">Dmitrijs<br>Olenicenko</h1>
+      <div class="role rv"><b>Strategy</b> · Data · <i>Operations</i></div>
+      <div class="goldline rv"></div>
+      <p class="heroLead rv">I look for the causal thread inside complex systems, then turn it into something people can act on. Eight years, four countries, one method: <strong>complexity in, clarity out.</strong></p>
+      <p class="quote rv">“To know thyself is the beginning of wisdom.”<small>— Socrates</small></p>
+      <div class="chips rv">
+        <span class="chip">Dubai · Riga · Worldwide</span>
+        <span class="chip">8+ years international</span>
+        <span class="chip">52 countries</span>
+      </div>
+      <div class="heroBtns rv">
+        <a class="btn solid" href="https://www.linkedin.com/in/dmitrijsolenicenko/" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="btn ghost" href="#overview">Explore ↓</a>
+      </div>
     </div>
-    <h1 class="rv">Dmitrijs Olenicenko</h1>
-    <div class="role rv"><b>Strategy</b> · Data · <i>Operations</i></div>
-    <div class="goldline"></div>
-    <p class="quote rv">“To know thyself is the beginning of wisdom.”<small>— Socrates</small></p>
-    <div class="chips rv">
-      <span class="chip">Dubai · Riga · Worldwide</span>
-      <span class="chip">8+ years international</span>
-      <span class="chip">52 countries</span>
+    <div class="photoWrap rv">
+      <div class="halo"></div>
+      <img class="hero" src="assets/dimitri.jpg" alt="Dmitrijs Olenicenko at sunset on the Palm, Dubai">
+      <div class="tint"></div>
+      <svg class="orbit" viewBox="0 0 100 125" preserveAspectRatio="none" aria-hidden="true">
+        <ellipse cx="50" cy="57" rx="47" ry="55"/>
+        <ellipse class="v" cx="50" cy="60" rx="42" ry="50" transform="rotate(-8 50 60)"/>
+      </svg>
+      <div class="cap">Palm Jumeirah · golden hour</div>
     </div>
   </div>
+  <div class="scrollCue">scroll</div>
 </header>
 
 <main class="wrap">
 
   <!-- 01 · OVERVIEW -->
   <section>
-    <div class="block blue open rv" id="overview">
+    <div class="block violet open rv" id="overview">
       <div class="blockHead" data-toggle>
         <span class="num">01</span>
-        <div><h2>Overview</h2><div class="sub">who I am, in one honest paragraph</div></div>
+        <div><h2>Overview</h2><div class="sub">who I am, in three honest paragraphs</div></div>
         <span class="chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
       </div>
       <div class="blockBody"><div class="blockInner">
-        <p class="lead">Strategy, data and operations professional with <strong>8+ years of international experience</strong> across financial services, SaaS platform development and technology consulting. Track record of translating complex business and regulatory requirements into structured specifications, driving cross-functional initiatives end-to-end and producing data-driven insights for senior stakeholders.</p>
-        <p class="lead" style="margin-top:14px">Experienced in working across compliance, product and engineering functions in fast-moving, ambiguous environments — from early-stage platform builds to established enterprise operations. <strong>The person looking for the causal relationships between all processes and structure — with one goal: to find the most efficient and fair way.</strong></p>
-        <p class="lead" style="margin-top:14px">Beyond the CV: architect of the <strong>New Era</strong> ecosystem — an institutional-grade investment operating system, a product studio, and the live platform <a href="https://neifcapital.com" style="color:var(--blue)">neifcapital.com</a> — built end-to-end by one person, from data architecture and risk analytics to the running production system. The career and the projects tell one story: complexity in, clarity out.</p>
+        <p class="lead">Strategy, data and operations is the formal answer. The honest one: for eight years my job has been to walk into complexity and hand back structure. Regulatory requirements become specifications engineers can build from. Messy operational data becomes insight a board can decide on. An ambiguous initiative gets an owner, a sequence, and a finish line. I have done this across financial services, SaaS platform development and technology consulting, in <strong>four countries and three languages</strong>.</p>
+        <p class="lead">The range is deliberate: Deloitte audit rooms in Riga, three years inside the reporting engine of a Swedish enterprise, restaurant P&amp;Ls in Dubai, a national statistics bureau, and now three business lines at Naviora Group. Different industries, same underlying work — <strong>finding the causal relationships between processes and structure</strong>, with one goal: the most efficient and fair way for everyone involved.</p>
+        <p class="lead">Beyond the CV, I am the architect of the <strong>New Era</strong> ecosystem: an institutional-grade investment operating system, a product studio, and the live platform <a href="https://neifcapital.com">neifcapital.com</a> — designed and built end-to-end by one person, from data architecture and risk analytics to the running production system. The career and the projects tell one story: <strong>complexity in, clarity out.</strong></p>
       </div></div>
     </div>
   </section>
 
   <!-- 02 · CV -->
   <section>
-    <div class="block blue rv" id="cv">
+    <div class="block blue open rv" id="cv">
       <div class="blockHead" data-toggle>
         <span class="num">02</span>
-        <div><h2>Curriculum Vitae</h2><div class="sub">press to open · 7 roles · 4 countries</div></div>
+        <div><h2>Curriculum Vitae</h2><div class="sub">7 roles · 4 countries · one throughline</div></div>
         <span class="chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
       </div>
       <div class="blockBody"><div class="blockInner">
@@ -301,10 +388,10 @@ footer .sig{margin-top:34px;font-family:var(--serif);font-style:italic;color:var
 
   <!-- 03 · BI PORTFOLIO -->
   <section>
-    <div class="block blue rv" id="portfolio">
+    <div class="block blue open rv" id="portfolio">
       <div class="blockHead" data-toggle>
         <span class="num">03</span>
-        <div><h2>Business Intelligence Portfolio</h2><div class="sub">press to open · 8 production Power BI systems · click any screen to zoom</div></div>
+        <div><h2>Business Intelligence Portfolio</h2><div class="sub">8 production Power BI systems · click any screen to zoom</div></div>
         <span class="chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
       </div>
       <div class="blockBody"><div class="blockInner">
@@ -347,10 +434,10 @@ footer .sig{margin-top:34px;font-family:var(--serif);font-style:italic;color:var
 
   <!-- 04 · LIVE PROJECTS -->
   <section>
-    <div class="block blue rv" id="projects">
+    <div class="block blue open rv" id="projects">
       <div class="blockHead" data-toggle>
         <span class="num">04</span>
-        <div><h2>Live Projects &amp; Builds</h2><div class="sub">press to open · systems running in the world right now</div></div>
+        <div><h2>Live Projects &amp; Builds</h2><div class="sub">systems running in the world right now</div></div>
         <span class="chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
       </div>
       <div class="blockBody"><div class="blockInner">
@@ -363,9 +450,9 @@ footer .sig{margin-top:34px;font-family:var(--serif);font-style:italic;color:var
             <h4>Jiang Yu Shan</h4><span class="u">jiangyushan.online</span>
             <p>Membership, content and commerce platform for a Grandmaster of traditional Chinese martial arts — from static design to a full production Phoenix platform with members' rooms, courses and payments.</p>
           </a>
-          <a class="liveCard" href="https://www.naviora.ae" target="_blank" rel="noopener">
-            <h4>Naviora Group</h4><span class="u">naviora · dubai</span>
-            <p>As Chief Data Officer: analytical consulting, data-room formation and the Placement PropTech SaaS — three business lines from requirements to revenue model.</p>
+          <a class="liveCard" href="https://naviora.group/en" target="_blank" rel="noopener">
+            <h4>Naviora Group</h4><span class="u">naviora.group</span>
+            <p>As Chief Data Officer: analytical consulting, data-room formation and the Placement PropTech SaaS — three business lines from requirements to revenue model, inside a strategic real-estate and capital ecosystem in Dubai.</p>
           </a>
           <a class="liveCard g" href="assets/csp-data-architecture.pdf" target="_blank" rel="noopener">
             <h4>Central Statistical Bureau of Latvia</h4><span class="u">government data architecture</span>
@@ -378,10 +465,10 @@ footer .sig{margin-top:34px;font-family:var(--serif);font-style:italic;color:var
 
   <!-- 05 · SPEAKING & TEACHING -->
   <section>
-    <div class="block violet rv" id="speaking">
+    <div class="block violet open rv" id="speaking">
       <div class="blockHead" data-toggle>
         <span class="num">05</span>
-        <div><h2>Speaking &amp; Teaching</h2><div class="sub">press to open · sharing what the work taught me</div></div>
+        <div><h2>Speaking &amp; Teaching</h2><div class="sub">sharing what the work taught me</div></div>
         <span class="chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
       </div>
       <div class="blockBody"><div class="blockInner">
@@ -401,10 +488,10 @@ footer .sig{margin-top:34px;font-family:var(--serif);font-style:italic;color:var
 
   <!-- 06 · RECOMMENDATIONS -->
   <section>
-    <div class="block gold rv" id="recommendations">
+    <div class="block gold open rv" id="recommendations">
       <div class="blockHead" data-toggle>
         <span class="num">06</span>
-        <div><h2>Recommendations</h2><div class="sub">press to open · four letters · click to read</div></div>
+        <div><h2>Recommendations</h2><div class="sub">four letters · click to read</div></div>
         <span class="chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
       </div>
       <div class="blockBody"><div class="blockInner">
@@ -421,10 +508,10 @@ footer .sig{margin-top:34px;font-family:var(--serif);font-style:italic;color:var
 
   <!-- 07 · BEYOND THE WORK -->
   <section>
-    <div class="block violet rv" id="beyond">
+    <div class="block violet open rv" id="beyond">
       <div class="blockHead" data-toggle>
         <span class="num">07</span>
-        <div><h2>Beyond the Work</h2><div class="sub">press to open · the character behind the numbers</div></div>
+        <div><h2>Beyond the Work</h2><div class="sub">the character behind the numbers</div></div>
         <span class="chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
       </div>
       <div class="blockBody"><div class="blockInner">
@@ -452,7 +539,7 @@ footer .sig{margin-top:34px;font-family:var(--serif);font-style:italic;color:var
 
 <footer>
   <div class="wrap">
-    <div style="font-family:var(--serif);font-size:26px;letter-spacing:.08em">Dmitrijs Olenicenko</div>
+    <div class="fname">Dmitrijs Olenicenko</div>
     <div class="goldline"></div>
     <div class="social">
       <a href="https://www.linkedin.com/in/dmitrijsolenicenko/" target="_blank" rel="noopener">LinkedIn</a>
@@ -485,14 +572,14 @@ function buildMetatron(svg, animate){
     el.style.strokeDasharray=len; el.style.strokeDashoffset=len;
     el.style.transition=`stroke-dashoffset 1.5s cubic-bezier(.4,0,.2,1) ${i*14}ms`;
   });}
-  return elems;
+  return pts;
 }
+const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* ═══════ INTRO: proton (blue) + neutron (violet) collide → Metatron ═══════ */
 (function(){
   const intro=document.getElementById('intro'), cv=document.getElementById('introCanvas'),
         met=document.getElementById('metatron'), name=document.getElementById('introName');
-  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
   const seen=sessionStorage.getItem('do_intro');
   let finished=false;
   function finish(fast){
@@ -500,9 +587,9 @@ function buildMetatron(svg, animate){
     sessionStorage.setItem('do_intro','1');
     intro.classList.add('done');
     setTimeout(()=>intro.remove(), fast?250:1150);
-    document.querySelectorAll('#hero .rv').forEach((el,i)=>setTimeout(()=>el.classList.add('in'),120*i));
+    document.querySelectorAll('#hero .rv').forEach((el,i)=>setTimeout(()=>el.classList.add('in'),110*i));
   }
-  if(reduced||seen){ finish(true); return; }
+  if(REDUCED||seen){ finish(true); return; }
 
   const ctx=cv.getContext('2d'); let W,H,t0=null,phase=0,burst=[];
   function size(){W=cv.width=innerWidth*devicePixelRatio;H=cv.height=innerHeight*devicePixelRatio;}
@@ -557,19 +644,126 @@ function buildMetatron(svg, animate){
   intro.addEventListener('click',()=>finish(true));
 })();
 
-/* hero backdrop geometry (static, faint) */
-buildMetatron(document.getElementById('heroGeo'), false);
+/* hero backdrop geometry (static, faint) — keep node positions for the arcs */
+const geoPts = buildMetatron(document.getElementById('heroGeo'), false);
 
-/* ═══════ expandable blocks ═══════ */
+/* ═══════ AMBIENT LAYER 1: falling stardust (mouse-aware) ═══════ */
+(function(){
+  if(REDUCED) return;
+  const layers=[
+    {cv:document.getElementById('dust'),      n:innerWidth<700?26:60, aMax:.4,  rMin:.7, rMax:2.1, blur:0},
+    {cv:document.getElementById('dustFront'), n:innerWidth<700?6:13,  aMax:.16, rMin:2.6,rMax:4.6, blur:2}
+  ];
+  const COLORS=[[201,168,76],[124,92,255],[124,92,255],[47,109,208]]; // gold, violet ×2, blue
+  let mx=-1e4,my=-1e4, running=true;
+  addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+  document.addEventListener('visibilitychange',()=>{running=!document.hidden});
+  layers.forEach(L=>{
+    const ctx=L.cv.getContext('2d'); let W,H;
+    const size=()=>{W=L.cv.width=innerWidth;H=L.cv.height=innerHeight};
+    size(); addEventListener('resize',size);
+    const mk=()=>({x:Math.random()*W,y:Math.random()*H,r:L.rMin+Math.random()*(L.rMax-L.rMin),
+      s:.14+Math.random()*.4, ph:Math.random()*7, c:COLORS[Math.random()*COLORS.length|0],
+      a:(.35+Math.random()*.65)*L.aMax});
+    let ps=Array.from({length:L.n},mk);
+    let spark=null, nextSpark=performance.now()+6000+Math.random()*8000;
+    function tick(ts){
+      requestAnimationFrame(tick);
+      if(!running) return;
+      ctx.clearRect(0,0,W,H);
+      if(L.blur)ctx.filter='blur('+L.blur+'px)';
+      ps.forEach(p=>{
+        p.y+=p.s; p.x+=Math.sin(ts/1600+p.ph)*.22;
+        const dx=p.x-mx,dy=p.y-my,d2=dx*dx+dy*dy;
+        if(d2<8100){const d=Math.sqrt(d2)||1,f=(90-d)/90*1.6;p.x+=dx/d*f;p.y+=dy/d*f;}
+        if(p.y>H+8){Object.assign(p,mk());p.y=-8;}
+        if(p.x<-10)p.x=W+8; if(p.x>W+10)p.x=-8;
+        ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,7);
+        ctx.fillStyle='rgba('+p.c[0]+','+p.c[1]+','+p.c[2]+','+p.a+')';ctx.fill();
+      });
+      /* occasional shooting spark (back layer only) */
+      if(!L.blur){
+        if(!spark&&ts>nextSpark){spark={x:Math.random()*W*.8+W*.1,y:-20,vx:1.6+Math.random()*1.4,vy:2.6+Math.random()*1.6,l:1};}
+        if(spark){
+          spark.x+=spark.vx*3;spark.y+=spark.vy*3;spark.l-=.014;
+          const g=ctx.createLinearGradient(spark.x,spark.y,spark.x-spark.vx*26,spark.y-spark.vy*26);
+          g.addColorStop(0,'rgba(228,201,122,'+(.8*spark.l)+')');g.addColorStop(1,'rgba(228,201,122,0)');
+          ctx.strokeStyle=g;ctx.lineWidth=1.6;ctx.beginPath();
+          ctx.moveTo(spark.x,spark.y);ctx.lineTo(spark.x-spark.vx*26,spark.y-spark.vy*26);ctx.stroke();
+          if(spark.l<=0||spark.y>H+30){spark=null;nextSpark=ts+7000+Math.random()*9000;}
+        }
+      }
+    }
+    requestAnimationFrame(tick);
+  });
+})();
+
+/* ═══════ AMBIENT LAYER 2: gold energy arcs across the hero geometry ═══════ */
+(function(){
+  if(REDUCED) return;
+  const hero=document.getElementById('hero'), cv=document.getElementById('arcCanvas'),
+        geo=document.getElementById('heroGeo'), ctx=cv.getContext('2d');
+  let W,H, arcs=[], nextAt=performance.now()+2400;
+  const size=()=>{W=cv.width=hero.clientWidth;H=cv.height=hero.clientHeight};
+  size(); addEventListener('resize',size);
+  function nodePx(){
+    const r=geo.getBoundingClientRect(), h=hero.getBoundingClientRect();
+    return geoPts.map(p=>[r.left-h.left+p[0]/400*r.width, r.top-h.top+p[1]/400*r.height]);
+  }
+  function fire(x1,y1,x2,y2){
+    const segs=[], n=7;
+    for(let i=0;i<=n;i++){
+      const t=i/n, jit=(i>0&&i<n)?(Math.random()-.5)*26:0,
+            nx=-(y2-y1), ny=x2-x1, len=Math.hypot(nx,ny)||1;
+      segs.push([x1+(x2-x1)*t+nx/len*jit, y1+(y2-y1)*t+ny/len*jit]);
+    }
+    arcs.push({segs,born:performance.now(),life:620});
+  }
+  function fireRandom(){
+    const pts=nodePx().filter(p=>p[0]>-40&&p[0]<W+40);
+    if(pts.length<2)return;
+    const a=pts[Math.random()*pts.length|0]; let b=pts[Math.random()*pts.length|0], guard=0;
+    while(b===a&&guard++<8)b=pts[Math.random()*pts.length|0];
+    fire(a[0],a[1],b[0],b[1]);
+  }
+  hero.addEventListener('click',e=>{
+    if(e.target.closest('a'))return;
+    const h=hero.getBoundingClientRect(), pts=nodePx(),
+          x=e.clientX-h.left, y=e.clientY-h.top;
+    let best=pts[0],bd=1e12;
+    pts.forEach(p=>{const d=(p[0]-x)**2+(p[1]-y)**2; if(d<bd){bd=d;best=p;}});
+    fire(x,y,best[0],best[1]); fire(x,y,best[0],best[1]);
+  });
+  function tick(ts){
+    requestAnimationFrame(tick);
+    if(!arcs.length&&ts<nextAt)return;
+    ctx.clearRect(0,0,W,H);
+    if(ts>=nextAt){fireRandom(); nextAt=ts+5200+Math.random()*5600;}
+    arcs=arcs.filter(a=>ts-a.born<a.life);
+    arcs.forEach(a=>{
+      const k=1-(ts-a.born)/a.life;
+      ctx.lineWidth=1.4; ctx.shadowBlur=14; ctx.shadowColor='rgba(228,201,122,'+(k*.9)+')';
+      ctx.strokeStyle='rgba(201,168,76,'+(k*.85)+')';
+      ctx.beginPath(); a.segs.forEach((s,i)=>i?ctx.lineTo(s[0],s[1]):ctx.moveTo(s[0],s[1])); ctx.stroke();
+      ctx.shadowBlur=0;
+      const m=a.segs[a.segs.length>>1],
+            g=ctx.createRadialGradient(m[0],m[1],0,m[0],m[1],70);
+      g.addColorStop(0,'rgba(228,201,122,'+(k*.18)+')');g.addColorStop(1,'rgba(228,201,122,0)');
+      ctx.fillStyle=g;ctx.beginPath();ctx.arc(m[0],m[1],70,0,7);ctx.fill();
+    });
+  }
+  requestAnimationFrame(tick);
+})();
+
+/* ═══════ blocks: OPEN by default, still collapsible ═══════ */
 document.querySelectorAll('[data-toggle]').forEach(h=>{
   const block=h.closest('.block'), body=block.querySelector('.blockBody');
   function set(open){
     block.classList.toggle('open',open);
     body.style.maxHeight=open? body.scrollHeight+'px':'0px';
   }
-  if(block.classList.contains('open')) set(true);
+  set(block.classList.contains('open'));
   h.addEventListener('click',()=>set(!block.classList.contains('open')));
-  // keep expanded height fluid (images loading, read-more)
   new ResizeObserver(()=>{ if(block.classList.contains('open')) body.style.maxHeight=body.scrollHeight+'px'; })
     .observe(body.querySelector('.blockInner'));
 });
@@ -593,10 +787,16 @@ document.querySelectorAll('[data-lb]').forEach(el=>{
 lb.addEventListener('click',()=>{lb.classList.remove('on');lbImg.src='';document.body.style.overflow='';});
 addEventListener('keydown',e=>{if(e.key==='Escape'&&lb.classList.contains('on'))lb.click();});
 
-/* ═══════ reveal on scroll ═══════ */
+/* ═══════ topbar + progress + reveal ═══════ */
+const topbar=document.getElementById('topbar'), prog=document.getElementById('prog');
+addEventListener('scroll',()=>{
+  const y=scrollY, max=document.documentElement.scrollHeight-innerHeight;
+  topbar.classList.toggle('on', y>420);
+  prog.style.width=(max>0? y/max*100:0)+'%';
+},{passive:true});
 const io=new IntersectionObserver(es=>es.forEach(e=>{
   if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}
-}),{threshold:.12});
+}),{threshold:.1});
 document.querySelectorAll('.rv').forEach(el=>io.observe(el));
 </script>
 </body>
