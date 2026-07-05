@@ -173,10 +173,16 @@ h1{font-family:var(--display);font-weight:600;font-size:clamp(36px,5vw,58px);let
 section{padding:22px 0}
 .block{background:var(--white);border:1px solid rgba(13,27,42,.08);border-radius:14px;box-shadow:var(--shadow);margin:18px 0;overflow:hidden;transition:box-shadow .35s ease;border-top:2px solid var(--accent,var(--gold))}
 .block:hover{box-shadow:var(--shadow-lift)}
-.blockHead{display:flex;align-items:center;gap:16px;padding:22px 28px 16px;cursor:pointer;user-select:none}
-.blockHead .num{font-family:var(--display);font-weight:600;font-size:13px;color:var(--gold-text);min-width:26px}
-.blockHead h2{font-family:var(--display);font-weight:600;font-size:clamp(19px,2.4vw,25px);letter-spacing:0;flex:1;line-height:1.15}
-.blockHead .sub{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-dim);margin-top:3px;font-weight:500}
+.blockHead{display:flex;align-items:center;gap:16px;padding:20px 28px;cursor:pointer;user-select:none;transition:background .25s}
+.block:not(.open) .blockHead:hover{background:var(--accent-pale,var(--gold-pale))}
+.block:not(.open){box-shadow:none;border-color:rgba(13,27,42,.1)}
+.block.open .blockHead{padding-bottom:14px}
+.blockHead .num{font-family:var(--display);font-weight:600;font-size:13px;color:var(--gold-text);min-width:24px}
+.blockHead h2{font-family:var(--display);font-weight:600;font-size:clamp(18px,2.2vw,23px);letter-spacing:0;line-height:1.15}
+.blockHead .htext{flex:1}
+.blockHead .sub{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-dim);margin-top:3px;font-weight:500}
+.block:not(.open) .blockHead{padding:16px 28px}
+.block:not(.open) .blockHead h2{font-size:clamp(16px,2vw,19px)}
 .block:not(.open) .chev{animation:chevHint 2.8s ease-in-out infinite}
 @keyframes chevHint{0%,100%{box-shadow:0 0 0 0 rgba(201,168,76,0)}50%{box-shadow:0 0 0 4px rgba(201,168,76,.1)}}
 .blockHead .chev{width:30px;height:30px;border-radius:50%;border:1px solid rgba(13,27,42,.14);display:flex;align-items:center;justify-content:center;transition:transform .45s cubic-bezier(.6,0,.2,1), background .3s;flex:none}
@@ -380,13 +386,12 @@ footer .sig{margin-top:30px;font-family:var(--italic);font-style:italic;color:rg
     <div class="block zone-violet open rv" id="overview">
       <div class="blockHead" data-toggle>
         <span class="num">01</span>
-        <div><h2>Overview</h2><div class="sub">who I am, in three honest paragraphs</div></div>
+        <div class="htext"><h2>Overview</h2><div class="sub">who I am, in short</div></div>
         <span class="chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
       </div>
       <div class="blockBody"><div class="blockInner">
-        <p class="lead">Data, finance and strategy is the formal answer. The honest one: <strong>I am a numbers person before anything else.</strong> Give me a ledger, a dataset or a market and I will find what it is actually saying. For eight years that has been the job — regulatory requirements become specifications engineers can build from, messy operational data becomes insight a board can decide on, an ambiguous initiative gets an owner, a sequence and a finish line. Across financial services, SaaS platform development and technology consulting, in <strong>four countries and three languages</strong>.</p>
-        <p class="lead">The range is deliberate — projects in <strong>more than 15 industries</strong>: Deloitte audit rooms in Riga, three years inside the reporting engine of a Swedish enterprise, food production, cybersecurity, real estate funds, restaurant P&amp;Ls in Dubai, a national statistics bureau, and now three business lines at Naviora Group. Different industries, same underlying work — <strong>finding the causal relationships between processes and structure</strong>, with one goal: the most efficient and fair way for everyone involved. The numbers are how I get there; they are the one language every business speaks.</p>
-        <p class="lead">Beyond the CV, I am the architect of the <strong>New Era</strong> ecosystem: an institutional-grade investment operating system, a product studio, and the live platform <a href="https://neifcapital.com">neifcapital.com</a> — designed and built end-to-end by one person, from data architecture and risk analytics to the running production system. The career and the projects tell one story: <strong>complexity in, clarity out.</strong></p>
+        <p class="lead"><strong>I am a numbers person before anything else.</strong> Give me a ledger, a dataset or a market and I find what it is actually saying — then turn it into a decision a board can act on. Eight years, four countries, 15+ industries: audit at Deloitte, enterprise BI in Sweden, PropTech and finance in Dubai, a national statistics bureau, and three business lines today as CDO at Naviora Group.</p>
+        <p class="lead">Beyond the CV, I built the <strong>New Era</strong> ecosystem end-to-end — an institutional investment operating system, live at <a href="https://neifcapital.com">neifcapital.com</a>. One method throughout: <strong>complexity in, clarity out.</strong></p>
       </div></div>
     </div>
   </section>
@@ -396,28 +401,28 @@ footer .sig{margin-top:30px;font-family:var(--italic);font-style:italic;color:rg
     <div class="block zone-blue open rv" id="capabilities">
       <div class="blockHead" data-toggle>
         <span class="num">02</span>
-        <div><h2>What I Do at Institutional Level</h2><div class="sub">data rooms · valuation · the numbers behind decisions</div></div>
+        <div class="htext"><h2>What I Do at Institutional Level</h2><div class="sub">data rooms · valuation · the numbers behind decisions</div></div>
         <span class="chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
       </div>
       <div class="blockBody"><div class="blockInner">
-        <p class="lead">The work below is not theory — every capability here has shipped: for factory shareholders, fund managers, Swedish enterprise controllers, Dubai investors and a national statistics bureau.</p>
-        <div class="caps" style="margin-top:18px">
+        <p class="lead">Six things I do at institutional standard — every one shipped, not theory.</p>
+        <div class="caps" style="margin-top:16px">
           <div class="capCard"><span class="k">Deals</span><h4>Data Rooms &amp; Due Diligence</h4>
-            <p>Investment-grade data rooms built end-to-end: ProForma, sensitivity heat maps, exit and market-liquidity analysis, price validation, demand research — organised so an investment committee can decide and an auditor can trace every number to its source.</p></div>
+            <p>Investment-grade data rooms end-to-end — ProForma, sensitivity, exit &amp; liquidity, price validation. Built so a committee can decide and an auditor can trace every number.</p></div>
           <div class="capCard"><span class="k">Valuation</span><h4>Evaluation &amp; Investment Memos</h4>
-            <p>DCF, comparables and scenario modelling; risk evaluation frameworks and investment memorandums written bear-case-first, to the standard of the audit rooms I trained in — analysis that survives sceptical questioning, not pitches.</p></div>
+            <p>DCF, comparables and scenario modelling; risk frameworks and memos written bear-case-first — analysis that survives scrutiny, not pitches.</p></div>
           <div class="capCard"><span class="k">Finance</span><h4>Financial Modelling &amp; Reporting</h4>
-            <p>Three-statement models, cash-flow forecasting, plan-vs-actual discipline, unit economics — and the reporting infrastructure around them that owners and boards actually use, from a two-restaurant group to enterprise scale.</p></div>
+            <p>Three-statement models, cash-flow forecasting, plan-vs-actual, unit economics — plus the reporting infrastructure owners and boards actually use.</p></div>
           <div class="capCard"><span class="k">Analytics</span><h4>BI &amp; Analytics Platforms</h4>
-            <p>Production Power BI ecosystems across 15+ industries: general-ledger-to-invoice drill-downs, row-level security per manager, daily-refresh intelligence — built once, used every day by hundreds of people.</p></div>
+            <p>Production Power BI across 15+ industries — GL-to-invoice drill-downs, row-level security, daily-refresh intelligence used by hundreds of people.</p></div>
           <div class="capCard"><span class="k">Architecture</span><h4>Data Architecture &amp; Governance</h4>
-            <p>From the sovereign lakehouse design for Latvia's national statistics bureau to a live investment platform: pipelines, quality gates, disclosure control, documentation — data an institution can put its name on.</p></div>
+            <p>From a national statistics bureau's lakehouse design to a live platform — pipelines, quality gates, disclosure control. Data an institution can sign its name to.</p></div>
           <div class="capCard"><span class="k">Delivery</span><h4>Zero to Running System</h4>
-            <p>Requirements, specification, build, production — the whole arc, personally. neifcapital.com is the standing proof: an institutional investment operating system designed and shipped end-to-end by one person.</p></div>
+            <p>Requirements to production, personally. neifcapital.com is the proof: an institutional investment OS shipped end-to-end by one person.</p></div>
         </div>
         <div class="capsCta">
-          <span class="t">A number that doesn't add up, a deal that needs a second pair of eyes, or a data function to build?</span>
-          <a class="btn solid" href="#contact">Talk to me</a>
+          <span class="t">Need a number checked, a deal reviewed, or a data function built?</span>
+          <a class="btn solid" href="#contact">Get in touch</a>
         </div>
       </div></div>
     </div>
@@ -428,7 +433,7 @@ footer .sig{margin-top:30px;font-family:var(--italic);font-style:italic;color:rg
     <div class="block zone-blue open rv" id="cv" data-mobile-collapse>
       <div class="blockHead" data-toggle>
         <span class="num">03</span>
-        <div><h2>Curriculum Vitae</h2><div class="sub">7 roles · 4 countries · one throughline</div></div>
+        <div class="htext"><h2>Curriculum Vitae</h2><div class="sub">7 roles · 4 countries · one throughline</div></div>
         <span class="chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
       </div>
       <div class="blockBody"><div class="blockInner">
@@ -501,7 +506,7 @@ footer .sig{margin-top:30px;font-family:var(--italic);font-style:italic;color:rg
     <div class="block zone-blue open rv" id="portfolio" data-mobile-collapse>
       <div class="blockHead" data-toggle>
         <span class="num">04</span>
-        <div><h2>Business Intelligence Portfolio</h2><div class="sub">8 production Power BI systems · click any screen to zoom</div></div>
+        <div class="htext"><h2>Business Intelligence Portfolio</h2><div class="sub">8 production Power BI systems · click any screen to zoom</div></div>
         <span class="chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
       </div>
       <div class="blockBody"><div class="blockInner">
@@ -547,7 +552,7 @@ footer .sig{margin-top:30px;font-family:var(--italic);font-style:italic;color:rg
     <div class="block zone-blue open rv" id="projects" data-mobile-collapse>
       <div class="blockHead" data-toggle>
         <span class="num">05</span>
-        <div><h2>Live Projects &amp; Builds</h2><div class="sub">systems running in the world right now</div></div>
+        <div class="htext"><h2>Live Projects &amp; Builds</h2><div class="sub">systems running in the world right now</div></div>
         <span class="chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
       </div>
       <div class="blockBody"><div class="blockInner">
@@ -578,7 +583,7 @@ footer .sig{margin-top:30px;font-family:var(--italic);font-style:italic;color:rg
     <div class="block zone-violet open rv" id="speaking" data-mobile-collapse>
       <div class="blockHead" data-toggle>
         <span class="num">06</span>
-        <div><h2>Speaking &amp; Teaching</h2><div class="sub">sharing what the work taught me</div></div>
+        <div class="htext"><h2>Speaking &amp; Teaching</h2><div class="sub">sharing what the work taught me</div></div>
         <span class="chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
       </div>
       <div class="blockBody"><div class="blockInner">
@@ -602,7 +607,7 @@ footer .sig{margin-top:30px;font-family:var(--italic);font-style:italic;color:rg
     <div class="block zone-gold open rv" id="recommendations" data-mobile-collapse>
       <div class="blockHead" data-toggle>
         <span class="num">07</span>
-        <div><h2>Recommendations</h2><div class="sub">four letters · click to read</div></div>
+        <div class="htext"><h2>Recommendations</h2><div class="sub">four letters · click to read</div></div>
         <span class="chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
       </div>
       <div class="blockBody"><div class="blockInner">
@@ -622,7 +627,7 @@ footer .sig{margin-top:30px;font-family:var(--italic);font-style:italic;color:rg
     <div class="block zone-violet open rv" id="beyond" data-mobile-collapse>
       <div class="blockHead" data-toggle>
         <span class="num">08</span>
-        <div><h2>Beyond the Work</h2><div class="sub">the character behind the numbers</div></div>
+        <div class="htext"><h2>Beyond the Work</h2><div class="sub">the character behind the numbers</div></div>
         <span class="chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
       </div>
       <div class="blockBody"><div class="blockInner">
@@ -648,7 +653,7 @@ footer .sig{margin-top:30px;font-family:var(--italic);font-style:italic;color:rg
     <div class="block zone-gold open rv" id="contact">
       <div class="blockHead" data-toggle>
         <span class="num">09</span>
-        <div><h2>Contact</h2><div class="sub">two time zones, always reachable</div></div>
+        <div class="htext"><h2>Contact</h2><div class="sub">two time zones, always reachable</div></div>
         <span class="chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
       </div>
       <div class="blockBody"><div class="blockInner">
@@ -951,19 +956,21 @@ const geoPts = buildMetatron(document.getElementById('heroGeo'), false);
   requestAnimationFrame(tick);
 })();
 
-/* ═══════ blocks: collapsible; deep blocks auto-close on phones to reduce the wall of text ═══════ */
-const isPhone = matchMedia('(max-width:720px)').matches;
+/* ═══════ blocks: deep/proof sections start CLOSED on ALL devices — a scannable page, opened on intent ═══════ */
 document.querySelectorAll('[data-toggle]').forEach(h=>{
   const block=h.closest('.block'), body=block.querySelector('.blockBody');
   function set(open){
     block.classList.toggle('open',open);
     body.style.maxHeight=open? body.scrollHeight+'px':'0px';
   }
-  // on phones, start the deep/archival sections collapsed — visitor opens what interests them
-  let startOpen = block.classList.contains('open');
-  if(isPhone && block.hasAttribute('data-mobile-collapse')) startOpen = false;
+  // data-mobile-collapse now means "start closed everywhere" — only the essentials stay open
+  let startOpen = block.classList.contains('open') && !block.hasAttribute('data-mobile-collapse');
   set(startOpen);
-  h.addEventListener('click',()=>set(!block.classList.contains('open')));
+  h.addEventListener('click',()=>{
+    const willOpen = !block.classList.contains('open');
+    set(willOpen);
+    if(willOpen) setTimeout(()=>{ const top=block.getBoundingClientRect().top+scrollY-70; if(scrollY>top) scrollTo({top,behavior:'smooth'}); },10);
+  });
   new ResizeObserver(()=>{ if(block.classList.contains('open')) body.style.maxHeight=body.scrollHeight+'px'; })
     .observe(body.querySelector('.blockInner'));
 });
