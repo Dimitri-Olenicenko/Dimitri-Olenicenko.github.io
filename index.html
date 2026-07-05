@@ -121,19 +121,24 @@ h1{font-family:var(--serif);font-weight:500;font-size:clamp(40px,5.6vw,66px);let
 .btn.solid:hover{transform:translateY(-2px);box-shadow:0 12px 34px var(--violet-glow)}
 .btn.ghost{border-color:rgba(13,27,42,.2);color:var(--ink)}
 .btn.ghost:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-2px)}
-/* the photo — full-height atmosphere on the right, feathered into the page */
-.photoPanel{position:absolute;top:0;right:0;bottom:0;width:min(56vw,840px);z-index:1;pointer-events:none}
-.photoPanel img{width:100%;height:100%;object-fit:cover;object-position:50% 24%;display:block;
-  -webkit-mask-image:radial-gradient(118% 98% at 88% 40%, #000 50%, rgba(0,0,0,.6) 70%, transparent 95%);
-          mask-image:radial-gradient(118% 98% at 88% 40%, #000 50%, rgba(0,0,0,.6) 70%, transparent 95%);
-  filter:saturate(1.05) contrast(1.01)}
+/* the photo — dissolved seamlessly into the page, no frame, no ring */
+.photoPanel{position:absolute;top:0;right:0;bottom:0;width:min(60vw,900px);z-index:1;pointer-events:none}
+.photoPanel img{width:100%;height:100%;object-fit:cover;object-position:52% 22%;display:block;
+  -webkit-mask-image:
+     linear-gradient(90deg, transparent 0%, rgba(0,0,0,.35) 24%, #000 56%),
+     linear-gradient(0deg, transparent 0%, rgba(0,0,0,.5) 12%, #000 30%),
+     linear-gradient(180deg, transparent 0%, rgba(0,0,0,.5) 8%, #000 22%);
+  -webkit-mask-composite:source-in;
+          mask-image:
+     linear-gradient(90deg, transparent 0%, rgba(0,0,0,.35) 24%, #000 56%),
+     linear-gradient(0deg, transparent 0%, rgba(0,0,0,.5) 12%, #000 30%),
+     linear-gradient(180deg, transparent 0%, rgba(0,0,0,.5) 8%, #000 22%);
+          mask-composite:intersect;
+  filter:saturate(1.04) contrast(1.01)}
 .photoPanel .ptint{position:absolute;inset:0;background:
-  linear-gradient(90deg, var(--bone) 0%, rgba(248,246,241,.4) 18%, transparent 52%),
-  linear-gradient(0deg, rgba(248,246,241,.92) 0%, rgba(248,246,241,.25) 14%, transparent 32%),
-  radial-gradient(62% 54% at 72% 64%, transparent 42%, rgba(35,26,79,.12) 100%),
-  linear-gradient(250deg, rgba(124,92,255,.12), transparent 46%),
-  linear-gradient(70deg, rgba(201,168,76,.10), transparent 42%)}
-.photoPanel .pcap{position:absolute;right:28px;bottom:14px;font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--ink-dim)}
+  linear-gradient(90deg, var(--bone) 0%, rgba(248,246,241,.45) 20%, transparent 54%),
+  linear-gradient(0deg, var(--bone) 0%, rgba(248,246,241,.3) 12%, transparent 30%),
+  linear-gradient(180deg, var(--white) 0%, transparent 20%)}
 .scrollCue{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);z-index:4;font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--ink-dim);animation:cue 2.4s ease-in-out infinite}
 @keyframes cue{0%,100%{transform:translate(-50%,0);opacity:.55}50%{transform:translate(-50%,7px);opacity:1}}
 @media (max-width:1150px){.photoPanel{width:50vw}}
@@ -141,9 +146,8 @@ h1{font-family:var(--serif);font-weight:500;font-size:clamp(40px,5.6vw,66px);let
   #hero{min-height:0;padding:88px 0 46px;flex-direction:column;justify-content:flex-start}
   .heroGrid{grid-template-columns:1fr;gap:8px}
   .photoPanel{position:relative;inset:auto;width:min(92vw,440px);height:60vw;max-height:430px;margin:0 auto -6px;pointer-events:none}
-  .photoPanel img{-webkit-mask-image:radial-gradient(100% 96% at 50% 42%, #000 52%, rgba(0,0,0,.55) 72%, transparent 96%);mask-image:radial-gradient(100% 96% at 50% 42%, #000 52%, rgba(0,0,0,.55) 72%, transparent 96%);object-position:50% 28%}
-  .photoPanel .ptint{background:linear-gradient(0deg, rgba(248,246,241,.9) 0%, transparent 28%)}
-  .photoPanel .pcap{display:none}
+  .photoPanel img{-webkit-mask-image:linear-gradient(180deg, transparent 0%, #000 26%, #000 72%, transparent 100%);mask-image:linear-gradient(180deg, transparent 0%, #000 26%, #000 72%, transparent 100%);object-position:50% 26%;-webkit-mask-composite:source-over;mask-composite:add}
+  .photoPanel .ptint{background:linear-gradient(0deg, var(--bone) 0%, transparent 30%),linear-gradient(180deg, var(--white) 0%, transparent 24%)}
   .heroLead,.quote{max-width:none}
   #heroGeo{right:-30%;opacity:.09}
 }
@@ -159,6 +163,9 @@ section{padding:30px 0}
 .blockHead .num{font-family:var(--serif);font-size:15px;color:var(--gold);min-width:30px}
 .blockHead h2{font-family:var(--serif);font-weight:500;font-size:clamp(23px,3vw,31px);letter-spacing:.03em;flex:1}
 .blockHead .sub{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-dim);margin-top:3px}
+/* gentle "tap to open" pulse on closed blocks so mobile users know they expand */
+.block:not(.open) .chev{animation:chevHint 2.6s ease-in-out infinite}
+@keyframes chevHint{0%,100%{box-shadow:0 0 0 0 rgba(124,92,255,0)}50%{box-shadow:0 0 0 5px rgba(124,92,255,.09)}}
 .blockHead .chev{width:34px;height:34px;border-radius:50%;border:1px solid rgba(35,26,79,.15);display:flex;align-items:center;justify-content:center;transition:transform .45s cubic-bezier(.6,0,.2,1), background .3s;flex:none}
 .blockHead .chev svg{width:13px;height:13px;stroke:var(--ink-soft);fill:none;stroke-width:2}
 .block.open .chev{transform:rotate(180deg)}
@@ -245,11 +252,11 @@ section{padding:30px 0}
 .fact .lbl{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);margin-top:6px}
 .fact .note{font-size:12.5px;color:var(--ink-dim);margin-top:6px}
 
-/* recommendations */
-.recs{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px;margin-top:12px}
-.recs .rec{border:1px solid rgba(35,26,79,.12);border-radius:12px;overflow:hidden;cursor:zoom-in;background:var(--mist);transition:transform .3s, box-shadow .3s}
+/* recommendations — full letter visible, never cropped */
+.recs{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px;margin-top:12px}
+.recs .rec{border:1px solid rgba(35,26,79,.12);border-radius:12px;overflow:hidden;cursor:zoom-in;background:var(--white);transition:transform .3s, box-shadow .3s;padding:8px}
 .recs .rec:hover{transform:translateY(-4px);box-shadow:var(--shadow-lift)}
-.recs img{width:100%;aspect-ratio:3/4;object-fit:cover;object-position:top;display:block}
+.recs img{width:100%;height:auto;display:block;border-radius:6px}
 
 /* contact */
 .contactGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin-top:12px}
@@ -332,23 +339,22 @@ footer .sig{margin-top:36px;font-family:var(--serif);font-style:italic;color:rgb
   <div class="photoPanel rv">
     <img src="assets/dimitri.webp" fetchpriority="high" alt="Dmitrijs Olenicenko at sunset on Palm Jumeirah, Dubai">
     <div class="ptint"></div>
-    <div class="pcap">Palm Jumeirah · golden hour</div>
   </div>
   <svg id="heroGeo" viewBox="0 0 400 400" aria-hidden="true"></svg>
   <canvas id="arcCanvas"></canvas>
   <div class="wrap heroGrid">
     <div>
-      <div class="kicker rv">Chief Data Officer · Naviora Group — Dubai</div>
+      <div class="kicker rv">Data · Finance · Operations</div>
       <h1 class="rv">Dmitrijs<br>Olenicenko</h1>
       <div class="role rv"><b>Data</b> · <em>Finance</em> · <i>Strategy</i></div>
       <div class="goldline rv"></div>
-      <p class="heroLead rv">A numbers person before anything else. I find the causal thread inside complex systems — P&amp;Ls, markets, data pipelines — and turn it into decisions people can act on. Eight years, four countries, <strong>15+ industries</strong>, one method: <strong>complexity in, clarity out.</strong></p>
+      <p class="heroLead rv">I help businesses turn complexity into clear, confident decisions. Give me a P&amp;L, a dataset or a market and I find the causal thread running through it — then translate that into something a team can act on. Eight years, four countries, <strong>15+ industries</strong>, one method: <strong>complexity in, clarity out.</strong></p>
       <p class="quote rv">“To know thyself is the beginning of wisdom.”<small>— Socrates</small></p>
       <div class="chips rv">
         <span class="chip">Dubai · Riga · Worldwide</span>
         <span class="chip">8+ years international</span>
         <span class="chip">15+ industries</span>
-        <span class="chip">52 countries</span>
+        <span class="chip">52 countries visited</span>
       </div>
       <div class="heroBtns rv">
         <a class="btn solid" href="https://www.linkedin.com/in/dmitrijsolenicenko/" target="_blank" rel="noopener">LinkedIn</a>
@@ -412,7 +418,7 @@ footer .sig{margin-top:36px;font-family:var(--serif);font-style:italic;color:rgb
 
   <!-- 03 · CV -->
   <section>
-    <div class="block blue open rv" id="cv">
+    <div class="block blue open rv" id="cv" data-mobile-collapse>
       <div class="blockHead" data-toggle>
         <span class="num">03</span>
         <div><h2>Curriculum Vitae</h2><div class="sub">7 roles · 4 countries · one throughline</div></div>
@@ -485,7 +491,7 @@ footer .sig{margin-top:36px;font-family:var(--serif);font-style:italic;color:rgb
 
   <!-- 04 · BI PORTFOLIO -->
   <section>
-    <div class="block blue open rv" id="portfolio">
+    <div class="block blue open rv" id="portfolio" data-mobile-collapse>
       <div class="blockHead" data-toggle>
         <span class="num">04</span>
         <div><h2>Business Intelligence Portfolio</h2><div class="sub">8 production Power BI systems · click any screen to zoom</div></div>
@@ -562,7 +568,7 @@ footer .sig{margin-top:36px;font-family:var(--serif);font-style:italic;color:rgb
 
   <!-- 06 · SPEAKING & TEACHING -->
   <section>
-    <div class="block violet open rv" id="speaking">
+    <div class="block violet open rv" id="speaking" data-mobile-collapse>
       <div class="blockHead" data-toggle>
         <span class="num">06</span>
         <div><h2>Speaking &amp; Teaching</h2><div class="sub">sharing what the work taught me</div></div>
@@ -586,7 +592,7 @@ footer .sig{margin-top:36px;font-family:var(--serif);font-style:italic;color:rgb
 
   <!-- 07 · RECOMMENDATIONS -->
   <section>
-    <div class="block gold open rv" id="recommendations">
+    <div class="block gold open rv" id="recommendations" data-mobile-collapse>
       <div class="blockHead" data-toggle>
         <span class="num">07</span>
         <div><h2>Recommendations</h2><div class="sub">four letters · click to read</div></div>
@@ -606,7 +612,7 @@ footer .sig{margin-top:36px;font-family:var(--serif);font-style:italic;color:rgb
 
   <!-- 08 · BEYOND THE WORK -->
   <section>
-    <div class="block violet open rv" id="beyond">
+    <div class="block violet open rv" id="beyond" data-mobile-collapse>
       <div class="blockHead" data-toggle>
         <span class="num">08</span>
         <div><h2>Beyond the Work</h2><div class="sub">the character behind the numbers</div></div>
@@ -938,14 +944,18 @@ const geoPts = buildMetatron(document.getElementById('heroGeo'), false);
   requestAnimationFrame(tick);
 })();
 
-/* ═══════ blocks: OPEN by default, still collapsible ═══════ */
+/* ═══════ blocks: collapsible; deep blocks auto-close on phones to reduce the wall of text ═══════ */
+const isPhone = matchMedia('(max-width:720px)').matches;
 document.querySelectorAll('[data-toggle]').forEach(h=>{
   const block=h.closest('.block'), body=block.querySelector('.blockBody');
   function set(open){
     block.classList.toggle('open',open);
     body.style.maxHeight=open? body.scrollHeight+'px':'0px';
   }
-  set(block.classList.contains('open'));
+  // on phones, start the deep/archival sections collapsed — visitor opens what interests them
+  let startOpen = block.classList.contains('open');
+  if(isPhone && block.hasAttribute('data-mobile-collapse')) startOpen = false;
+  set(startOpen);
   h.addEventListener('click',()=>set(!block.classList.contains('open')));
   new ResizeObserver(()=>{ if(block.classList.contains('open')) body.style.maxHeight=body.scrollHeight+'px'; })
     .observe(body.querySelector('.blockInner'));
