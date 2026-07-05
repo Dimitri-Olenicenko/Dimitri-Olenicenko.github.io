@@ -9,10 +9,17 @@
 <meta property="og:title" content="Dmitrijs Olenicenko — Data · Finance · Strategy">
 <meta property="og:description" content="To know thyself is the beginning of wisdom. The work, the projects and the person behind them.">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://dimitri-olenicenko.github.io/assets/dimitri.jpg">
+<meta property="og:image" content="https://dimitri-olenicenko.github.io/assets/og-card.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta property="og:url" content="https://dimitri-olenicenko.github.io/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Dmitrijs Olenicenko — Data · Finance · Strategy">
+<meta name="twitter:description" content="A numbers person before anything else. 15+ industries, four countries — complexity in, clarity out.">
+<meta name="twitter:image" content="https://dimitri-olenicenko.github.io/assets/og-card.jpg">
 <meta name="theme-color" content="#0d1b2a">
 <link rel="canonical" href="https://dimitri-olenicenko.github.io/">
+<link rel="preload" as="image" href="assets/dimitri.webp">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='29' fill='none' stroke='%23c9a84c' stroke-width='2.5'/%3E%3Ctext x='32' y='42' font-family='Georgia,serif' font-size='27' fill='%230d1b2a' text-anchor='middle'%3EDO%3C/text%3E%3C/svg%3E">
 <script type="application/ld+json">
 {
@@ -40,7 +47,7 @@
 <style>
 :root{
   --white:#ffffff; --bone:#f8f6f1; --mist:#eef0f7;
-  --ink:#0d1b2a; --ink-soft:#3c4a5c; --ink-dim:#71809296;
+  --ink:#0d1b2a; --ink-soft:#3c4a5c; --ink-dim:#66758a;
   --gold:#c9a84c; --gold-light:#e4c97a; --gold-pale:#f3ead2;
   --blue:#2f6dd0; --blue-deep:#1e4fa3; --blue-pale:#eaf1fc; --blue-glow:rgba(47,109,208,.22);
   --violet:#7c5cff; --violet-deep:#5b3fd4; --violet-ink:#231a4f; --violet-pale:#f0ecfe; --violet-glow:rgba(124,92,255,.26);
@@ -91,8 +98,10 @@ main,header,footer{position:relative;z-index:2}
 
 /* ═════ HERO — photo woven in ═════ */
 #hero{position:relative;min-height:96vh;display:flex;align-items:center;padding:80px 0 40px;overflow:hidden;background:linear-gradient(180deg,var(--white) 0%,var(--bone) 100%)}
-#heroGeo{position:absolute;top:50%;right:2%;transform:translateY(-52%);width:min(94vmin,760px);height:min(94vmin,760px);pointer-events:none;z-index:2;animation:geoPulse 9s ease-in-out infinite}
-@keyframes geoPulse{0%,100%{opacity:.12}50%{opacity:.2}}
+#heroGeo{position:absolute;top:55%;right:0;transform:translateY(-52%);width:min(94vmin,760px);height:min(94vmin,760px);pointer-events:none;z-index:2;animation:geoPulse 9s ease-in-out infinite;
+  -webkit-mask-image:linear-gradient(90deg, rgba(0,0,0,.3), #000 58%);
+          mask-image:linear-gradient(90deg, rgba(0,0,0,.3), #000 58%)}
+@keyframes geoPulse{0%,100%{opacity:.16}50%{opacity:.3}}
 #heroGeo line,#heroGeo circle{stroke:var(--gold);stroke-width:.8;fill:none}
 #arcCanvas{position:absolute;inset:0;pointer-events:none;z-index:3}
 .heroGrid{display:grid;grid-template-columns:minmax(0,660px);gap:40px;align-items:center;width:100%;position:relative;z-index:4}
@@ -121,7 +130,9 @@ h1{font-family:var(--serif);font-weight:500;font-size:clamp(40px,5.6vw,66px);let
 .photoPanel .ptint{position:absolute;inset:0;background:
   linear-gradient(90deg, var(--bone) 0%, rgba(248,246,241,.4) 18%, transparent 52%),
   linear-gradient(0deg, rgba(248,246,241,.92) 0%, rgba(248,246,241,.25) 14%, transparent 32%),
-  linear-gradient(250deg, rgba(124,92,255,.10), transparent 46%)}
+  radial-gradient(62% 54% at 72% 64%, transparent 42%, rgba(35,26,79,.12) 100%),
+  linear-gradient(250deg, rgba(124,92,255,.12), transparent 46%),
+  linear-gradient(70deg, rgba(201,168,76,.10), transparent 42%)}
 .photoPanel .pcap{position:absolute;right:28px;bottom:14px;font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--ink-dim)}
 .scrollCue{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);z-index:4;font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--ink-dim);animation:cue 2.4s ease-in-out infinite}
 @keyframes cue{0%,100%{transform:translate(-50%,0);opacity:.55}50%{transform:translate(-50%,7px);opacity:1}}
@@ -203,6 +214,8 @@ section{padding:30px 0}
 .liveCard p{font-size:13px;color:var(--ink-soft);margin-top:8px}
 .liveCard.v{border-left-color:var(--violet)}.liveCard.v .u{color:var(--violet)}
 .liveCard.g{border-left-color:var(--gold)}.liveCard.g .u{color:var(--gold)}
+.liveCard.wide{grid-column:1/-1;background:linear-gradient(120deg,var(--white) 55%,var(--violet-pale));border-left-width:4px}
+.liveCard.wide p{max-width:860px}
 
 /* institutional capabilities */
 .caps{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px;margin-top:10px}
@@ -317,7 +330,7 @@ footer .sig{margin-top:36px;font-family:var(--serif);font-style:italic;color:rgb
 <!-- ═════════ HERO ═════════ -->
 <header id="hero">
   <div class="photoPanel rv">
-    <img src="assets/dimitri.jpg" alt="Dmitrijs Olenicenko at sunset on Palm Jumeirah, Dubai">
+    <img src="assets/dimitri.webp" fetchpriority="high" alt="Dmitrijs Olenicenko at sunset on Palm Jumeirah, Dubai">
     <div class="ptint"></div>
     <div class="pcap">Palm Jumeirah · golden hour</div>
   </div>
@@ -480,35 +493,35 @@ footer .sig{margin-top:36px;font-family:var(--serif);font-style:italic;color:rgb
       </div>
       <div class="blockBody"><div class="blockInner">
         <div class="grid">
-          <div class="card"><div class="shot" data-lb="assets/bi-food-production.png" data-cap="Food Production — shareholder performance app"><img src="assets/bi-food-production.png" alt="Food Production report" loading="lazy"><span class="zoom">zoom</span></div>
+          <div class="card"><div class="shot" data-lb="assets/bi-food-production.webp" data-cap="Food Production — shareholder performance app"><img src="assets/bi-food-production.webp" alt="Food Production report" loading="lazy"><span class="zoom">zoom</span></div>
             <div class="body"><span class="tag">4 reports · 5–7 pages each</span><h4>Food Production</h4>
             <p>Built for a group managing four food-production factories: a shareholder app showing Revenue, Cost, Gross Profit and margins with full production cost — raw materials, salaries, utilities, marketing. Products needing price adjustment or cost reduction are flagged in red; deeper sections give factory directors cost drill-downs, margin-enhancement scenarios (1–20% price moves), invoice detail, and key product and customer analysis.</p><span class="more" data-more>read more</span></div></div>
 
-          <div class="card"><div class="shot" data-lb="assets/bi-cybersecurity.png" data-cap="Cybersecurity — daily breach & license intelligence"><img src="assets/bi-cybersecurity.png" alt="Cybersecurity report" loading="lazy"><span class="zoom">zoom</span></div>
+          <div class="card"><div class="shot" data-lb="assets/bi-cybersecurity.webp" data-cap="Cybersecurity — daily breach & license intelligence"><img src="assets/bi-cybersecurity.webp" alt="Cybersecurity report" loading="lazy"><span class="zoom">zoom</span></div>
             <div class="body"><span class="tag">8 pages · daily refresh</span><h4>Cybersecurity</h4>
             <p>For a cybersecurity-license vendor: a daily intelligence view of breach attempts and vulnerable areas — for the company and per client. Client-specific risk analysis powers tailored solutions; license-expiration and breach-frequency views arm the sales team to renew proactively and upsell stronger packages.</p><span class="more" data-more>read more</span></div></div>
 
-          <div class="card"><div class="shot" data-lb="assets/bi-bpm.png" data-cap="Business Process Management — 11 processes under control"><img src="assets/bi-bpm.png" alt="BPM report" loading="lazy"><span class="zoom">zoom</span></div>
+          <div class="card"><div class="shot" data-lb="assets/bi-bpm.webp" data-cap="Business Process Management — 11 processes under control"><img src="assets/bi-bpm.webp" alt="BPM report" loading="lazy"><span class="zoom">zoom</span></div>
             <div class="body"><span class="tag">12 reports · 2–3 pages each</span><h4>Business Process Management</h4>
             <p>Eleven business processes measured against 30-day targets — incidents and reaction, requests and completion, customer experience, change speed. Colour-coded thresholds (below 100% / 80%); each process gets its own report with reaction speed, resolution time, rolled-back changes, overdue cases, and the people involved — so the BPM team catches issues per country the moment they appear.</p><span class="more" data-more>read more</span></div></div>
 
-          <div class="card"><div class="shot" data-lb="assets/bi-business-fields.png" data-cap="Business Fields — P&L drill-down to every invoice"><img src="assets/bi-business-fields.png" alt="Business Fields report" loading="lazy"><span class="zoom">zoom</span></div>
+          <div class="card"><div class="shot" data-lb="assets/bi-business-fields.webp" data-cap="Business Fields — P&L drill-down to every invoice"><img src="assets/bi-business-fields.webp" alt="Business Fields report" loading="lazy"><span class="zoom">zoom</span></div>
             <div class="body"><span class="tag">4 pages · 30+ P&L accounts</span><h4>Business Fields P&amp;L</h4>
             <p>Connected straight to the General Ledger: navigate every transaction from the highest level down to the individual invoice — with links per Account, Field of Business, Region, Department, Customer and Employee. Select any field and the full transaction detail appears: financial account, agreement, invoice number and link, department, customer, amount. Custom reports on any level.</p><span class="more" data-more>read more</span></div></div>
 
-          <div class="card"><div class="shot" data-lb="assets/bi-sales-teams.png" data-cap="Sales Teams Performance — targets, regions, security levels"><img src="assets/bi-sales-teams.png" alt="Sales Teams report" loading="lazy"><span class="zoom">zoom</span></div>
+          <div class="card"><div class="shot" data-lb="assets/bi-sales-teams.webp" data-cap="Sales Teams Performance — targets, regions, security levels"><img src="assets/bi-sales-teams.webp" alt="Sales Teams report" loading="lazy"><span class="zoom">zoom</span></div>
             <div class="body"><span class="tag">5 pages · row-level security</span><h4>Sales Teams Performance</h4>
             <p>Sales performance by field of business — region, office, manager and department against targets and prior year. Filter to individual salespeople by name or code; drill into product, service and consultant breakdowns. Built on security levels so every manager sees exactly their own field of responsibility.</p><span class="more" data-more>read more</span></div></div>
 
-          <div class="card"><div class="shot" data-lb="assets/bi-balance-pl-cashflow.png" data-cap="Balance Sheet · P&L · Cash Flow — the controller's monthly view"><img src="assets/bi-balance-pl-cashflow.png" alt="Balance sheet report" loading="lazy"><span class="zoom">zoom</span></div>
+          <div class="card"><div class="shot" data-lb="assets/bi-balance-pl-cashflow.webp" data-cap="Balance Sheet · P&L · Cash Flow — the controller's monthly view"><img src="assets/bi-balance-pl-cashflow.webp" alt="Balance sheet report" loading="lazy"><span class="zoom">zoom</span></div>
             <div class="body"><span class="tag">3 pages · actuals / forecast / budget / PY</span><h4>Balance Sheet · P&amp;L · Cash Flow</h4>
             <p>The three statements over time, fully customisable: Actuals, Forecast, Budget and Previous Year, by region and department, in any timeframe — the high-level monthly business read for Business Controllers.</p><span class="more" data-more>read more</span></div></div>
 
-          <div class="card"><div class="shot" data-lb="assets/bi-real-estate-fund.png" data-cap="Real Estate Fund — Latvia & France rental portfolio"><img src="assets/bi-real-estate-fund.png" alt="Real estate fund report" loading="lazy"><span class="zoom">zoom</span></div>
+          <div class="card"><div class="shot" data-lb="assets/bi-real-estate-fund.webp" data-cap="Real Estate Fund — Latvia & France rental portfolio"><img src="assets/bi-real-estate-fund.webp" alt="Real estate fund report" loading="lazy"><span class="zoom">zoom</span></div>
             <div class="body"><span class="tag">5 pages · Excel ETL</span><h4>Real Estate Fund</h4>
             <p>For an investment fund renting apartments in Latvia and France (long-term + Airbnb): a monthly-updated ETL in Excel feeding one shared view — rented units, per-flat revenue and expenses (taxes, utilities, repairs), contract durations, invoice records, tenant details, and photo/video tours of every property.</p><span class="more" data-more>read more</span></div></div>
 
-          <div class="card"><div class="shot" data-lb="assets/bi-360-customers.png" data-cap="360° View — profit vs the true cost of serving each customer"><img src="assets/bi-360-customers.png" alt="360 customers report" loading="lazy"><span class="zoom">zoom</span></div>
+          <div class="card"><div class="shot" data-lb="assets/bi-360-customers.webp" data-cap="360° View — profit vs the true cost of serving each customer"><img src="assets/bi-360-customers.webp" alt="360 customers report" loading="lazy"><span class="zoom">zoom</span></div>
             <div class="body"><span class="tag">2 reports · 3 pages each</span><h4>360° of the Most Profitable Customers</h4>
             <p>Gross profit per customer against the true Total Input to serve them — twelve variables including salespeople dedicated, delivery workforce, support cases, manufacturers required and contract-renewal churn. Five further pages compare clients across variables and unpack each relationship — so attention flows to the customers genuinely in the green zone of profit vs effort.</p><span class="more" data-more>read more</span></div></div>
         </div>
@@ -526,9 +539,9 @@ footer .sig{margin-top:36px;font-family:var(--serif);font-style:italic;color:rgb
       </div>
       <div class="blockBody"><div class="blockInner">
         <div class="live">
-          <a class="liveCard" href="https://neifcapital.com" target="_blank" rel="noopener">
+          <a class="liveCard wide" href="https://neifcapital.com" target="_blank" rel="noopener">
             <h4>New Era Investment Fund</h4><span class="u">neifcapital.com</span>
-            <p>An institutional investment operating system — risk analytics, valuation engines, GIPS/ILPA-grade reporting — exposed as a live platform where clients connect their own AI to the fund's intelligence. Architecture, data, engineering and product: built end-to-end.</p>
+            <p>The flagship. An institutional operating system with a research engine at its core — councils of specialist analysts that can take <strong>any field</strong> to institutional depth: a company, a market, a person, a property, a scientific question. It runs the full discipline of a fund — due diligence, valuation, risk analytics, quantitative models, audit-grade reporting — and it is live: clients connect their own AI to the platform and draw on that intelligence, with hard privacy isolation by design. Architecture, data, engineering, product: designed and built end-to-end by one person.</p>
           </a>
           <a class="liveCard v" href="https://jiangyushan.online" target="_blank" rel="noopener">
             <h4>Jiang Yu Shan</h4><span class="u">jiangyushan.online</span>
@@ -560,10 +573,10 @@ footer .sig{margin-top:36px;font-family:var(--serif);font-style:italic;color:rgb
         <p class="lead" style="margin-top:14px">Presented to the <strong>Central Statistical Bureau of Latvia</strong> a remodelling of the national statistics agency's data architecture — a sovereign, standards-based design for how a country's official numbers are produced, protected and published. The full presentation is below.</p>
         <div class="takeaway">“Vision creates direction — but evidence validates the path.”</div>
         <div class="photos">
-          <img src="assets/lu-1.jpg" alt="Lecture at University of Latvia" data-lb="assets/lu-1.jpg" data-cap="University of Latvia — Innovation & Acceleration Center" loading="lazy">
-          <img src="assets/lu-2.jpg" alt="Lecture audience" data-lb="assets/lu-2.jpg" data-cap="Pre-incubation program with Latvenergo & Sadales Tīkls" loading="lazy">
-          <img src="assets/lu-3.jpg" alt="Presenting" data-lb="assets/lu-3.jpg" data-cap="From idea to sustainable business" loading="lazy">
-          <img src="assets/lu-4.jpg" alt="Discussion" data-lb="assets/lu-4.jpg" data-cap="Q&A with future founders" loading="lazy">
+          <img src="assets/lu-1.webp" alt="Lecture at University of Latvia" data-lb="assets/lu-1.webp" data-cap="University of Latvia — Innovation & Acceleration Center" loading="lazy">
+          <img src="assets/lu-2.webp" alt="Lecture audience" data-lb="assets/lu-2.webp" data-cap="Pre-incubation program with Latvenergo & Sadales Tīkls" loading="lazy">
+          <img src="assets/lu-3.webp" alt="Presenting" data-lb="assets/lu-3.webp" data-cap="From idea to sustainable business" loading="lazy">
+          <img src="assets/lu-4.webp" alt="Discussion" data-lb="assets/lu-4.webp" data-cap="Q&A with future founders" loading="lazy">
         </div>
         <a class="pdfBtn v" href="assets/lu-lecture-business-solution-development.pdf" target="_blank" rel="noopener">Open the lecture deck (PDF)</a>
         <a class="pdfBtn" href="assets/csp-data-architecture.pdf" target="_blank" rel="noopener">CSP data-architecture presentation (PDF)</a>
@@ -607,10 +620,10 @@ footer .sig{margin-top:36px;font-family:var(--serif);font-style:italic;color:rgb
           <div class="fact"><div class="big">∞</div><div class="lbl">Curiosity</div><div class="note">rooms with Tony Robbins, Oskar Hartmann, Pavel Gitelman</div></div>
         </div>
         <div class="photos" style="margin-top:20px">
-          <img src="assets/diving-1.jpg" alt="Diving" data-lb="assets/diving-1.jpg" data-cap="PADI Divemaster — 150+ dives across the world" loading="lazy">
-          <img src="assets/diving-2.jpg" alt="Diving a wreck" data-lb="assets/diving-2.jpg" data-cap="Sand-wreck lover" loading="lazy">
-          <img src="assets/diving-3.jpg" alt="Underwater" data-lb="assets/diving-3.jpg" data-cap="Where the noise stops" loading="lazy">
-          <img src="assets/speaking.jpg" alt="Speaking at an event" data-lb="assets/speaking.jpg" data-cap="Never off — always in the arena" loading="lazy">
+          <img src="assets/diving-1.webp" alt="Diving" data-lb="assets/diving-1.webp" data-cap="PADI Divemaster — 150+ dives across the world" loading="lazy">
+          <img src="assets/diving-2.webp" alt="Diving a wreck" data-lb="assets/diving-2.webp" data-cap="Sand-wreck lover" loading="lazy">
+          <img src="assets/diving-3.webp" alt="Underwater" data-lb="assets/diving-3.webp" data-cap="Where the noise stops" loading="lazy">
+          <img src="assets/speaking.webp" alt="Speaking at an event" data-lb="assets/speaking.webp" data-cap="Never off — always in the arena" loading="lazy">
         </div>
         <p class="lead" style="margin-top:20px">The same pattern runs through all of it: go where it is uncomfortable, learn the system from the inside, find the causal thread — whether that is a balance sheet, a data pipeline, a wreck forty metres down, or a street in a city where nobody knows your name.</p>
       </div></div>
@@ -955,16 +968,29 @@ document.querySelectorAll('[data-more]').forEach(m=>{
   });
 });
 
-/* ═══════ lightbox ═══════ */
+/* ═══════ lightbox (keyboard-first, focus-managed) ═══════ */
 const lb=document.getElementById('lb'), lbImg=lb.querySelector('img'), lbCap=lb.querySelector('.cap');
+lb.setAttribute('aria-modal','true'); lb.tabIndex=-1;
+let lbTrigger=null;
+function lbOpen(el){
+  lbImg.src=el.getAttribute('data-lb'); lbImg.alt=el.getAttribute('data-cap')||'Enlarged image';
+  lbCap.textContent=el.getAttribute('data-cap')||'';
+  lb.classList.add('on'); document.body.style.overflow='hidden';
+  lbTrigger=el; lb.focus();
+}
+function lbClose(){
+  lb.classList.remove('on'); lbImg.src=''; document.body.style.overflow='';
+  if(lbTrigger){lbTrigger.focus(); lbTrigger=null;}
+}
 document.querySelectorAll('[data-lb]').forEach(el=>{
-  el.addEventListener('click',()=>{
-    lbImg.src=el.getAttribute('data-lb'); lbCap.textContent=el.getAttribute('data-cap')||'';
-    lb.classList.add('on'); document.body.style.overflow='hidden';
-  });
+  if(!el.hasAttribute('tabindex')){el.tabIndex=0; el.setAttribute('role','button');}
+  el.setAttribute('aria-label','View: '+(el.getAttribute('data-cap')||'image'));
+  el.addEventListener('click',()=>lbOpen(el));
+  el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();lbOpen(el);}});
 });
-lb.addEventListener('click',()=>{lb.classList.remove('on');lbImg.src='';document.body.style.overflow='';});
-addEventListener('keydown',e=>{if(e.key==='Escape'&&lb.classList.contains('on'))lb.click();});
+lb.addEventListener('click',lbClose);
+lb.addEventListener('keydown',e=>{if(e.key==='Tab')e.preventDefault();});
+addEventListener('keydown',e=>{if(e.key==='Escape'&&lb.classList.contains('on'))lbClose();});
 
 /* ═══════ topbar + progress + reveal ═══════ */
 const topbar=document.getElementById('topbar'), prog=document.getElementById('prog');
