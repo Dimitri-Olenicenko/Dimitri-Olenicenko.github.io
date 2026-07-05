@@ -192,6 +192,8 @@ section:first-child{padding-top:8px}
 .lead strong{color:var(--ink);font-weight:600}
 .lead a{color:var(--accent-deep,var(--gold-text));font-weight:500}
 .lead+.lead{margin-top:12px}
+.dim-note{color:var(--ink-dim)}
+.dim-note a{color:var(--accent-deep,var(--gold-text))}
 
 /* CV timeline — single accent (blue zone) */
 .tl{position:relative;margin-top:6px}
@@ -271,8 +273,11 @@ section:first-child{padding-top:8px}
 .contactGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px;margin-top:10px}
 .cCard{display:block;text-decoration:none;border:1px solid rgba(13,27,42,.1);border-radius:12px;padding:17px 20px;background:var(--white);transition:transform .3s, box-shadow .3s;cursor:pointer;position:relative;border-left:3px solid var(--gold)}
 .cCard:hover{transform:translateY(-3px);box-shadow:var(--shadow-lift)}
+/* email card spans the row so the address stays on ONE line */
+.cCard.wide{grid-column:1/-1}
 .cCard .lbl{font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-dim)}
-.cCard .val{font-family:var(--display);font-size:17px;font-weight:600;color:var(--ink);margin-top:5px;word-break:break-word}
+.cCard .val{font-family:var(--display);font-size:17px;font-weight:600;color:var(--ink);margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cCard.wide .val{font-size:clamp(16px,3.4vw,21px)}
 .cCard .hint{font-size:10.5px;color:var(--ink-dim);margin-top:5px;letter-spacing:.06em}
 .cCard .copied{position:absolute;top:11px;right:13px;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-text);opacity:0;transition:opacity .3s}
 .cCard .copied.on{opacity:1}
@@ -386,9 +391,9 @@ footer .sig{margin-top:30px;font-family:var(--italic);font-style:italic;color:rg
         <span class="chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
       </div>
       <div class="blockBody"><div class="blockInner">
-        <p class="lead"><strong>I am a numbers person before anything else.</strong> Give me a ledger, a dataset or a market and I find what it is actually saying — then turn it into a decision a board can act on. Eight years, four countries, 15+ industries: audit at Deloitte, enterprise BI in Sweden, PropTech and finance in Dubai, and three business lines today as CDO at Naviora Group.</p>
-        <p class="lead">I run <strong>deep research on any subject</strong> — a company, a market, a person, a technology — and turn the findings into products, models and AI systems. That is what the New Era platform does at scale: I designed and built <strong>AI research agents</strong> that take a question in any field to institutional depth, and the products around them.</p>
-        <p class="lead">Beyond the CV, I built the <strong>New Era</strong> ecosystem end-to-end — an institutional investment operating system, live at <a href="https://neifcapital.com">neifcapital.com</a>. One method throughout: <strong>complexity in, clarity out.</strong></p>
+        <p class="lead"><strong>I build the systems institutions make decisions with</strong> — the data, the analysis, and increasingly the AI underneath them. Give me a ledger, a dataset or a market and I find what it is actually saying; then I turn that into a model, a report, or a product a board can act on. Numbers first, always: they are the one language every business speaks.</p>
+        <p class="lead">Eight years, four countries, 15+ industries — audit at <strong>Deloitte</strong>, enterprise BI in Sweden serving 40 controllers, PropTech and finance in Dubai, and three business lines today as <strong>Chief Data Officer at Naviora Group</strong>. Different sectors, one throughline: finding the causal thread in complexity and making it decision-ready.</p>
+        <p class="lead">Lately that means <strong>deep research and AI</strong>: I investigate any subject — a company, a market, a technology — to institutional depth, and build the models, data architecture and AI research agents that turn findings into working products. <span class="dim-note">A live example is <a href="https://neifcapital.com">neifcapital.com</a>, an institutional investment platform I designed and built end-to-end.</span> One method throughout: <strong>complexity in, clarity out.</strong></p>
       </div></div>
     </div>
   </section>
@@ -662,7 +667,7 @@ footer .sig{margin-top:30px;font-family:var(--italic);font-style:italic;color:rg
       <div class="blockBody"><div class="blockInner">
         <p class="lead">For roles, projects, partnerships, or a good conversation about data and strategy — write first, call second. Based in Dubai, rooted in Riga, working worldwide.</p>
         <div class="contactGrid">
-          <div class="cCard" data-copy="dmitrijs.olenicenko@gmail.com" role="button" tabindex="0" aria-label="Copy email address">
+          <div class="cCard wide" data-copy="dmitrijs.olenicenko@gmail.com" role="button" tabindex="0" aria-label="Copy email address">
             <span class="copied">copied ✓</span>
             <div class="lbl">Email</div>
             <div class="val">dmitrijs.olenicenko@gmail.com</div>
