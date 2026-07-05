@@ -34,8 +34,7 @@
   "image": "https://dimitri-olenicenko.github.io/assets/dimitri.jpg",
   "address": { "@type": "PostalAddress", "addressLocality": "Dubai", "addressCountry": "AE" },
   "sameAs": [
-    "https://www.linkedin.com/in/dmitrijsolenicenko/",
-    "https://www.instagram.com/shatzs/"
+    "https://www.linkedin.com/in/dmitrijsolenicenko/"
   ],
   "knowsAbout": ["Data Analytics", "Deep Research", "AI Agents", "Financial Modelling", "Business Intelligence", "Data Architecture", "Product Development", "Strategy"],
   "knowsLanguage": ["English", "Russian", "Latvian"]
@@ -94,18 +93,17 @@ main,header,footer{position:relative;z-index:2}
 }
 #topbar .links{display:flex;gap:22px;align-items:center}
 
-/* ————— INTRO: sober institutional loader — name draws in, gold hairline sweeps ————— */
-#intro{position:fixed;inset:0;z-index:1000;background:linear-gradient(180deg,#fff 0%,var(--bone) 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:opacity .9s ease}
+/* ————— INTRO: proton + neutron collide → Metatron draws (overlay only, never on the photo) ————— */
+#intro{position:fixed;inset:0;z-index:1000;background:radial-gradient(1200px 800px at 50% 45%, #fff 0%, var(--bone) 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:opacity 1.1s ease}
 #intro.done{opacity:0;pointer-events:none}
-#introName{font-family:var(--display);font-weight:600;font-size:clamp(26px,4.4vw,44px);letter-spacing:.01em;color:var(--ink);opacity:0;transform:translateY(8px);transition:opacity 1s ease, transform 1s ease}
+#introCanvas{position:absolute;inset:0;width:100%;height:100%}
+#metatron{position:relative;width:min(56vmin,400px);height:min(56vmin,400px);opacity:0;transition:opacity .8s ease}
+#metatron.show{opacity:1}
+#metatron line,#metatron circle{stroke:var(--gold);stroke-width:1.1;fill:none;vector-effect:non-scaling-stroke}
+#introName{position:absolute;top:9vh;left:0;right:0;text-align:center;font-family:var(--display);font-weight:600;font-size:clamp(17px,2.6vw,24px);letter-spacing:.06em;color:var(--ink-soft);opacity:0;transition:opacity 1.2s ease .2s}
 #introName span{color:var(--gold-text)}
-#intro.reveal #introName{opacity:1;transform:none}
-#introRule{width:0;height:1.5px;background:var(--gold);margin-top:20px;transition:width 1.1s cubic-bezier(.4,0,.2,1) .35s}
-#intro.reveal #introRule{width:min(46vw,320px)}
-#introSub{margin-top:18px;font-size:10px;letter-spacing:.34em;text-transform:uppercase;color:var(--ink-dim);opacity:0;transition:opacity 1s ease .7s}
-#intro.reveal #introSub{opacity:.85}
-#introHint{position:absolute;bottom:6vh;left:0;right:0;text-align:center;font-size:9px;letter-spacing:.32em;text-transform:uppercase;color:var(--ink-dim);opacity:0;transition:opacity 1s ease 1.2s}
-#intro.reveal #introHint{opacity:.6}
+#introName.show{opacity:.95}
+#introHint{position:absolute;bottom:6vh;left:0;right:0;text-align:center;font-size:9px;letter-spacing:.32em;text-transform:uppercase;color:var(--ink-dim);opacity:.65}
 
 /* ————— PAGE ————— */
 .wrap{max-width:1120px;margin:0 auto;padding:0 26px}
@@ -250,7 +248,7 @@ section:first-child{padding-top:8px}
 
 /* photos — FULLY VISIBLE, never cropped */
 .photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:12px}
-.photos img{width:100%;height:auto;display:block;border-radius:10px;cursor:zoom-in;transition:transform .35s ease, box-shadow .35s;box-shadow:var(--shadow);background:var(--mist)}
+.photos img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;border-radius:10px;cursor:zoom-in;transition:transform .35s ease, box-shadow .35s;box-shadow:var(--shadow);background:var(--mist)}
 .photos img:hover{transform:scale(1.02);box-shadow:var(--shadow-lift)}
 .pdfBtn{display:inline-flex;align-items:center;gap:9px;margin:14px 10px 0 0;padding:10px 20px;border-radius:999px;border:1px solid var(--accent);color:var(--accent-deep);text-decoration:none;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;transition:all .3s}
 .pdfBtn:hover{background:var(--accent);color:#fff}
@@ -277,7 +275,7 @@ section:first-child{padding-top:8px}
 .cCard.wide{grid-column:1/-1}
 .cCard .lbl{font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-dim)}
 .cCard .val{font-family:var(--display);font-size:17px;font-weight:600;color:var(--ink);margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.cCard.wide .val{font-size:clamp(16px,3.4vw,21px)}
+.cCard.email .val{font-size:13px;letter-spacing:-.01em}
 .cCard .hint{font-size:10.5px;color:var(--ink-dim);margin-top:5px;letter-spacing:.06em}
 .cCard .copied{position:absolute;top:11px;right:13px;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-text);opacity:0;transition:opacity .3s}
 .cCard .copied.on{opacity:1}
@@ -341,11 +339,11 @@ footer .sig{margin-top:30px;font-family:var(--italic);font-style:italic;color:rg
   <button id="navToggle" aria-label="Menu" aria-expanded="false">☰</button>
 </nav>
 
-<!-- ═════════ INTRO: sober institutional loader ═════════ -->
-<div id="intro" aria-label="Loading — click to enter">
+<!-- ═════════ INTRO: proton + neutron → Metatron ═════════ -->
+<div id="intro" aria-label="Intro animation — click to skip">
+  <canvas id="introCanvas"></canvas>
   <div id="introName">Dmitrijs&nbsp;<span>Olenicenko</span></div>
-  <div id="introRule"></div>
-  <div id="introSub">Data · Finance · Strategy</div>
+  <svg id="metatron" viewBox="0 0 400 400" aria-hidden="true"></svg>
   <div id="introHint">click to enter</div>
 </div>
 
@@ -360,7 +358,6 @@ footer .sig{margin-top:30px;font-family:var(--italic);font-style:italic;color:rg
     <div>
       <div class="kicker rv">Data · Finance · Research · AI</div>
       <h1 class="rv">Dmitrijs Olenicenko</h1>
-      <div class="role rv">Data <span>·</span> Finance <span>·</span> Strategy</div>
       <div class="goldline rv"></div>
       <p class="heroLead rv">A numbers person before anything else. I turn complexity into clear, confident decisions — give me a P&amp;L, a dataset or a market and I find the causal thread, then translate it into something a team can act on. One method: <strong>complexity in, clarity out.</strong></p>
       <div class="statRow rv">
@@ -428,10 +425,6 @@ footer .sig{margin-top:30px;font-family:var(--italic);font-style:italic;color:rg
             <p>Production Power BI across 15+ industries — GL-to-invoice drill-downs, row-level security, daily-refresh intelligence used by hundreds of people.</p></div>
           <div class="capCard"><span class="k">Delivery</span><h4>Zero to Running System</h4>
             <p>Requirements to production, personally. neifcapital.com is the proof: an institutional investment OS shipped end-to-end by one person.</p></div>
-        </div>
-        <div class="capsCta">
-          <span class="t">Need a number checked, a deal reviewed, or a data function built?</span>
-          <a class="btn solid" href="#contact">Get in touch</a>
         </div>
       </div></div>
     </div>
@@ -598,7 +591,6 @@ footer .sig{margin-top:30px;font-family:var(--italic);font-style:italic;color:rg
       <div class="blockBody"><div class="blockInner">
         <p class="lead">Lecture at the <strong>University of Latvia Innovation &amp; Acceleration Center</strong> — pre-incubation program in cooperation with Latvenergo and Sadales Tīkls. How entrepreneurs turn ideas into sustainable businesses: market validation and customer research, go-to-market and customer acquisition, financial modelling and unit economics, AI as a tool for faster decision-making, and data-driven risk management.</p>
         <p class="lead" style="margin-top:14px">A recurring theme in my talks: how <strong>deep research and AI</strong> compress the distance between a question and a decision — how to investigate any field rigorously, and turn the findings into products, models and agents rather than slides.</p>
-        <div class="takeaway">“Vision creates direction — but evidence validates the path.”</div>
         <div class="photos">
           <img src="assets/lu-1.webp" alt="Lecture at University of Latvia" data-lb="assets/lu-1.webp" data-cap="University of Latvia — Innovation & Acceleration Center" loading="lazy">
           <img src="assets/lu-2.webp" alt="Lecture audience" data-lb="assets/lu-2.webp" data-cap="Pre-incubation program with Latvenergo & Sadales Tīkls" loading="lazy">
@@ -667,7 +659,7 @@ footer .sig{margin-top:30px;font-family:var(--italic);font-style:italic;color:rg
       <div class="blockBody"><div class="blockInner">
         <p class="lead">For roles, projects, partnerships, or a good conversation about data and strategy — write first, call second. Based in Dubai, rooted in Riga, working worldwide.</p>
         <div class="contactGrid">
-          <div class="cCard wide" data-copy="dmitrijs.olenicenko@gmail.com" role="button" tabindex="0" aria-label="Copy email address">
+          <div class="cCard email" data-copy="dmitrijs.olenicenko@gmail.com" role="button" tabindex="0" aria-label="Copy email address">
             <span class="copied">copied ✓</span>
             <div class="lbl">Email</div>
             <div class="val">dmitrijs.olenicenko@gmail.com</div>
@@ -703,16 +695,6 @@ footer .sig{margin-top:30px;font-family:var(--italic);font-style:italic;color:rg
   <div class="wrap">
     <div class="fname">Dmitrijs <span>Olenicenko</span></div>
     <div class="goldline"></div>
-    <div class="social">
-      <a href="https://www.linkedin.com/in/dmitrijsolenicenko/" target="_blank" rel="noopener">LinkedIn</a>
-      <a href="https://www.instagram.com/shatzs/" target="_blank" rel="noopener">Instagram</a>
-      <a href="https://neifcapital.com" target="_blank" rel="noopener">NEIF Capital</a>
-    </div>
-    <div class="fContacts">
-      <a href="mailto:dmitrijs.olenicenko@gmail.com">dmitrijs.olenicenko@gmail.com</a>
-      <a href="tel:+971504540013">UAE +971 50 454 0013</a>
-      <a href="tel:+37129889963">LV +371 29 889 963</a>
-    </div>
     <div class="sig">“Complexity in — clarity out.”</div>
   </div>
 </footer>
@@ -720,22 +702,96 @@ footer .sig{margin-top:30px;font-family:var(--italic);font-style:italic;color:rg
 <script>
 const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-/* ═══════ INTRO: sober institutional loader — name + gold hairline, brief & refined ═══════ */
+/* ═══════ Metatron's Cube geometry (13 circles + all connecting lines) ═══════ */
+function buildMetatron(svg, animate){
+  const cx=200, cy=200, r=52, cr=26;
+  const pts=[[cx,cy]];
+  for(let i=0;i<6;i++){const a=Math.PI/2+i*Math.PI/3; pts.push([cx+r*Math.cos(a), cy-r*Math.sin(a)]);}
+  for(let i=0;i<6;i++){const a=Math.PI/2+i*Math.PI/3; pts.push([cx+2*r*Math.cos(a), cy-2*r*Math.sin(a)]);}
+  const ns='http://www.w3.org/2000/svg'; let elems=[];
+  for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){
+    const l=document.createElementNS(ns,'line');
+    l.setAttribute('x1',pts[i][0]);l.setAttribute('y1',pts[i][1]);
+    l.setAttribute('x2',pts[j][0]);l.setAttribute('y2',pts[j][1]);
+    svg.appendChild(l); elems.push(l);
+  }
+  pts.forEach(p=>{const c=document.createElementNS(ns,'circle');
+    c.setAttribute('cx',p[0]);c.setAttribute('cy',p[1]);c.setAttribute('r',cr);
+    svg.appendChild(c); elems.push(c);});
+  if(animate){elems.forEach((el,i)=>{
+    const len = el.tagName==='circle' ? 2*Math.PI*cr : Math.hypot(el.getAttribute('x2')-el.getAttribute('x1'), el.getAttribute('y2')-el.getAttribute('y1'));
+    el.style.strokeDasharray=len; el.style.strokeDashoffset=len;
+    el.style.transition=`stroke-dashoffset 1.5s cubic-bezier(.4,0,.2,1) ${i*14}ms`;
+  });}
+  return pts;
+}
+
+/* ═══════ INTRO: proton (blue) + neutron (violet) collide → Metatron draws ═══════ */
 (function(){
-  const intro=document.getElementById('intro');
+  const intro=document.getElementById('intro'), cv=document.getElementById('introCanvas'),
+        met=document.getElementById('metatron'), name=document.getElementById('introName');
   const seen=sessionStorage.getItem('do_intro');
   let finished=false;
   function finish(fast){
     if(finished)return; finished=true;
     sessionStorage.setItem('do_intro','1');
     intro.classList.add('done');
-    setTimeout(()=>intro.remove(), fast?200:900);
+    setTimeout(()=>intro.remove(), fast?250:1150);
     document.querySelectorAll('#hero .rv').forEach((el,i)=>setTimeout(()=>el.classList.add('in'),100*i));
   }
   if(REDUCED||seen){ finish(true); return; }
-  requestAnimationFrame(()=>requestAnimationFrame(()=>intro.classList.add('reveal')));
-  const auto=setTimeout(()=>finish(false), 2400);          // short, dignified
-  intro.addEventListener('click',()=>{clearTimeout(auto);finish(true);});
+
+  const ctx=cv.getContext('2d'); let W,H,t0=null,phase=0,burst=[];
+  function size(){W=cv.width=innerWidth*devicePixelRatio;H=cv.height=innerHeight*devicePixelRatio;}
+  size(); addEventListener('resize',size);
+  const P={x:-.18,c:'#2f6dd0',glow:'rgba(47,109,208,',s:'+'},
+        N={x:1.18,c:'#7c5cff',glow:'rgba(124,92,255,',s:''};
+  [P,N].forEach(p=>{p.trail=[];});
+  const DUR=2600;
+
+  function draw(ts){
+    if(!t0)t0=ts; const el=ts-t0; ctx.clearRect(0,0,W,H);
+    const cx=W/2, cy=H*0.46, R=Math.max(10,Math.min(W,H)*0.016);
+    if(phase===0){
+      const k=Math.min(1,el/DUR), e=0.14*k+0.86*k*k*k*k;
+      const wob=Math.sin(el/130)*(1-k)*H*0.045;
+      P.px=W*(P.x+(.5-P.x)*e); P.py=cy+wob;
+      N.px=W*(N.x+(.5-N.x)*e); N.py=cy-wob;
+      [P,N].forEach(p=>{
+        p.trail.push([p.px,p.py]); if(p.trail.length>26)p.trail.shift();
+        p.trail.forEach((q,i)=>{const a=i/p.trail.length*0.35;
+          ctx.beginPath();ctx.arc(q[0],q[1],R*(0.3+0.7*i/p.trail.length),0,7);
+          ctx.fillStyle=p.glow+a+')';ctx.fill();});
+        const g=ctx.createRadialGradient(p.px,p.py,0,p.px,p.py,R*3.2);
+        g.addColorStop(0,p.glow+'0.55)');g.addColorStop(1,p.glow+'0)');
+        ctx.beginPath();ctx.arc(p.px,p.py,R*3.2,0,7);ctx.fillStyle=g;ctx.fill();
+        ctx.beginPath();ctx.arc(p.px,p.py,R,0,7);ctx.fillStyle=p.c;ctx.fill();
+        if(p.s){ctx.fillStyle='#fff';ctx.font=`600 ${R*1.3}px Inter`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(p.s,p.px,p.py+R*0.05);}
+      });
+      if(k>=1){phase=1;t0=ts;
+        for(let i=0;i<90;i++){const a=Math.random()*7,v=(0.25+Math.random()*1)*Math.min(W,H)*0.0009;
+          burst.push({x:cx,y:cy,vx:Math.cos(a)*v,vy:Math.sin(a)*v,l:1,c:Math.random()<.5?P:N});}
+      }
+    } else if(phase===1){
+      const k=Math.min(1,el/900);
+      const fl=ctx.createRadialGradient(cx,cy,0,cx,cy,Math.min(W,H)*(0.05+k*0.5));
+      fl.addColorStop(0,'rgba(255,255,255,'+(0.95*(1-k))+')');
+      fl.addColorStop(0.4,'rgba(228,201,122,'+(0.5*(1-k))+')');
+      fl.addColorStop(1,'rgba(255,255,255,0)');
+      ctx.fillStyle=fl;ctx.fillRect(0,0,W,H);
+      burst.forEach(b=>{b.x+=b.vx*16;b.y+=b.vy*16;b.vx*=.97;b.vy*=.97;b.l-=.012;
+        if(b.l>0){ctx.beginPath();ctx.arc(b.x,b.y,Math.max(0.5,R*0.5*b.l),0,7);
+          ctx.fillStyle=b.c.glow+(b.l*0.8)+')';ctx.fill();}});
+      if(el>350&&!met.dataset.on){met.dataset.on=1;met.classList.add('show');name.classList.add('show');
+        requestAnimationFrame(()=>requestAnimationFrame(()=>{
+          met.querySelectorAll('line,circle').forEach(e=>e.style.strokeDashoffset=0);}));}
+      if(el>3300){finish();return;}
+    }
+    if(!finished)requestAnimationFrame(draw);
+  }
+  buildMetatron(met,true);
+  requestAnimationFrame(draw);
+  intro.addEventListener('click',()=>finish(true));
 })();
 
 
