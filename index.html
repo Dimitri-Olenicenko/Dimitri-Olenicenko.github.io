@@ -94,16 +94,18 @@ main,header,footer{position:relative;z-index:2}
 }
 #topbar .links{display:flex;gap:22px;align-items:center}
 
-/* ————— INTRO OVERLAY: proton + neutron → Metatron ————— */
-#intro{position:fixed;inset:0;z-index:1000;background:radial-gradient(1200px 800px at 50% 45%, #fff 0%, var(--bone) 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:opacity 1.1s ease}
+/* ————— INTRO: sober institutional loader — name draws in, gold hairline sweeps ————— */
+#intro{position:fixed;inset:0;z-index:1000;background:linear-gradient(180deg,#fff 0%,var(--bone) 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:opacity .9s ease}
 #intro.done{opacity:0;pointer-events:none}
-#introCanvas{position:absolute;inset:0;width:100%;height:100%}
-#metatron{position:relative;width:min(58vmin,420px);height:min(58vmin,420px);opacity:0;transition:opacity .8s ease}
-#metatron.show{opacity:1}
-#metatron line,#metatron circle{stroke:var(--gold);stroke-width:1.1;fill:none;vector-effect:non-scaling-stroke}
-#introHint{position:absolute;bottom:6vh;left:0;right:0;text-align:center;font-size:10px;letter-spacing:.35em;text-transform:uppercase;color:var(--ink-dim);opacity:.7}
-#introName{position:absolute;top:9vh;left:0;right:0;text-align:center;font-family:var(--display);font-weight:600;font-size:clamp(16px,2.4vw,22px);letter-spacing:.36em;text-transform:uppercase;color:var(--ink-soft);opacity:0;transition:opacity 1.2s ease .2s}
-#introName.show{opacity:.9}
+#introName{font-family:var(--display);font-weight:600;font-size:clamp(26px,4.4vw,44px);letter-spacing:.01em;color:var(--ink);opacity:0;transform:translateY(8px);transition:opacity 1s ease, transform 1s ease}
+#introName span{color:var(--gold-text)}
+#intro.reveal #introName{opacity:1;transform:none}
+#introRule{width:0;height:1.5px;background:var(--gold);margin-top:20px;transition:width 1.1s cubic-bezier(.4,0,.2,1) .35s}
+#intro.reveal #introRule{width:min(46vw,320px)}
+#introSub{margin-top:18px;font-size:10px;letter-spacing:.34em;text-transform:uppercase;color:var(--ink-dim);opacity:0;transition:opacity 1s ease .7s}
+#intro.reveal #introSub{opacity:.85}
+#introHint{position:absolute;bottom:6vh;left:0;right:0;text-align:center;font-size:9px;letter-spacing:.32em;text-transform:uppercase;color:var(--ink-dim);opacity:0;transition:opacity 1s ease 1.2s}
+#intro.reveal #introHint{opacity:.6}
 
 /* ————— PAGE ————— */
 .wrap{max-width:1120px;margin:0 auto;padding:0 26px}
@@ -119,6 +121,9 @@ main,header,footer{position:relative;z-index:2}
 #arcCanvas{position:absolute;inset:0;pointer-events:none;z-index:3}
 .heroGrid{display:grid;grid-template-columns:minmax(0,620px);gap:36px;align-items:center;width:100%;position:relative;z-index:4}
 .kicker{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold-text);font-weight:600;margin-bottom:16px}
+.availBadge{display:inline-flex;align-items:center;gap:8px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);font-weight:600;padding:6px 14px;border:1px solid rgba(45,140,90,.3);background:rgba(45,140,90,.06);border-radius:999px;margin-bottom:16px}
+.availBadge .dot{width:7px;height:7px;border-radius:50%;background:#2d8c5a;box-shadow:0 0 0 0 rgba(45,140,90,.5);animation:availPulse 2.4s ease-in-out infinite}
+@keyframes availPulse{0%,100%{box-shadow:0 0 0 0 rgba(45,140,90,.45)}50%{box-shadow:0 0 0 5px rgba(45,140,90,0)}}
 h1{font-family:var(--display);font-weight:600;font-size:clamp(36px,5vw,58px);letter-spacing:0;line-height:1.04}
 .titleStrap{margin-top:12px;font-size:12.5px;letter-spacing:.02em;color:var(--ink-soft);font-weight:500}
 .titleStrap b{color:var(--ink);font-weight:600}
@@ -345,11 +350,11 @@ footer .sig{margin-top:30px;font-family:var(--italic);font-style:italic;color:rg
   <button id="navToggle" aria-label="Menu" aria-expanded="false">☰</button>
 </nav>
 
-<!-- ═════════ INTRO: proton + neutron → Metatron ═════════ -->
-<div id="intro" aria-label="Intro animation — click to skip">
-  <canvas id="introCanvas"></canvas>
-  <div id="introName">Dmitrijs&nbsp;Olenicenko</div>
-  <svg id="metatron" viewBox="0 0 400 400" aria-hidden="true"></svg>
+<!-- ═════════ INTRO: sober institutional loader ═════════ -->
+<div id="intro" aria-label="Loading — click to enter">
+  <div id="introName">Dmitrijs&nbsp;<span>Olenicenko</span></div>
+  <div id="introRule"></div>
+  <div id="introSub">Data · Finance · Strategy</div>
   <div id="introHint">click to enter</div>
 </div>
 
@@ -363,12 +368,12 @@ footer .sig{margin-top:30px;font-family:var(--italic);font-style:italic;color:rg
   <canvas id="arcCanvas"></canvas>
   <div class="wrap heroGrid">
     <div>
-      <div class="kicker rv">Data · Finance · Operations</div>
+      <div class="availBadge rv"><span class="dot"></span>Open to senior data &amp; finance roles · advisory</div>
       <h1 class="rv">Dmitrijs Olenicenko</h1>
       <div class="titleStrap rv"><b>Chief Data Officer</b>, Naviora Group · <b>Founder</b>, New Era Investment Fund</div>
       <div class="role rv">Data <span>·</span> Finance <span>·</span> Strategy</div>
       <div class="goldline rv"></div>
-      <p class="heroLead rv">A numbers person before anything else. I help businesses turn complexity into clear, confident decisions — give me a P&amp;L, a dataset or a market and I find the causal thread running through it, then translate it into something a team can act on. One method: <strong>complexity in, clarity out.</strong></p>
+      <p class="heroLead rv">A numbers person before anything else. I turn complexity into clear, confident decisions — give me a P&amp;L, a dataset or a market and I find the causal thread, then translate it into something a team can act on. One method: <strong>complexity in, clarity out.</strong></p>
       <div class="statRow rv">
         <div class="stat"><div class="n">8+</div><div class="l">Years</div></div>
         <div class="stat"><div class="n">15+</div><div class="l">Industries</div></div>
@@ -749,72 +754,22 @@ function buildMetatron(svg, animate){
 }
 const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-/* ═══════ INTRO: proton (blue) + neutron (violet) collide → Metatron ═══════ */
+/* ═══════ INTRO: sober institutional loader — name + gold hairline, brief & refined ═══════ */
 (function(){
-  const intro=document.getElementById('intro'), cv=document.getElementById('introCanvas'),
-        met=document.getElementById('metatron'), name=document.getElementById('introName');
+  const intro=document.getElementById('intro');
   const seen=sessionStorage.getItem('do_intro');
   let finished=false;
   function finish(fast){
     if(finished)return; finished=true;
     sessionStorage.setItem('do_intro','1');
     intro.classList.add('done');
-    setTimeout(()=>intro.remove(), fast?250:1150);
-    document.querySelectorAll('#hero .rv').forEach((el,i)=>setTimeout(()=>el.classList.add('in'),110*i));
+    setTimeout(()=>intro.remove(), fast?200:900);
+    document.querySelectorAll('#hero .rv').forEach((el,i)=>setTimeout(()=>el.classList.add('in'),100*i));
   }
   if(REDUCED||seen){ finish(true); return; }
-
-  const ctx=cv.getContext('2d'); let W,H,t0=null,phase=0,burst=[];
-  function size(){W=cv.width=innerWidth*devicePixelRatio;H=cv.height=innerHeight*devicePixelRatio;}
-  size(); addEventListener('resize',size);
-  const P={x:-.18,c:'#2f6dd0',glow:'rgba(47,109,208,',s:'+'},
-        N={x:1.18,c:'#7c5cff',glow:'rgba(124,92,255,',s:''};
-  [P,N].forEach(p=>{p.trail=[];});
-  const DUR=2600;
-
-  function draw(ts){
-    if(!t0)t0=ts; const el=ts-t0; ctx.clearRect(0,0,W,H);
-    const cx=W/2, cy=H*0.46, R=Math.max(10,Math.min(W,H)*0.016);
-    if(phase===0){
-      const k=Math.min(1,el/DUR), e=0.14*k+0.86*k*k*k*k;         // slow drift, then gravitational rush into collision
-      const wob=Math.sin(el/130)* (1-k)*H*0.045;
-      P.px=W*(P.x+( .5-P.x)*e); P.py=cy+wob;
-      N.px=W*(N.x+( .5-N.x)*e); N.py=cy-wob;
-      [P,N].forEach(p=>{
-        p.trail.push([p.px,p.py]); if(p.trail.length>26)p.trail.shift();
-        p.trail.forEach((q,i)=>{const a=i/p.trail.length*0.35;
-          ctx.beginPath();ctx.arc(q[0],q[1],R*(0.3+0.7*i/p.trail.length),0,7);
-          ctx.fillStyle=p.glow+a+')';ctx.fill();});
-        const g=ctx.createRadialGradient(p.px,p.py,0,p.px,p.py,R*3.2);
-        g.addColorStop(0,p.glow+'0.55)');g.addColorStop(1,p.glow+'0)');
-        ctx.beginPath();ctx.arc(p.px,p.py,R*3.2,0,7);ctx.fillStyle=g;ctx.fill();
-        ctx.beginPath();ctx.arc(p.px,p.py,R,0,7);ctx.fillStyle=p.c;ctx.fill();
-        if(p.s){ctx.fillStyle='#fff';ctx.font=`600 ${R*1.3}px Inter`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(p.s,p.px,p.py+R*0.05);}
-      });
-      if(k>=1){phase=1;t0=ts;
-        for(let i=0;i<90;i++){const a=Math.random()*7,v=(0.25+Math.random()*1)*Math.min(W,H)*0.0009;
-          burst.push({x:cx,y:cy,vx:Math.cos(a)*v,vy:Math.sin(a)*v,l:1,c:Math.random()<.5?P:N});}
-      }
-    } else if(phase===1){
-      const k=Math.min(1,el/900);
-      const fl=ctx.createRadialGradient(cx,cy,0,cx,cy,Math.min(W,H)*(0.05+k*0.5));
-      fl.addColorStop(0,'rgba(255,255,255,'+(0.95*(1-k))+')');
-      fl.addColorStop(0.4,'rgba(228,201,122,'+(0.5*(1-k))+')');
-      fl.addColorStop(1,'rgba(255,255,255,0)');
-      ctx.fillStyle=fl;ctx.fillRect(0,0,W,H);
-      burst.forEach(b=>{b.x+=b.vx*16;b.y+=b.vy*16;b.vx*=.97;b.vy*=.97;b.l-=.012;
-        if(b.l>0){ctx.beginPath();ctx.arc(b.x,b.y,Math.max(0.5,R*0.5*b.l),0,7);
-          ctx.fillStyle=b.c.glow+(b.l*0.8)+')';ctx.fill();}});
-      if(el>350&&!met.dataset.on){met.dataset.on=1;met.classList.add('show');name.classList.add('show');
-        requestAnimationFrame(()=>requestAnimationFrame(()=>{
-          met.querySelectorAll('line,circle').forEach(e=>e.style.strokeDashoffset=0);}));}
-      if(el>3300){finish();return;}
-    }
-    if(!finished)requestAnimationFrame(draw);
-  }
-  buildMetatron(met,true);
-  requestAnimationFrame(draw);
-  intro.addEventListener('click',()=>finish(true));
+  requestAnimationFrame(()=>requestAnimationFrame(()=>intro.classList.add('reveal')));
+  const auto=setTimeout(()=>finish(false), 2400);          // short, dignified
+  intro.addEventListener('click',()=>{clearTimeout(auto);finish(true);});
 })();
 
 /* hero backdrop geometry (static, faint) — keep node positions for the arcs */
@@ -824,10 +779,10 @@ const geoPts = buildMetatron(document.getElementById('heroGeo'), false);
 (function(){
   if(REDUCED) return;
   const layers=[
-    {cv:document.getElementById('dust'),      n:innerWidth<700?26:60, aMax:.4,  rMin:.7, rMax:2.1, blur:0},
-    {cv:document.getElementById('dustFront'), n:innerWidth<700?6:13,  aMax:.16, rMin:2.6,rMax:4.6, blur:2}
+    {cv:document.getElementById('dust'),      n:innerWidth<700?12:26, aMax:.26, rMin:.6, rMax:1.7, blur:0},
+    {cv:document.getElementById('dustFront'), n:innerWidth<700?3:6,   aMax:.1,  rMin:2.2,rMax:3.8, blur:2}
   ];
-  const COLORS=[[201,168,76],[201,168,76],[201,168,76],[143,124,214]]; // gold-led, occasional soft violet
+  const COLORS=[[201,168,76],[201,168,76],[201,168,76],[201,168,76]]; // gold only — quiet, institutional
   let mx=-1e4,my=-1e4, running=true;
   addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
   document.addEventListener('visibilitychange',()=>{running=!document.hidden});
