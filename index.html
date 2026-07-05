@@ -113,12 +113,7 @@ main,header,footer{position:relative;z-index:2}
 
 /* ═════ HERO — gold-led, compact ═════ */
 #hero{position:relative;min-height:92vh;display:flex;align-items:center;padding:76px 0 40px;overflow:hidden;background:linear-gradient(180deg,var(--white) 0%,var(--bone) 100%)}
-#heroGeo{position:absolute;top:55%;right:0;transform:translateY(-52%);width:min(88vmin,700px);height:min(88vmin,700px);pointer-events:none;z-index:2;animation:geoPulse 11s ease-in-out infinite;
-  -webkit-mask-image:linear-gradient(90deg, rgba(0,0,0,.25), #000 58%);
-          mask-image:linear-gradient(90deg, rgba(0,0,0,.25), #000 58%)}
-@keyframes geoPulse{0%,100%{opacity:.12}50%{opacity:.2}}
-#heroGeo line,#heroGeo circle{stroke:var(--gold);stroke-width:.8;fill:none}
-#arcCanvas{position:absolute;inset:0;pointer-events:none;z-index:3}
+#arcCanvas{position:absolute;inset:0;pointer-events:none;z-index:3;opacity:.85}
 .heroGrid{display:grid;grid-template-columns:minmax(0,620px);gap:36px;align-items:center;width:100%;position:relative;z-index:4}
 .kicker{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold-text);font-weight:600;margin-bottom:16px}
 .availBadge{display:inline-flex;align-items:center;gap:8px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);font-weight:600;padding:6px 14px;border:1px solid rgba(45,140,90,.3);background:rgba(45,140,90,.06);border-radius:999px;margin-bottom:16px}
@@ -171,7 +166,7 @@ h1{font-family:var(--display);font-weight:600;font-size:clamp(36px,5vw,58px);let
   .photoPanel img{-webkit-mask-image:linear-gradient(180deg, transparent 0%, #000 26%, #000 72%, transparent 100%);mask-image:linear-gradient(180deg, transparent 0%, #000 26%, #000 72%, transparent 100%);object-position:50% 26%;-webkit-mask-composite:source-over;mask-composite:add}
   .photoPanel .ptint{background:linear-gradient(0deg, var(--bone) 0%, transparent 30%),linear-gradient(180deg, var(--white) 0%, transparent 24%)}
   .heroLead,.quote{max-width:none}
-  #heroGeo{right:-30%;opacity:.09}
+  #arcCanvas{opacity:.6}
 }
 
 /* ═════ sections — compact, zone-accented, with breathing room ═════ */
@@ -364,7 +359,6 @@ footer .sig{margin-top:30px;font-family:var(--italic);font-style:italic;color:rg
     <img src="assets/dimitri.webp" fetchpriority="high" alt="Dmitrijs Olenicenko at sunset on Palm Jumeirah, Dubai">
     <div class="ptint"></div>
   </div>
-  <svg id="heroGeo" viewBox="0 0 400 400" aria-hidden="true"></svg>
   <canvas id="arcCanvas"></canvas>
   <div class="wrap heroGrid">
     <div>
@@ -729,29 +723,6 @@ footer .sig{margin-top:30px;font-family:var(--italic);font-style:italic;color:rg
 </footer>
 
 <script>
-/* ═══════ Metatron's Cube geometry (13 circles + all connecting lines) ═══════ */
-function buildMetatron(svg, animate){
-  const cx=200, cy=200, r=52, cr=26;
-  const pts=[[cx,cy]];
-  for(let i=0;i<6;i++){const a=Math.PI/2+i*Math.PI/3; pts.push([cx+r*Math.cos(a), cy-r*Math.sin(a)]);}
-  for(let i=0;i<6;i++){const a=Math.PI/2+i*Math.PI/3; pts.push([cx+2*r*Math.cos(a), cy-2*r*Math.sin(a)]);}
-  const ns='http://www.w3.org/2000/svg'; let elems=[];
-  for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){
-    const l=document.createElementNS(ns,'line');
-    l.setAttribute('x1',pts[i][0]);l.setAttribute('y1',pts[i][1]);
-    l.setAttribute('x2',pts[j][0]);l.setAttribute('y2',pts[j][1]);
-    svg.appendChild(l); elems.push(l);
-  }
-  pts.forEach(p=>{const c=document.createElementNS(ns,'circle');
-    c.setAttribute('cx',p[0]);c.setAttribute('cy',p[1]);c.setAttribute('r',cr);
-    svg.appendChild(c); elems.push(c);});
-  if(animate){elems.forEach((el,i)=>{
-    const len = el.tagName==='circle' ? 2*Math.PI*cr : Math.hypot(el.getAttribute('x2')-el.getAttribute('x1'), el.getAttribute('y2')-el.getAttribute('y1'));
-    el.style.strokeDasharray=len; el.style.strokeDashoffset=len;
-    el.style.transition=`stroke-dashoffset 1.5s cubic-bezier(.4,0,.2,1) ${i*14}ms`;
-  });}
-  return pts;
-}
 const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* ═══════ INTRO: sober institutional loader — name + gold hairline, brief & refined ═══════ */
@@ -772,8 +743,6 @@ const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
   intro.addEventListener('click',()=>{clearTimeout(auto);finish(true);});
 })();
 
-/* hero backdrop geometry (static, faint) — keep node positions for the arcs */
-const geoPts = buildMetatron(document.getElementById('heroGeo'), false);
 
 /* ═══════ AMBIENT LAYER 1: falling stardust (mouse-aware) ═══════ */
 (function(){
@@ -826,100 +795,48 @@ const geoPts = buildMetatron(document.getElementById('heroGeo'), false);
   });
 })();
 
-/* ═══════ AMBIENT LAYER 2: the living Metatron — arcs, constellation hover, click ripples ═══════ */
+/* ═══════ HERO AMBIENT: abstract data network — drifting nodes + gold links, cursor-reactive ═══════ */
 (function(){
   if(REDUCED) return;
-  const hero=document.getElementById('hero'), cv=document.getElementById('arcCanvas'),
-        geo=document.getElementById('heroGeo'), ctx=cv.getContext('2d');
-  let W,H, arcs=[], ripples=[], nextAt=performance.now()+2000, hm={x:-1e4,y:-1e4};
-  const size=()=>{W=cv.width=hero.clientWidth;H=cv.height=hero.clientHeight};
+  const hero=document.getElementById('hero'), cv=document.getElementById('arcCanvas'), ctx=cv.getContext('2d');
+  let W,H,nodes=[], hm={x:-1e4,y:-1e4};
+  function size(){
+    W=cv.width=hero.clientWidth; H=cv.height=hero.clientHeight;
+    const n=Math.min(34, Math.round(W*H/42000));
+    nodes=Array.from({length:n},()=>({
+      x:Math.random()*W, y:Math.random()*H,
+      vx:(Math.random()-.5)*.18, vy:(Math.random()-.5)*.18,
+      r:1+Math.random()*1.6
+    }));
+  }
   size(); addEventListener('resize',size);
-  function nodePx(){
-    const r=geo.getBoundingClientRect(), h=hero.getBoundingClientRect();
-    return geoPts.map(p=>[r.left-h.left+p[0]/400*r.width, r.top-h.top+p[1]/400*r.height]);
-  }
-  function fire(x1,y1,x2,y2){
-    const segs=[], n=7;
-    for(let i=0;i<=n;i++){
-      const t=i/n, jit=(i>0&&i<n)?(Math.random()-.5)*26:0,
-            nx=-(y2-y1), ny=x2-x1, len=Math.hypot(nx,ny)||1;
-      segs.push([x1+(x2-x1)*t+nx/len*jit, y1+(y2-y1)*t+ny/len*jit]);
-    }
-    arcs.push({segs,born:performance.now(),life:620});
-  }
-  function fireRandom(){
-    const pts=nodePx().filter(p=>p[0]>-40&&p[0]<W+40);
-    if(pts.length<2)return;
-    const a=pts[Math.random()*pts.length|0]; let b=pts[Math.random()*pts.length|0], guard=0;
-    while(b===a&&guard++<8)b=pts[Math.random()*pts.length|0];
-    fire(a[0],a[1],b[0],b[1]);
-    if(Math.random()<.4){ let c=pts[Math.random()*pts.length|0]; if(c!==b) fire(b[0],b[1],c[0],c[1]); }
-  }
-  hero.addEventListener('mousemove',e=>{
-    const h=hero.getBoundingClientRect(); hm.x=e.clientX-h.left; hm.y=e.clientY-h.top;
-  });
+  hero.addEventListener('mousemove',e=>{const h=hero.getBoundingClientRect();hm.x=e.clientX-h.left;hm.y=e.clientY-h.top;});
   hero.addEventListener('mouseleave',()=>{hm.x=-1e4;hm.y=-1e4;});
-  hero.addEventListener('click',e=>{
-    if(e.target.closest('a'))return;
-    const h=hero.getBoundingClientRect(), pts=nodePx(),
-          x=e.clientX-h.left, y=e.clientY-h.top;
-    let bi=0,bd=1e12;
-    pts.forEach((p,i)=>{const d=(p[0]-x)**2+(p[1]-y)**2; if(d<bd){bd=d;bi=i;}});
-    const best=pts[bi];
-    fire(x,y,best[0],best[1]); fire(x,y,best[0],best[1]);
-    ripples.push({i:bi,born:performance.now(),life:800});
-  });
-  function tick(ts){
+  const LINK=150, PULL=150;
+  function tick(){
     requestAnimationFrame(tick);
     ctx.clearRect(0,0,W,H);
-    if(ts>=nextAt){fireRandom(); nextAt=ts+9000+Math.random()*8000;}
-    const pts=nodePx();
-
-    /* constellation hover: the geometry brightens around the cursor */
-    let bi=-1,bd=1e12;
-    pts.forEach((p,i)=>{const d=(p[0]-hm.x)**2+(p[1]-hm.y)**2; if(d<bd){bd=d;bi=i;}});
-    const R=170;
-    if(bi>=0&&bd<R*R){
-      const p=pts[bi], g=1-Math.sqrt(bd)/R, pulse=.75+.25*Math.sin(ts/300);
-      ctx.lineWidth=.9;
-      pts.forEach((q,i)=>{ if(i===bi)return;
-        ctx.strokeStyle='rgba(201,168,76,'+(g*.3*pulse)+')';
-        ctx.beginPath();ctx.moveTo(p[0],p[1]);ctx.lineTo(q[0],q[1]);ctx.stroke(); });
-      const halo=ctx.createRadialGradient(p[0],p[1],0,p[0],p[1],46*g+12);
-      halo.addColorStop(0,'rgba(228,201,122,'+(g*.6*pulse)+')');
-      halo.addColorStop(1,'rgba(228,201,122,0)');
-      ctx.fillStyle=halo;ctx.beginPath();ctx.arc(p[0],p[1],46*g+12,0,7);ctx.fill();
-      ctx.fillStyle='rgba(201,168,76,'+(g*.95)+')';
-      ctx.beginPath();ctx.arc(p[0],p[1],3.2,0,7);ctx.fill();
-      pts.forEach(q=>{ ctx.fillStyle='rgba(124,92,255,'+(g*.4*pulse)+')';
-        ctx.beginPath();ctx.arc(q[0],q[1],2,0,7);ctx.fill(); });
-    }
-
-    /* click ripples: the struck node flashes its whole web */
-    ripples=ripples.filter(r=>ts-r.born<r.life);
-    ripples.forEach(r=>{
-      const k=(ts-r.born)/r.life, p=pts[r.i];
-      ctx.strokeStyle='rgba(228,201,122,'+((1-k)*.55)+')';
-      ctx.lineWidth=1.2;
-      ctx.beginPath();ctx.arc(p[0],p[1],20+k*150,0,7);ctx.stroke();
-      ctx.lineWidth=.9;
-      pts.forEach((q,i)=>{ if(i===r.i)return;
-        ctx.strokeStyle='rgba(201,168,76,'+((1-k)*.5)+')';
-        ctx.beginPath();ctx.moveTo(p[0],p[1]);ctx.lineTo(q[0],q[1]);ctx.stroke(); });
+    // move
+    nodes.forEach(p=>{
+      p.x+=p.vx; p.y+=p.vy;
+      if(p.x<0||p.x>W)p.vx*=-1; if(p.y<0||p.y>H)p.vy*=-1;
+      const dx=p.x-hm.x, dy=p.y-hm.y, d2=dx*dx+dy*dy;
+      if(d2<PULL*PULL){ const d=Math.sqrt(d2)||1, f=(PULL-d)/PULL*.4; p.x+=dx/d*f; p.y+=dy/d*f; }
     });
-
-    /* lightning arcs */
-    arcs=arcs.filter(a=>ts-a.born<a.life);
-    arcs.forEach(a=>{
-      const k=1-(ts-a.born)/a.life;
-      ctx.lineWidth=1.4; ctx.shadowBlur=14; ctx.shadowColor='rgba(228,201,122,'+(k*.9)+')';
-      ctx.strokeStyle='rgba(201,168,76,'+(k*.85)+')';
-      ctx.beginPath(); a.segs.forEach((s,i)=>i?ctx.lineTo(s[0],s[1]):ctx.moveTo(s[0],s[1])); ctx.stroke();
-      ctx.shadowBlur=0;
-      const m=a.segs[a.segs.length>>1],
-            g=ctx.createRadialGradient(m[0],m[1],0,m[0],m[1],70);
-      g.addColorStop(0,'rgba(228,201,122,'+(k*.18)+')');g.addColorStop(1,'rgba(228,201,122,0)');
-      ctx.fillStyle=g;ctx.beginPath();ctx.arc(m[0],m[1],70,0,7);ctx.fill();
+    // links
+    for(let i=0;i<nodes.length;i++){
+      for(let j=i+1;j<nodes.length;j++){
+        const a=nodes[i],b=nodes[j],dx=a.x-b.x,dy=a.y-b.y,d=Math.hypot(dx,dy);
+        if(d<LINK){ ctx.strokeStyle='rgba(201,168,76,'+((1-d/LINK)*.22)+')'; ctx.lineWidth=.7;
+          ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke(); }
+      }
+    }
+    // links to cursor + nodes
+    nodes.forEach(p=>{
+      const dx=p.x-hm.x, dy=p.y-hm.y, d=Math.hypot(dx,dy);
+      if(d<PULL){ ctx.strokeStyle='rgba(201,168,76,'+((1-d/PULL)*.3)+')'; ctx.lineWidth=.8;
+        ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(hm.x,hm.y);ctx.stroke(); }
+      ctx.fillStyle='rgba(201,168,76,.5)'; ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,7); ctx.fill();
     });
   }
   requestAnimationFrame(tick);
