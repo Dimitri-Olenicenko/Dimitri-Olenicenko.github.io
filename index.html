@@ -43,84 +43,101 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
   --white:#ffffff; --bone:#f8f6f1; --mist:#eef0f7;
   --ink:#0d1b2a; --ink-soft:#3c4a5c; --ink-dim:#66758a;
-  --gold:#c9a84c; --gold-light:#e4c97a; --gold-pale:#f3ead2;
-  --blue:#2f6dd0; --blue-deep:#1e4fa3; --blue-pale:#eaf1fc; --blue-glow:rgba(47,109,208,.22);
-  --violet:#7c5cff; --violet-deep:#5b3fd4; --violet-ink:#231a4f; --violet-pale:#f0ecfe; --violet-glow:rgba(124,92,255,.26);
-  --serif:'Cormorant Garamond',Georgia,serif; --sans:'Inter',-apple-system,sans-serif;
-  --shadow:0 10px 40px rgba(13,27,42,.08); --shadow-lift:0 18px 60px rgba(35,26,79,.16);
+  --navy:#0d1b2a; --navy-mid:#142236; --navy-light:#1e3352; --pluto:#160a1c;
+  /* gold: bright for rules/numbers, dark-gold for TEXT on white (WCAG) */
+  --gold:#c9a84c; --gold-text:#8a6e2a; --gold-light:#e4c97a; --gold-pale:#f3ead2;
+  --blue:#2f6dd0; --blue-deep:#1e4fa3; --blue-pale:#eef4fd; --blue-glow:rgba(47,109,208,.16);
+  --violet:#6b53d6; --violet-deep:#5b3fd4; --violet-ink:#1c1440; --violet-pale:#f2eefb; --violet-glow:rgba(107,83,214,.14);
+  --display:'Playfair Display',Georgia,serif; --italic:'Cormorant Garamond',Georgia,serif; --sans:'Inter',-apple-system,sans-serif;
+  --shadow:0 8px 30px rgba(13,27,42,.06); --shadow-lift:0 14px 46px rgba(13,27,42,.11);
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{font-family:var(--sans);color:var(--ink);background:var(--white);line-height:1.65;font-weight:400;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-::selection{background:var(--violet-pale);color:var(--ink)}
+body{font-family:var(--sans);color:var(--ink);background:var(--white);line-height:1.6;font-weight:400;font-size:14px;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+::selection{background:var(--gold-pale);color:var(--ink)}
+/* zone accent variables — each section sets --accent once; gold is the only cross-zone color */
+.zone-blue{--accent:var(--blue);--accent-deep:var(--blue-deep);--accent-pale:var(--blue-pale);--accent-glow:var(--blue-glow)}
+.zone-violet{--accent:var(--violet);--accent-deep:var(--violet-deep);--accent-pale:var(--violet-pale);--accent-glow:var(--violet-glow)}
+.zone-gold{--accent:var(--gold-text);--accent-deep:var(--gold-text);--accent-pale:var(--gold-pale);--accent-glow:rgba(201,168,76,.14)}
 
-/* ————— ambient layers ————— */
+/* ————— ambient layers — quiet, gold-led, single faint tint per corner ————— */
 #auras{position:fixed;inset:0;z-index:0;pointer-events:none;background:
-  radial-gradient(900px 620px at 12% -4%, var(--violet-glow), transparent 62%),
-  radial-gradient(820px 560px at 88% 12%, var(--blue-glow), transparent 60%),
-  radial-gradient(700px 700px at 80% 78%, rgba(124,92,255,.13), transparent 65%),
-  radial-gradient(600px 500px at 8% 86%, rgba(201,168,76,.10), transparent 60%)}
+  radial-gradient(760px 560px at 88% 6%, var(--blue-glow), transparent 60%),
+  radial-gradient(680px 560px at 8% 88%, var(--violet-glow), transparent 62%),
+  radial-gradient(600px 500px at 50% 40%, rgba(201,168,76,.05), transparent 62%)}
 #dust,#dustFront{position:fixed;inset:0;pointer-events:none}
 #dust{z-index:1}
 #dustFront{z-index:5}
 main,header,footer{position:relative;z-index:2}
 
-/* progress bar */
-#prog{position:fixed;top:0;left:0;height:2.5px;width:0;z-index:60;background:linear-gradient(90deg,var(--gold),var(--violet));box-shadow:0 0 10px var(--violet-glow)}
+/* progress bar — pure gold */
+#prog{position:fixed;top:0;left:0;height:2px;width:0;z-index:60;background:var(--gold);box-shadow:0 0 8px rgba(201,168,76,.5)}
 
 /* topbar */
-#topbar{position:fixed;top:0;left:0;right:0;z-index:55;display:flex;align-items:center;gap:26px;padding:14px 30px;background:rgba(255,255,255,.82);backdrop-filter:blur(12px);border-bottom:1px solid rgba(124,92,255,.12);transform:translateY(-110%);transition:transform .5s cubic-bezier(.5,0,.2,1)}
+#topbar{position:fixed;top:0;left:0;right:0;z-index:55;display:flex;align-items:center;gap:22px;padding:11px 28px;background:rgba(255,255,255,.9);backdrop-filter:blur(12px);border-bottom:1px solid rgba(201,168,76,.18);transform:translateY(-110%);transition:transform .45s cubic-bezier(.5,0,.2,1)}
 #topbar.on{transform:none}
-#topbar .tn{font-family:var(--serif);font-size:18px;letter-spacing:.1em;margin-right:auto}
-#topbar a{text-decoration:none;color:var(--ink-soft);font-size:11px;letter-spacing:.16em;text-transform:uppercase;transition:color .25s}
-#topbar a:hover{color:var(--violet)}
-@media (max-width:900px){#topbar a{display:none}#topbar a.keep{display:inline}}
+#topbar .tn{font-family:var(--display);font-weight:600;font-size:16px;letter-spacing:.06em;margin-right:auto}
+#topbar a{text-decoration:none;color:var(--ink-soft);font-size:10px;letter-spacing:.16em;text-transform:uppercase;transition:color .25s}
+#topbar a:hover{color:var(--gold-text)}
+#navToggle{display:none;background:none;border:1px solid rgba(13,27,42,.2);border-radius:8px;padding:6px 10px;cursor:pointer;font-size:16px;line-height:1;color:var(--ink)}
+@media (max-width:820px){
+  #topbar{gap:0}
+  #navToggle{display:block;margin-left:auto}
+  #topbar .links{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;gap:0;background:rgba(255,255,255,.98);backdrop-filter:blur(12px);border-bottom:1px solid rgba(201,168,76,.18);padding:6px 0}
+  #topbar.menu .links{display:flex}
+  #topbar .links a{padding:12px 28px;border-top:1px solid rgba(13,27,42,.05);font-size:12px}
+}
+#topbar .links{display:flex;gap:22px;align-items:center}
 
 /* ————— INTRO OVERLAY: proton + neutron → Metatron ————— */
 #intro{position:fixed;inset:0;z-index:1000;background:radial-gradient(1200px 800px at 50% 45%, #fff 0%, var(--bone) 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:opacity 1.1s ease}
 #intro.done{opacity:0;pointer-events:none}
 #introCanvas{position:absolute;inset:0;width:100%;height:100%}
-#metatron{position:relative;width:min(64vmin,460px);height:min(64vmin,460px);opacity:0;transition:opacity .8s ease}
+#metatron{position:relative;width:min(58vmin,420px);height:min(58vmin,420px);opacity:0;transition:opacity .8s ease}
 #metatron.show{opacity:1}
 #metatron line,#metatron circle{stroke:var(--gold);stroke-width:1.1;fill:none;vector-effect:non-scaling-stroke}
-#introHint{position:absolute;bottom:6vh;left:0;right:0;text-align:center;font-size:11px;letter-spacing:.35em;text-transform:uppercase;color:var(--ink-dim);opacity:.75}
-#introName{position:absolute;top:9vh;left:0;right:0;text-align:center;font-family:var(--serif);font-size:clamp(17px,2.6vw,24px);letter-spacing:.42em;text-transform:uppercase;color:var(--ink-soft);opacity:0;transition:opacity 1.2s ease .2s}
+#introHint{position:absolute;bottom:6vh;left:0;right:0;text-align:center;font-size:10px;letter-spacing:.35em;text-transform:uppercase;color:var(--ink-dim);opacity:.7}
+#introName{position:absolute;top:9vh;left:0;right:0;text-align:center;font-family:var(--display);font-weight:600;font-size:clamp(16px,2.4vw,22px);letter-spacing:.36em;text-transform:uppercase;color:var(--ink-soft);opacity:0;transition:opacity 1.2s ease .2s}
 #introName.show{opacity:.9}
 
 /* ————— PAGE ————— */
-.wrap{max-width:1180px;margin:0 auto;padding:0 26px}
-.goldline{width:74px;height:1.5px;background:linear-gradient(90deg,transparent,var(--gold) 35%,var(--violet) 65%,transparent);margin:26px 0}
+.wrap{max-width:1120px;margin:0 auto;padding:0 26px}
+.goldline{width:60px;height:1.5px;background:var(--gold);margin:20px 0}
 
-/* ═════ HERO — photo woven in ═════ */
-#hero{position:relative;min-height:96vh;display:flex;align-items:center;padding:80px 0 40px;overflow:hidden;background:linear-gradient(180deg,var(--white) 0%,var(--bone) 100%)}
-#heroGeo{position:absolute;top:55%;right:0;transform:translateY(-52%);width:min(94vmin,760px);height:min(94vmin,760px);pointer-events:none;z-index:2;animation:geoPulse 9s ease-in-out infinite;
-  -webkit-mask-image:linear-gradient(90deg, rgba(0,0,0,.3), #000 58%);
-          mask-image:linear-gradient(90deg, rgba(0,0,0,.3), #000 58%)}
-@keyframes geoPulse{0%,100%{opacity:.16}50%{opacity:.3}}
+/* ═════ HERO — gold-led, compact ═════ */
+#hero{position:relative;min-height:92vh;display:flex;align-items:center;padding:76px 0 40px;overflow:hidden;background:linear-gradient(180deg,var(--white) 0%,var(--bone) 100%)}
+#heroGeo{position:absolute;top:55%;right:0;transform:translateY(-52%);width:min(88vmin,700px);height:min(88vmin,700px);pointer-events:none;z-index:2;animation:geoPulse 11s ease-in-out infinite;
+  -webkit-mask-image:linear-gradient(90deg, rgba(0,0,0,.25), #000 58%);
+          mask-image:linear-gradient(90deg, rgba(0,0,0,.25), #000 58%)}
+@keyframes geoPulse{0%,100%{opacity:.12}50%{opacity:.2}}
 #heroGeo line,#heroGeo circle{stroke:var(--gold);stroke-width:.8;fill:none}
 #arcCanvas{position:absolute;inset:0;pointer-events:none;z-index:3}
-.heroGrid{display:grid;grid-template-columns:minmax(0,660px);gap:40px;align-items:center;width:100%;position:relative;z-index:4}
-.kicker{font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:var(--violet);font-weight:600;margin-bottom:18px}
-h1{font-family:var(--serif);font-weight:500;font-size:clamp(40px,5.6vw,66px);letter-spacing:.04em;line-height:1.06}
-.role{margin-top:14px;font-size:13px;letter-spacing:.34em;text-transform:uppercase;color:var(--ink-soft)}
-.role b{color:var(--blue);font-weight:600}.role i{color:var(--violet);font-style:normal;font-weight:600}.role em{color:var(--gold);font-style:normal;font-weight:600}
-.heroLead{margin-top:26px;font-size:17px;color:var(--ink-soft);line-height:1.8;max-width:480px}
+.heroGrid{display:grid;grid-template-columns:minmax(0,620px);gap:36px;align-items:center;width:100%;position:relative;z-index:4}
+.kicker{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold-text);font-weight:600;margin-bottom:16px}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(36px,5vw,58px);letter-spacing:0;line-height:1.04}
+.titleStrap{margin-top:12px;font-size:12.5px;letter-spacing:.02em;color:var(--ink-soft);font-weight:500}
+.titleStrap b{color:var(--ink);font-weight:600}
+.role{margin-top:8px;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--ink-soft);font-weight:500}
+.role span{color:var(--gold-text)}
+.heroLead{margin-top:20px;font-size:14.5px;color:var(--ink-soft);line-height:1.75;max-width:460px}
 .heroLead strong{color:var(--ink);font-weight:600}
-.quote{margin-top:26px;font-family:var(--serif);font-style:italic;font-size:20px;color:var(--ink-soft);max-width:440px}
-.quote small{display:block;margin-top:6px;font-family:var(--sans);font-style:normal;font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold)}
-.chips{margin-top:28px;display:flex;gap:10px;flex-wrap:wrap}
-.chip{font-size:11px;letter-spacing:.13em;text-transform:uppercase;padding:8px 15px;border:1px solid rgba(124,92,255,.22);border-radius:999px;color:var(--ink-soft);background:rgba(255,255,255,.72);backdrop-filter:blur(4px)}
-.heroBtns{margin-top:30px;display:flex;gap:12px;flex-wrap:wrap}
-.btn{display:inline-flex;align-items:center;gap:9px;text-decoration:none;padding:12px 26px;border-radius:999px;font-size:12px;letter-spacing:.16em;text-transform:uppercase;transition:all .3s;border:1px solid transparent}
-.btn.solid{background:linear-gradient(120deg,var(--violet-deep),var(--violet));color:#fff;box-shadow:0 8px 26px var(--violet-glow)}
-.btn.solid:hover{transform:translateY(-2px);box-shadow:0 12px 34px var(--violet-glow)}
+/* institutional stat row — gold Playfair numbers */
+.statRow{margin-top:22px;display:flex;gap:26px;flex-wrap:wrap}
+.stat .n{font-family:var(--display);font-weight:600;font-size:26px;color:var(--gold-text);line-height:1}
+.stat .l{font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-dim);margin-top:4px}
+.quote{margin-top:22px;font-family:var(--italic);font-style:italic;font-size:17px;color:var(--ink-soft);max-width:440px}
+.quote small{display:block;margin-top:5px;font-family:var(--sans);font-style:normal;font-size:9.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold-text)}
+.heroBtns{margin-top:26px;display:flex;gap:10px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;text-decoration:none;padding:11px 24px;border-radius:999px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;transition:all .3s;border:1px solid transparent;font-weight:500}
+.btn.solid{background:var(--gold);color:var(--navy);box-shadow:0 6px 20px rgba(201,168,76,.28);font-weight:600}
+.btn.solid:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(201,168,76,.38);background:var(--gold-light)}
 .btn.ghost{border-color:rgba(13,27,42,.2);color:var(--ink)}
-.btn.ghost:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-2px)}
+.btn.ghost:hover{border-color:var(--gold);color:var(--gold-text);transform:translateY(-2px)}
 /* the photo — dissolved seamlessly into the page, no frame, no ring */
 .photoPanel{position:absolute;top:0;right:0;bottom:0;width:min(60vw,900px);z-index:1;pointer-events:none}
 .photoPanel img{width:100%;height:100%;object-fit:cover;object-position:52% 22%;display:block;
@@ -152,149 +169,134 @@ h1{font-family:var(--serif);font-weight:500;font-size:clamp(40px,5.6vw,66px);let
   #heroGeo{right:-30%;opacity:.09}
 }
 
-/* ═════ sections — visible by default ═════ */
-section{padding:30px 0}
-.block{background:rgba(255,255,255,.92);backdrop-filter:blur(3px);border:1px solid rgba(35,26,79,.09);border-radius:20px;box-shadow:var(--shadow);margin:26px 0;overflow:hidden;transition:box-shadow .35s ease}
+/* ═════ sections — compact, zone-accented ═════ */
+section{padding:22px 0}
+.block{background:var(--white);border:1px solid rgba(13,27,42,.08);border-radius:14px;box-shadow:var(--shadow);margin:18px 0;overflow:hidden;transition:box-shadow .35s ease;border-top:2px solid var(--accent,var(--gold))}
 .block:hover{box-shadow:var(--shadow-lift)}
-.block.blue{border-top:3px solid var(--blue)}
-.block.violet{border-top:3px solid var(--violet)}
-.block.gold{border-top:3px solid var(--gold)}
-.blockHead{display:flex;align-items:center;gap:18px;padding:28px 34px 20px;cursor:pointer;user-select:none}
-.blockHead .num{font-family:var(--serif);font-size:15px;color:var(--gold);min-width:30px}
-.blockHead h2{font-family:var(--serif);font-weight:500;font-size:clamp(23px,3vw,31px);letter-spacing:.03em;flex:1}
-.blockHead .sub{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-dim);margin-top:3px}
-/* gentle "tap to open" pulse on closed blocks so mobile users know they expand */
-.block:not(.open) .chev{animation:chevHint 2.6s ease-in-out infinite}
-@keyframes chevHint{0%,100%{box-shadow:0 0 0 0 rgba(124,92,255,0)}50%{box-shadow:0 0 0 5px rgba(124,92,255,.09)}}
-.blockHead .chev{width:34px;height:34px;border-radius:50%;border:1px solid rgba(35,26,79,.15);display:flex;align-items:center;justify-content:center;transition:transform .45s cubic-bezier(.6,0,.2,1), background .3s;flex:none}
-.blockHead .chev svg{width:13px;height:13px;stroke:var(--ink-soft);fill:none;stroke-width:2}
-.block.open .chev{transform:rotate(180deg)}
-.block.blue.open .chev{background:var(--blue-pale)}
-.block.violet.open .chev{background:var(--violet-pale)}
-.block.gold.open .chev{background:var(--gold-pale)}
+.blockHead{display:flex;align-items:center;gap:16px;padding:22px 28px 16px;cursor:pointer;user-select:none}
+.blockHead .num{font-family:var(--display);font-weight:600;font-size:13px;color:var(--gold-text);min-width:26px}
+.blockHead h2{font-family:var(--display);font-weight:600;font-size:clamp(19px,2.4vw,25px);letter-spacing:0;flex:1;line-height:1.15}
+.blockHead .sub{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-dim);margin-top:3px;font-weight:500}
+.block:not(.open) .chev{animation:chevHint 2.8s ease-in-out infinite}
+@keyframes chevHint{0%,100%{box-shadow:0 0 0 0 rgba(201,168,76,0)}50%{box-shadow:0 0 0 4px rgba(201,168,76,.1)}}
+.blockHead .chev{width:30px;height:30px;border-radius:50%;border:1px solid rgba(13,27,42,.14);display:flex;align-items:center;justify-content:center;transition:transform .45s cubic-bezier(.6,0,.2,1), background .3s;flex:none}
+.blockHead .chev svg{width:12px;height:12px;stroke:var(--ink-soft);fill:none;stroke-width:2}
+.block.open .chev{transform:rotate(180deg);background:var(--accent-pale,var(--gold-pale))}
 .blockBody{max-height:0;opacity:0;overflow:hidden;transition:max-height .8s cubic-bezier(.6,0,.2,1), opacity .55s ease}
 .block.open .blockBody{opacity:1}
-.blockInner{padding:2px 34px 36px}
-.lead{font-size:16.5px;color:var(--ink-soft);line-height:1.85}
+.blockInner{padding:2px 28px 28px}
+.lead{font-size:14px;color:var(--ink-soft);line-height:1.75}
 .lead strong{color:var(--ink);font-weight:600}
-.lead a{color:var(--blue)}
-.lead+.lead{margin-top:14px}
+.lead a{color:var(--accent-deep,var(--gold-text));font-weight:500}
+.lead+.lead{margin-top:12px}
 
-/* CV timeline */
-.tl{position:relative;margin-top:8px}
-.tl::before{content:"";position:absolute;left:7px;top:6px;bottom:6px;width:1.5px;background:linear-gradient(180deg,var(--blue),var(--violet))}
-.job{position:relative;padding:0 0 30px 38px}
-.job:last-child{padding-bottom:4px}
-.job::before{content:"";position:absolute;left:2px;top:7px;width:11px;height:11px;border-radius:50%;background:var(--white);border:2px solid var(--blue)}
-.job.violetDot::before{border-color:var(--violet)}
-.job h3{font-family:var(--serif);font-size:22px;font-weight:600}
-.job .meta{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-dim);margin:3px 0 10px}
-.job .meta b{color:var(--blue);font-weight:600}
-.job.violetDot .meta b{color:var(--violet)}
+/* CV timeline — single accent (blue zone) */
+.tl{position:relative;margin-top:6px}
+.tl::before{content:"";position:absolute;left:6px;top:5px;bottom:5px;width:1.5px;background:var(--accent)}
+.job{position:relative;padding:0 0 24px 34px}
+.job:last-child{padding-bottom:2px}
+.job::before{content:"";position:absolute;left:1px;top:6px;width:10px;height:10px;border-radius:50%;background:var(--white);border:2px solid var(--accent)}
+.job h3{font-family:var(--display);font-size:17px;font-weight:600;line-height:1.2}
+.job .meta{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-dim);margin:3px 0 8px}
+.job .meta b{color:var(--accent-deep);font-weight:600}
 .job ul{list-style:none}
-.job li{position:relative;padding:3px 0 3px 20px;color:var(--ink-soft);font-size:14.5px}
-.job li::before{content:"—";position:absolute;left:0;color:var(--gold)}
+.job li{position:relative;padding:2px 0 2px 18px;color:var(--ink-soft);font-size:12.5px;line-height:1.55}
+.job li::before{content:"—";position:absolute;left:0;color:var(--gold-text)}
 
 /* BI gallery */
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:22px;margin-top:10px}
-.card{border:1px solid rgba(35,26,79,.1);border-radius:16px;overflow:hidden;background:var(--white);transition:transform .35s ease, box-shadow .35s ease;display:flex;flex-direction:column}
-.card:hover{transform:translateY(-5px);box-shadow:var(--shadow-lift)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px;margin-top:8px}
+.card{border:1px solid rgba(13,27,42,.09);border-radius:12px;overflow:hidden;background:var(--white);transition:transform .35s ease, box-shadow .35s ease;display:flex;flex-direction:column}
+.card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lift)}
 .card .shot{position:relative;aspect-ratio:16/9.4;overflow:hidden;cursor:zoom-in;background:var(--mist)}
 .card .shot img{width:100%;height:100%;object-fit:cover;object-position:top;transition:transform .6s ease}
 .card:hover .shot img{transform:scale(1.045)}
-.card .shot .zoom{position:absolute;right:10px;bottom:10px;background:rgba(35,26,79,.68);color:#fff;font-size:10px;letter-spacing:.15em;text-transform:uppercase;padding:5px 10px;border-radius:999px;opacity:0;transition:opacity .3s}
+.card .shot .zoom{position:absolute;right:9px;bottom:9px;background:rgba(13,27,42,.68);color:#fff;font-size:9px;letter-spacing:.14em;text-transform:uppercase;padding:4px 9px;border-radius:999px;opacity:0;transition:opacity .3s}
 .card:hover .shot .zoom{opacity:1}
-.card .body{padding:16px 20px 18px;display:flex;flex-direction:column;gap:8px;flex:1}
-.card h4{font-family:var(--serif);font-size:20px;font-weight:600}
-.card .tag{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--violet);font-weight:600}
-.card p{font-size:13.5px;color:var(--ink-soft);display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.card .body{padding:13px 16px 15px;display:flex;flex-direction:column;gap:6px;flex:1}
+.card h4{font-family:var(--display);font-size:16px;font-weight:600;line-height:1.2}
+.card .tag{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent-deep);font-weight:600}
+.card p{font-size:12px;color:var(--ink-soft);line-height:1.55;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .card.open p{display:block;-webkit-line-clamp:unset}
-.card .more{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);cursor:pointer;margin-top:auto;padding-top:6px}
-.card .more:hover{color:var(--violet)}
+.card .more{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-deep);cursor:pointer;margin-top:auto;padding-top:5px;font-weight:600}
+.card .more:hover{color:var(--gold-text)}
 
-/* live projects */
-.live{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px;margin-top:8px}
-.liveCard{display:block;text-decoration:none;color:var(--ink);border:1px solid rgba(35,26,79,.1);border-left:3px solid var(--blue);border-radius:14px;padding:22px 24px;transition:transform .3s,box-shadow .3s;background:var(--white)}
-.liveCard:hover{transform:translateY(-4px);box-shadow:var(--shadow-lift)}
-.liveCard h4{font-family:var(--serif);font-size:21px;font-weight:600}
-.liveCard .u{font-size:11px;letter-spacing:.12em;color:var(--blue);text-transform:lowercase}
-.liveCard p{font-size:13px;color:var(--ink-soft);margin-top:8px}
-.liveCard.v{border-left-color:var(--violet)}.liveCard.v .u{color:var(--violet)}
-.liveCard.g{border-left-color:var(--gold)}.liveCard.g .u{color:var(--gold)}
-.liveCard.wide{grid-column:1/-1;background:linear-gradient(120deg,var(--white) 55%,var(--violet-pale));border-left-width:4px}
-.liveCard.wide p{max-width:860px}
+/* live projects (blue zone) */
+.live{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin-top:6px}
+.liveCard{display:block;text-decoration:none;color:var(--ink);border:1px solid rgba(13,27,42,.09);border-left:3px solid var(--accent);border-radius:12px;padding:18px 20px;transition:transform .3s,box-shadow .3s;background:var(--white)}
+.liveCard:hover{transform:translateY(-3px);box-shadow:var(--shadow-lift)}
+.liveCard h4{font-family:var(--display);font-size:17px;font-weight:600;line-height:1.2}
+.liveCard .u{font-size:10px;letter-spacing:.1em;color:var(--accent-deep);text-transform:lowercase}
+.liveCard p{font-size:12px;color:var(--ink-soft);margin-top:7px;line-height:1.55}
+/* flagship = gold-framed (NEIF) */
+.liveCard.flag{grid-column:1/-1;border-left-color:var(--gold);border-left-width:4px;background:linear-gradient(110deg,var(--white) 60%,var(--gold-pale))}
+.liveCard.flag .u{color:var(--gold-text)}
+.liveCard.flag p{max-width:840px}
 
-/* institutional capabilities */
-.caps{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px;margin-top:10px}
-.capCard{border:1px solid rgba(35,26,79,.1);border-left:3px solid var(--blue);border-radius:14px;padding:22px 24px;background:var(--white);transition:transform .3s, box-shadow .3s}
-.capCard:hover{transform:translateY(-4px);box-shadow:var(--shadow-lift)}
-.capCard h4{font-family:var(--serif);font-size:21px;font-weight:600}
-.capCard .k{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--blue);font-weight:600}
-.capCard p{font-size:13.5px;color:var(--ink-soft);margin-top:8px}
-.capCard.v{border-left-color:var(--violet)}.capCard.v .k{color:var(--violet)}
-.capCard.g{border-left-color:var(--gold)}.capCard.g .k{color:var(--gold)}
-.capsCta{margin-top:26px;padding:22px 28px;border-radius:14px;background:linear-gradient(120deg,var(--violet-pale),var(--gold-pale));display:flex;align-items:center;gap:20px;flex-wrap:wrap;justify-content:space-between}
-.capsCta .t{font-family:var(--serif);font-size:20px;color:var(--ink);font-style:italic}
+/* institutional capabilities (blue zone) */
+.caps{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-top:8px}
+.capCard{border:1px solid rgba(13,27,42,.09);border-left:3px solid var(--accent);border-radius:12px;padding:18px 20px;background:var(--white);transition:transform .3s, box-shadow .3s}
+.capCard:hover{transform:translateY(-3px);box-shadow:var(--shadow-lift)}
+.capCard h4{font-family:var(--display);font-size:17px;font-weight:600;line-height:1.2;margin-top:2px}
+.capCard .k{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent-deep);font-weight:600}
+.capCard p{font-size:12px;color:var(--ink-soft);margin-top:7px;line-height:1.55}
+.capsCta{margin-top:20px;padding:18px 24px;border-radius:12px;background:var(--gold-pale);border:1px solid rgba(201,168,76,.3);display:flex;align-items:center;gap:18px;flex-wrap:wrap;justify-content:space-between}
+.capsCta .t{font-family:var(--italic);font-size:16px;color:var(--ink);font-style:italic}
 
 /* photos & pdf buttons */
-.photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px;margin-top:14px}
-.photos img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:12px;cursor:zoom-in;transition:transform .35s ease, box-shadow .35s;box-shadow:var(--shadow)}
+.photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px;margin-top:12px}
+.photos img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:10px;cursor:zoom-in;transition:transform .35s ease, box-shadow .35s;box-shadow:var(--shadow)}
 .photos img:hover{transform:scale(1.03);box-shadow:var(--shadow-lift)}
-.pdfBtn{display:inline-flex;align-items:center;gap:10px;margin:16px 12px 0 0;padding:11px 22px;border-radius:999px;border:1px solid var(--blue);color:var(--blue);text-decoration:none;font-size:12px;letter-spacing:.16em;text-transform:uppercase;transition:all .3s}
-.pdfBtn:hover{background:var(--blue);color:#fff}
-.pdfBtn.v{border-color:var(--violet);color:var(--violet)}.pdfBtn.v:hover{background:var(--violet);color:#fff}
-.takeaway{margin-top:22px;padding:20px 26px;border-left:3px solid var(--gold);background:linear-gradient(100deg,var(--gold-pale),var(--violet-pale));border-radius:0 12px 12px 0;font-family:var(--serif);font-style:italic;font-size:19px;color:var(--ink)}
+.pdfBtn{display:inline-flex;align-items:center;gap:9px;margin:14px 10px 0 0;padding:10px 20px;border-radius:999px;border:1px solid var(--accent);color:var(--accent-deep);text-decoration:none;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;transition:all .3s}
+.pdfBtn:hover{background:var(--accent);color:#fff}
+.takeaway{margin-top:18px;padding:16px 22px;border-left:3px solid var(--gold);background:var(--gold-pale);border-radius:0 10px 10px 0;font-family:var(--italic);font-style:italic;font-size:16px;color:var(--ink)}
 
 /* facts */
 .facts{display:grid;grid-template-columns:repeat(auto-fill,minmax(225px,1fr));gap:16px;margin-top:10px}
-.fact{border:1px solid rgba(35,26,79,.1);border-radius:14px;padding:24px;background:linear-gradient(160deg,var(--white),var(--violet-pale));text-align:center}
-.fact .big{font-family:var(--serif);font-size:42px;font-weight:600;color:var(--violet-deep);line-height:1.1}
-.fact .lbl{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);margin-top:6px}
-.fact .note{font-size:12.5px;color:var(--ink-dim);margin-top:6px}
+.fact{border:1px solid rgba(13,27,42,.09);border-radius:12px;padding:18px;background:linear-gradient(160deg,var(--white),var(--accent-pale));text-align:center}
+.fact .big{font-family:var(--display);font-size:32px;font-weight:600;color:var(--accent-deep);line-height:1.1}
+.fact .lbl{font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);margin-top:5px}
+.fact .note{font-size:11px;color:var(--ink-dim);margin-top:5px;line-height:1.5}
 
-/* recommendations — full letter visible, never cropped */
-.recs{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px;margin-top:12px}
-.recs .rec{border:1px solid rgba(35,26,79,.12);border-radius:12px;overflow:hidden;cursor:zoom-in;background:var(--white);transition:transform .3s, box-shadow .3s;padding:8px}
-.recs .rec:hover{transform:translateY(-4px);box-shadow:var(--shadow-lift)}
-.recs img{width:100%;height:auto;display:block;border-radius:6px}
+/* recommendations — full letter visible, never cropped (gold zone) */
+.recs{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px;margin-top:10px}
+.recs .rec{border:1px solid rgba(13,27,42,.1);border-radius:10px;overflow:hidden;cursor:zoom-in;background:var(--white);transition:transform .3s, box-shadow .3s;padding:7px}
+.recs .rec:hover{transform:translateY(-3px);box-shadow:var(--shadow-lift)}
+.recs img{width:100%;height:auto;display:block;border-radius:5px}
 
-/* contact */
-.contactGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin-top:12px}
-.cCard{display:block;text-decoration:none;border:1px solid rgba(35,26,79,.1);border-radius:14px;padding:20px 22px;background:var(--white);transition:transform .3s, box-shadow .3s;cursor:pointer;position:relative}
-.cCard:hover{transform:translateY(-4px);box-shadow:var(--shadow-lift)}
-.cCard .lbl{font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-dim)}
-.cCard .val{font-family:var(--serif);font-size:20px;font-weight:600;color:var(--ink);margin-top:6px;word-break:break-word}
-.cCard .hint{font-size:11.5px;color:var(--ink-dim);margin-top:6px;letter-spacing:.08em}
-.cCard.e{border-left:3px solid var(--gold)}
-.cCard.u{border-left:3px solid var(--blue)}
-.cCard.l{border-left:3px solid var(--violet)}
-.cCard .copied{position:absolute;top:12px;right:14px;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--violet);opacity:0;transition:opacity .3s}
+/* contact (gold zone) */
+.contactGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px;margin-top:10px}
+.cCard{display:block;text-decoration:none;border:1px solid rgba(13,27,42,.1);border-radius:12px;padding:17px 20px;background:var(--white);transition:transform .3s, box-shadow .3s;cursor:pointer;position:relative;border-left:3px solid var(--gold)}
+.cCard:hover{transform:translateY(-3px);box-shadow:var(--shadow-lift)}
+.cCard .lbl{font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-dim)}
+.cCard .val{font-family:var(--display);font-size:17px;font-weight:600;color:var(--ink);margin-top:5px;word-break:break-word}
+.cCard .hint{font-size:10.5px;color:var(--ink-dim);margin-top:5px;letter-spacing:.06em}
+.cCard .copied{position:absolute;top:11px;right:13px;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-text);opacity:0;transition:opacity .3s}
 .cCard .copied.on{opacity:1}
-.contactBtns{margin-top:24px;display:flex;gap:12px;flex-wrap:wrap}
-.wa{display:inline-flex;align-items:center;gap:8px;text-decoration:none;padding:12px 24px;border-radius:999px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;background:#e9f9ef;color:#1d7a45;border:1px solid #bfe8cf;transition:all .3s}
+.contactBtns{margin-top:20px;display:flex;gap:10px;flex-wrap:wrap}
+.wa{display:inline-flex;align-items:center;gap:8px;text-decoration:none;padding:10px 22px;border-radius:999px;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;background:#e9f9ef;color:#1d7a45;border:1px solid #bfe8cf;transition:all .3s}
 .wa:hover{background:#25D366;color:#fff;border-color:#25D366;transform:translateY(-2px)}
-.fContacts{margin-top:26px;display:flex;gap:10px 26px;justify-content:center;flex-wrap:wrap;font-size:13.5px;letter-spacing:.05em}
-.fContacts a{color:rgba(248,246,241,.85);text-decoration:none;transition:color .25s}
+.fContacts{margin-top:22px;display:flex;gap:8px 24px;justify-content:center;flex-wrap:wrap;font-size:12px;letter-spacing:.04em}
+.fContacts a{color:rgba(240,236,227,.85);text-decoration:none;transition:color .25s}
 .fContacts a:hover{color:var(--gold-light)}
 
 /* lightbox */
-#lb{position:fixed;inset:0;z-index:900;background:rgba(20,14,44,.92);display:none;align-items:center;justify-content:center;padding:4vmin;cursor:zoom-out}
+#lb{position:fixed;inset:0;z-index:900;background:rgba(13,27,42,.94);display:none;align-items:center;justify-content:center;padding:4vmin;cursor:zoom-out}
 #lb.on{display:flex}
 #lb img{max-width:94vw;max-height:88vh;border-radius:8px;box-shadow:0 30px 90px rgba(0,0,0,.5)}
-#lb .cap{position:absolute;bottom:3vh;left:0;right:0;text-align:center;color:#fff;font-size:13px;letter-spacing:.1em;opacity:.85}
+#lb .cap{position:absolute;bottom:3vh;left:0;right:0;text-align:center;color:#fff;font-size:12px;letter-spacing:.1em;opacity:.85}
 
-/* footer — the dark close */
-footer{margin-top:70px;padding:80px 0 56px;background:linear-gradient(155deg,var(--ink) 20%,var(--violet-ink) 100%);text-align:center;color:var(--bone)}
-footer .fname{font-family:var(--serif);font-size:30px;letter-spacing:.1em}
-footer .goldline{margin:26px auto}
-.social{display:flex;gap:14px;justify-content:center;margin-top:6px;flex-wrap:wrap}
-.social a{display:flex;align-items:center;gap:9px;text-decoration:none;color:var(--bone);border:1px solid rgba(248,246,241,.28);padding:11px 24px;border-radius:999px;font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;transition:all .3s;background:rgba(255,255,255,.04)}
+/* footer — navy close (brandbook ink, not a purple wash) */
+footer{margin-top:56px;padding:64px 0 44px;background:linear-gradient(160deg,var(--navy) 0%,var(--pluto) 130%);text-align:center;color:var(--bone)}
+footer .fname{font-family:var(--display);font-weight:600;font-size:26px;letter-spacing:.02em}
+footer .fname span{color:var(--gold)}
+footer .goldline{margin:20px auto;background:var(--gold)}
+.social{display:flex;gap:12px;justify-content:center;margin-top:4px;flex-wrap:wrap}
+.social a{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--bone);border:1px solid rgba(240,236,227,.24);padding:10px 22px;border-radius:999px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;transition:all .3s;background:rgba(255,255,255,.03)}
 .social a:hover{border-color:var(--gold);color:var(--gold-light);transform:translateY(-2px)}
-.social a.ig:hover{border-color:var(--violet);color:#b3a1ff}
-footer .sig{margin-top:36px;font-family:var(--serif);font-style:italic;color:rgba(248,246,241,.65);font-size:16px}
+footer .sig{margin-top:30px;font-family:var(--italic);font-style:italic;color:rgba(240,236,227,.6);font-size:15px}
 
 /* reveal on scroll */
-.rv{opacity:0;transform:translateY(26px);transition:opacity .9s ease, transform .9s cubic-bezier(.5,0,.2,1)}
+.rv{opacity:0;transform:translateY(22px);transition:opacity .9s ease, transform .9s cubic-bezier(.5,0,.2,1)}
 .rv.in{opacity:1;transform:none}
 @media (prefers-reduced-motion: reduce){
   *{animation:none!important;transition:none!important}
@@ -302,7 +304,8 @@ footer .sig{margin-top:36px;font-family:var(--serif);font-style:italic;color:rgb
   #dust,#dustFront{display:none}
 }
 @media (max-width:640px){
-  .blockHead{padding:22px 20px 14px}.blockInner{padding:2px 20px 28px}
+  .blockHead{padding:18px 18px 12px}.blockInner{padding:2px 18px 22px}
+  body{font-size:13.5px}
 }
 </style>
 </head>
@@ -314,16 +317,19 @@ footer .sig{margin-top:36px;font-family:var(--serif);font-style:italic;color:rgb
 <div id="prog"></div>
 
 <nav id="topbar" aria-label="Sections">
-  <span class="tn">D·O</span>
-  <a href="#overview">Overview</a>
-  <a href="#capabilities">Capabilities</a>
-  <a href="#cv">CV</a>
-  <a href="#portfolio">Portfolio</a>
-  <a href="#projects">Projects</a>
-  <a href="#speaking">Speaking</a>
-  <a href="#recommendations">Letters</a>
-  <a href="#beyond">Beyond</a>
-  <a href="#contact" class="keep">Contact</a>
+  <span class="tn">Dmitrijs <span style="color:var(--gold-text)">Olenicenko</span></span>
+  <div class="links">
+    <a href="#overview">Overview</a>
+    <a href="#capabilities">Capabilities</a>
+    <a href="#cv">CV</a>
+    <a href="#portfolio">Portfolio</a>
+    <a href="#projects">Projects</a>
+    <a href="#speaking">Speaking</a>
+    <a href="#recommendations">Recommendations</a>
+    <a href="#beyond">Beyond the Work</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <button id="navToggle" aria-label="Menu" aria-expanded="false">☰</button>
 </nav>
 
 <!-- ═════════ INTRO: proton + neutron → Metatron ═════════ -->
@@ -345,21 +351,22 @@ footer .sig{margin-top:36px;font-family:var(--serif);font-style:italic;color:rgb
   <div class="wrap heroGrid">
     <div>
       <div class="kicker rv">Data · Finance · Operations</div>
-      <h1 class="rv">Dmitrijs<br>Olenicenko</h1>
-      <div class="role rv"><b>Data</b> · <em>Finance</em> · <i>Strategy</i></div>
+      <h1 class="rv">Dmitrijs Olenicenko</h1>
+      <div class="titleStrap rv"><b>Chief Data Officer</b>, Naviora Group · <b>Founder</b>, New Era Investment Fund</div>
+      <div class="role rv">Data <span>·</span> Finance <span>·</span> Strategy</div>
       <div class="goldline rv"></div>
-      <p class="heroLead rv">I help businesses turn complexity into clear, confident decisions. Give me a P&amp;L, a dataset or a market and I find the causal thread running through it — then translate that into something a team can act on. Eight years, four countries, <strong>15+ industries</strong>, one method: <strong>complexity in, clarity out.</strong></p>
-      <p class="quote rv">“To know thyself is the beginning of wisdom.”<small>— Socrates</small></p>
-      <div class="chips rv">
-        <span class="chip">Dubai · Riga · Worldwide</span>
-        <span class="chip">8+ years international</span>
-        <span class="chip">15+ industries</span>
-        <span class="chip">52 countries visited</span>
+      <p class="heroLead rv">A numbers person before anything else. I help businesses turn complexity into clear, confident decisions — give me a P&amp;L, a dataset or a market and I find the causal thread running through it, then translate it into something a team can act on. One method: <strong>complexity in, clarity out.</strong></p>
+      <div class="statRow rv">
+        <div class="stat"><div class="n">8+</div><div class="l">Years</div></div>
+        <div class="stat"><div class="n">15+</div><div class="l">Industries</div></div>
+        <div class="stat"><div class="n">4</div><div class="l">Countries</div></div>
+        <div class="stat"><div class="n">52</div><div class="l">Countries visited</div></div>
       </div>
+      <p class="quote rv">“To know thyself is the beginning of wisdom.”<small>— Socrates</small></p>
       <div class="heroBtns rv">
-        <a class="btn solid" href="https://www.linkedin.com/in/dmitrijsolenicenko/" target="_blank" rel="noopener">LinkedIn</a>
-        <a class="btn ghost" href="#overview">Explore ↓</a>
-        <a class="btn ghost" href="#contact">Contact</a>
+        <a class="btn solid" href="#contact">Get in touch</a>
+        <a class="btn ghost" href="#capabilities">What I do ↓</a>
+        <a class="btn ghost" href="https://www.linkedin.com/in/dmitrijsolenicenko/" target="_blank" rel="noopener">LinkedIn</a>
       </div>
     </div>
   </div>
@@ -370,7 +377,7 @@ footer .sig{margin-top:36px;font-family:var(--serif);font-style:italic;color:rgb
 
   <!-- 01 · OVERVIEW -->
   <section>
-    <div class="block violet open rv" id="overview">
+    <div class="block zone-violet open rv" id="overview">
       <div class="blockHead" data-toggle>
         <span class="num">01</span>
         <div><h2>Overview</h2><div class="sub">who I am, in three honest paragraphs</div></div>
@@ -386,7 +393,7 @@ footer .sig{margin-top:36px;font-family:var(--serif);font-style:italic;color:rgb
 
   <!-- 02 · INSTITUTIONAL CAPABILITIES -->
   <section>
-    <div class="block gold open rv" id="capabilities">
+    <div class="block zone-blue open rv" id="capabilities">
       <div class="blockHead" data-toggle>
         <span class="num">02</span>
         <div><h2>What I Do at Institutional Level</h2><div class="sub">data rooms · valuation · the numbers behind decisions</div></div>
@@ -397,15 +404,15 @@ footer .sig{margin-top:36px;font-family:var(--serif);font-style:italic;color:rgb
         <div class="caps" style="margin-top:18px">
           <div class="capCard"><span class="k">Deals</span><h4>Data Rooms &amp; Due Diligence</h4>
             <p>Investment-grade data rooms built end-to-end: ProForma, sensitivity heat maps, exit and market-liquidity analysis, price validation, demand research — organised so an investment committee can decide and an auditor can trace every number to its source.</p></div>
-          <div class="capCard g"><span class="k">Valuation</span><h4>Evaluation &amp; Investment Memos</h4>
+          <div class="capCard"><span class="k">Valuation</span><h4>Evaluation &amp; Investment Memos</h4>
             <p>DCF, comparables and scenario modelling; risk evaluation frameworks and investment memorandums written bear-case-first, to the standard of the audit rooms I trained in — analysis that survives sceptical questioning, not pitches.</p></div>
           <div class="capCard"><span class="k">Finance</span><h4>Financial Modelling &amp; Reporting</h4>
             <p>Three-statement models, cash-flow forecasting, plan-vs-actual discipline, unit economics — and the reporting infrastructure around them that owners and boards actually use, from a two-restaurant group to enterprise scale.</p></div>
-          <div class="capCard v"><span class="k">Analytics</span><h4>BI &amp; Analytics Platforms</h4>
+          <div class="capCard"><span class="k">Analytics</span><h4>BI &amp; Analytics Platforms</h4>
             <p>Production Power BI ecosystems across 15+ industries: general-ledger-to-invoice drill-downs, row-level security per manager, daily-refresh intelligence — built once, used every day by hundreds of people.</p></div>
-          <div class="capCard v"><span class="k">Architecture</span><h4>Data Architecture &amp; Governance</h4>
+          <div class="capCard"><span class="k">Architecture</span><h4>Data Architecture &amp; Governance</h4>
             <p>From the sovereign lakehouse design for Latvia's national statistics bureau to a live investment platform: pipelines, quality gates, disclosure control, documentation — data an institution can put its name on.</p></div>
-          <div class="capCard g"><span class="k">Delivery</span><h4>Zero to Running System</h4>
+          <div class="capCard"><span class="k">Delivery</span><h4>Zero to Running System</h4>
             <p>Requirements, specification, build, production — the whole arc, personally. neifcapital.com is the standing proof: an institutional investment operating system designed and shipped end-to-end by one person.</p></div>
         </div>
         <div class="capsCta">
@@ -418,7 +425,7 @@ footer .sig{margin-top:36px;font-family:var(--serif);font-style:italic;color:rgb
 
   <!-- 03 · CV -->
   <section>
-    <div class="block blue open rv" id="cv" data-mobile-collapse>
+    <div class="block zone-blue open rv" id="cv" data-mobile-collapse>
       <div class="blockHead" data-toggle>
         <span class="num">03</span>
         <div><h2>Curriculum Vitae</h2><div class="sub">7 roles · 4 countries · one throughline</div></div>
@@ -477,7 +484,7 @@ footer .sig{margin-top:36px;font-family:var(--serif);font-style:italic;color:rgb
               <li>Multi-year assessments of financial statements to audit-grade precision; contributed to M&amp;A due-diligence engagements.</li>
             </ul>
           </div>
-          <div class="job violetDot">
+          <div class="job">
             <h3>Executive Sales Representative — Southwestern Advantage</h3>
             <div class="meta"><b>2018</b> · United States</div>
             <ul>
@@ -491,7 +498,7 @@ footer .sig{margin-top:36px;font-family:var(--serif);font-style:italic;color:rgb
 
   <!-- 04 · BI PORTFOLIO -->
   <section>
-    <div class="block blue open rv" id="portfolio" data-mobile-collapse>
+    <div class="block zone-blue open rv" id="portfolio" data-mobile-collapse>
       <div class="blockHead" data-toggle>
         <span class="num">04</span>
         <div><h2>Business Intelligence Portfolio</h2><div class="sub">8 production Power BI systems · click any screen to zoom</div></div>
@@ -537,7 +544,7 @@ footer .sig{margin-top:36px;font-family:var(--serif);font-style:italic;color:rgb
 
   <!-- 05 · LIVE PROJECTS -->
   <section>
-    <div class="block blue open rv" id="projects">
+    <div class="block zone-blue open rv" id="projects" data-mobile-collapse>
       <div class="blockHead" data-toggle>
         <span class="num">05</span>
         <div><h2>Live Projects &amp; Builds</h2><div class="sub">systems running in the world right now</div></div>
@@ -545,11 +552,11 @@ footer .sig{margin-top:36px;font-family:var(--serif);font-style:italic;color:rgb
       </div>
       <div class="blockBody"><div class="blockInner">
         <div class="live">
-          <a class="liveCard wide" href="https://neifcapital.com" target="_blank" rel="noopener">
+          <a class="liveCard flag" href="https://neifcapital.com" target="_blank" rel="noopener">
             <h4>New Era Investment Fund</h4><span class="u">neifcapital.com</span>
             <p>The flagship. An institutional operating system with a research engine at its core — councils of specialist analysts that can take <strong>any field</strong> to institutional depth: a company, a market, a person, a property, a scientific question. It runs the full discipline of a fund — due diligence, valuation, risk analytics, quantitative models, audit-grade reporting — and it is live: clients connect their own AI to the platform and draw on that intelligence, with hard privacy isolation by design. Architecture, data, engineering, product: designed and built end-to-end by one person.</p>
           </a>
-          <a class="liveCard v" href="https://jiangyushan.online" target="_blank" rel="noopener">
+          <a class="liveCard" href="https://jiangyushan.online" target="_blank" rel="noopener">
             <h4>Jiang Yu Shan</h4><span class="u">jiangyushan.online</span>
             <p>Membership, content and commerce platform for a Grandmaster of traditional Chinese martial arts — from static design to a full production Phoenix platform with members' rooms, courses and payments.</p>
           </a>
@@ -557,7 +564,7 @@ footer .sig{margin-top:36px;font-family:var(--serif);font-style:italic;color:rgb
             <h4>Naviora Group</h4><span class="u">naviora.group</span>
             <p>As Chief Data Officer: analytical consulting, data-room formation and the Placement PropTech SaaS — three business lines from requirements to revenue model, inside a strategic real-estate and capital ecosystem in Dubai.</p>
           </a>
-          <a class="liveCard g" href="https://palacement.ae/" target="_blank" rel="noopener">
+          <a class="liveCard" href="https://palacement.ae/" target="_blank" rel="noopener">
             <h4>Palacement</h4><span class="u">palacement.ae</span>
             <p>Architects of Predictable Capital — the PropTech SaaS built under my product and data direction at Naviora: investors' property portfolios monitored in one place, the whole overview in clear numbers. Fragmented UAE commercial real estate becomes executable, measurable investment scenarios.</p>
           </a>
@@ -568,7 +575,7 @@ footer .sig{margin-top:36px;font-family:var(--serif);font-style:italic;color:rgb
 
   <!-- 06 · SPEAKING & TEACHING -->
   <section>
-    <div class="block violet open rv" id="speaking" data-mobile-collapse>
+    <div class="block zone-violet open rv" id="speaking" data-mobile-collapse>
       <div class="blockHead" data-toggle>
         <span class="num">06</span>
         <div><h2>Speaking &amp; Teaching</h2><div class="sub">sharing what the work taught me</div></div>
@@ -584,7 +591,7 @@ footer .sig{margin-top:36px;font-family:var(--serif);font-style:italic;color:rgb
           <img src="assets/lu-3.webp" alt="Presenting" data-lb="assets/lu-3.webp" data-cap="From idea to sustainable business" loading="lazy">
           <img src="assets/lu-4.webp" alt="Discussion" data-lb="assets/lu-4.webp" data-cap="Q&A with future founders" loading="lazy">
         </div>
-        <a class="pdfBtn v" href="assets/lu-lecture-business-solution-development.pdf" target="_blank" rel="noopener">Open the lecture deck (PDF)</a>
+        <a class="pdfBtn" href="assets/lu-lecture-business-solution-development.pdf" target="_blank" rel="noopener">Open the lecture deck (PDF)</a>
         <a class="pdfBtn" href="assets/csp-data-architecture.pdf" target="_blank" rel="noopener">CSP data-architecture presentation (PDF)</a>
       </div></div>
     </div>
@@ -592,7 +599,7 @@ footer .sig{margin-top:36px;font-family:var(--serif);font-style:italic;color:rgb
 
   <!-- 07 · RECOMMENDATIONS -->
   <section>
-    <div class="block gold open rv" id="recommendations" data-mobile-collapse>
+    <div class="block zone-gold open rv" id="recommendations" data-mobile-collapse>
       <div class="blockHead" data-toggle>
         <span class="num">07</span>
         <div><h2>Recommendations</h2><div class="sub">four letters · click to read</div></div>
@@ -612,7 +619,7 @@ footer .sig{margin-top:36px;font-family:var(--serif);font-style:italic;color:rgb
 
   <!-- 08 · BEYOND THE WORK -->
   <section>
-    <div class="block violet open rv" id="beyond" data-mobile-collapse>
+    <div class="block zone-violet open rv" id="beyond" data-mobile-collapse>
       <div class="blockHead" data-toggle>
         <span class="num">08</span>
         <div><h2>Beyond the Work</h2><div class="sub">the character behind the numbers</div></div>
@@ -638,7 +645,7 @@ footer .sig{margin-top:36px;font-family:var(--serif);font-style:italic;color:rgb
 
   <!-- 09 · CONTACT -->
   <section>
-    <div class="block gold open rv" id="contact">
+    <div class="block zone-gold open rv" id="contact">
       <div class="blockHead" data-toggle>
         <span class="num">09</span>
         <div><h2>Contact</h2><div class="sub">two time zones, always reachable</div></div>
@@ -647,18 +654,18 @@ footer .sig{margin-top:36px;font-family:var(--serif);font-style:italic;color:rgb
       <div class="blockBody"><div class="blockInner">
         <p class="lead">For roles, projects, partnerships, or a good conversation about data and strategy — write first, call second. Based in Dubai, rooted in Riga, working worldwide.</p>
         <div class="contactGrid">
-          <div class="cCard e" data-copy="dmitrijs.olenicenko@gmail.com" role="button" tabindex="0" aria-label="Copy email address">
+          <div class="cCard" data-copy="dmitrijs.olenicenko@gmail.com" role="button" tabindex="0" aria-label="Copy email address">
             <span class="copied">copied ✓</span>
             <div class="lbl">Email</div>
             <div class="val">dmitrijs.olenicenko@gmail.com</div>
             <div class="hint">click to copy · or <a href="mailto:dmitrijs.olenicenko@gmail.com" style="color:var(--gold)">open mail</a></div>
           </div>
-          <a class="cCard u" href="tel:+971504540013">
+          <a class="cCard" href="tel:+971504540013">
             <div class="lbl">UAE · Dubai</div>
             <div class="val">+971 50 454 0013</div>
             <div class="hint">call · GST (UTC+4)</div>
           </a>
-          <a class="cCard l" href="tel:+37129889963">
+          <a class="cCard" href="tel:+37129889963">
             <div class="lbl">Latvia · Riga</div>
             <div class="val">+371 29 889 963</div>
             <div class="hint">call · EET (UTC+2/3)</div>
@@ -681,11 +688,11 @@ footer .sig{margin-top:36px;font-family:var(--serif);font-style:italic;color:rgb
 
 <footer>
   <div class="wrap">
-    <div class="fname">Dmitrijs Olenicenko</div>
+    <div class="fname">Dmitrijs <span>Olenicenko</span></div>
     <div class="goldline"></div>
     <div class="social">
       <a href="https://www.linkedin.com/in/dmitrijsolenicenko/" target="_blank" rel="noopener">LinkedIn</a>
-      <a class="ig" href="https://www.instagram.com/shatzs/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.instagram.com/shatzs/" target="_blank" rel="noopener">Instagram</a>
       <a href="https://neifcapital.com" target="_blank" rel="noopener">NEIF Capital</a>
     </div>
     <div class="fContacts">
@@ -801,7 +808,7 @@ const geoPts = buildMetatron(document.getElementById('heroGeo'), false);
     {cv:document.getElementById('dust'),      n:innerWidth<700?26:60, aMax:.4,  rMin:.7, rMax:2.1, blur:0},
     {cv:document.getElementById('dustFront'), n:innerWidth<700?6:13,  aMax:.16, rMin:2.6,rMax:4.6, blur:2}
   ];
-  const COLORS=[[201,168,76],[124,92,255],[124,92,255],[47,109,208]]; // gold, violet ×2, blue
+  const COLORS=[[201,168,76],[201,168,76],[201,168,76],[143,124,214]]; // gold-led, occasional soft violet
   let mx=-1e4,my=-1e4, running=true;
   addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
   document.addEventListener('visibilitychange',()=>{running=!document.hidden});
@@ -891,7 +898,7 @@ const geoPts = buildMetatron(document.getElementById('heroGeo'), false);
   function tick(ts){
     requestAnimationFrame(tick);
     ctx.clearRect(0,0,W,H);
-    if(ts>=nextAt){fireRandom(); nextAt=ts+3800+Math.random()*4600;}
+    if(ts>=nextAt){fireRandom(); nextAt=ts+9000+Math.random()*8000;}
     const pts=nodePx();
 
     /* constellation hover: the geometry brightens around the cursor */
@@ -1006,9 +1013,16 @@ addEventListener('keydown',e=>{if(e.key==='Escape'&&lb.classList.contains('on'))
 const topbar=document.getElementById('topbar'), prog=document.getElementById('prog');
 addEventListener('scroll',()=>{
   const y=scrollY, max=document.documentElement.scrollHeight-innerHeight;
-  topbar.classList.toggle('on', y>420);
+  topbar.classList.toggle('on', y>140);
   prog.style.width=(max>0? y/max*100:0)+'%';
 },{passive:true});
+/* mobile nav menu */
+const navToggle=document.getElementById('navToggle');
+navToggle.addEventListener('click',()=>{
+  const open=topbar.classList.toggle('menu');
+  navToggle.setAttribute('aria-expanded',open);
+});
+topbar.querySelectorAll('.links a').forEach(a=>a.addEventListener('click',()=>topbar.classList.remove('menu')));
 const io=new IntersectionObserver(es=>es.forEach(e=>{
   if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}
 }),{threshold:.1});
