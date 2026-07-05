@@ -37,7 +37,7 @@
     "https://www.linkedin.com/in/dmitrijsolenicenko/",
     "https://www.instagram.com/shatzs/"
   ],
-  "knowsAbout": ["Data Analytics", "Financial Modelling", "Business Intelligence", "Data Architecture", "Financial Analysis", "Strategy", "Operations"],
+  "knowsAbout": ["Data Analytics", "Deep Research", "AI Agents", "Financial Modelling", "Business Intelligence", "Data Architecture", "Product Development", "Strategy"],
   "knowsLanguage": ["English", "Russian", "Latvian"]
 }
 </script>
@@ -235,10 +235,6 @@ section:first-child{padding-top:8px}
 .liveCard h4{font-family:var(--display);font-size:17px;font-weight:600;line-height:1.2}
 .liveCard .u{font-size:10px;letter-spacing:.1em;color:var(--accent-deep);text-transform:lowercase}
 .liveCard p{font-size:12px;color:var(--ink-soft);margin-top:7px;line-height:1.55}
-/* flagship = gold-framed (NEIF) */
-.liveCard.flag{grid-column:1/-1;border-left-color:var(--gold);border-left-width:4px;background:linear-gradient(110deg,var(--white) 60%,var(--gold-pale))}
-.liveCard.flag .u{color:var(--gold-text)}
-.liveCard.flag p{max-width:840px}
 
 /* institutional capabilities (blue zone) */
 .caps{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-top:8px}
@@ -255,10 +251,10 @@ section:first-child{padding-top:8px}
 .metric .mn{font-family:var(--display);font-weight:600;font-size:22px;color:var(--accent-deep);line-height:1}
 .metric .ml{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-dim);margin-top:5px;line-height:1.3}
 
-/* photos & pdf buttons */
-.photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px;margin-top:12px}
-.photos img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:10px;cursor:zoom-in;transition:transform .35s ease, box-shadow .35s;box-shadow:var(--shadow)}
-.photos img:hover{transform:scale(1.03);box-shadow:var(--shadow-lift)}
+/* photos — FULLY VISIBLE, never cropped */
+.photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:12px}
+.photos img{width:100%;height:auto;display:block;border-radius:10px;cursor:zoom-in;transition:transform .35s ease, box-shadow .35s;box-shadow:var(--shadow);background:var(--mist)}
+.photos img:hover{transform:scale(1.02);box-shadow:var(--shadow-lift)}
 .pdfBtn{display:inline-flex;align-items:center;gap:9px;margin:14px 10px 0 0;padding:10px 20px;border-radius:999px;border:1px solid var(--accent);color:var(--accent-deep);text-decoration:none;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;transition:all .3s}
 .pdfBtn:hover{background:var(--accent);color:#fff}
 .takeaway{margin-top:18px;padding:16px 22px;border-left:3px solid var(--gold);background:var(--gold-pale);border-radius:0 10px 10px 0;font-family:var(--italic);font-style:italic;font-size:16px;color:var(--ink)}
@@ -362,9 +358,8 @@ footer .sig{margin-top:30px;font-family:var(--italic);font-style:italic;color:rg
   <canvas id="arcCanvas"></canvas>
   <div class="wrap heroGrid">
     <div>
-      <div class="availBadge rv"><span class="dot"></span>Open to senior data &amp; finance roles · advisory</div>
+      <div class="kicker rv">Data · Finance · Research · AI</div>
       <h1 class="rv">Dmitrijs Olenicenko</h1>
-      <div class="titleStrap rv"><b>Chief Data Officer</b>, Naviora Group · <b>Founder</b>, New Era Investment Fund</div>
       <div class="role rv">Data <span>·</span> Finance <span>·</span> Strategy</div>
       <div class="goldline rv"></div>
       <p class="heroLead rv">A numbers person before anything else. I turn complexity into clear, confident decisions — give me a P&amp;L, a dataset or a market and I find the causal thread, then translate it into something a team can act on. One method: <strong>complexity in, clarity out.</strong></p>
@@ -396,7 +391,8 @@ footer .sig{margin-top:30px;font-family:var(--italic);font-style:italic;color:rg
         <span class="chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
       </div>
       <div class="blockBody"><div class="blockInner">
-        <p class="lead"><strong>I am a numbers person before anything else.</strong> Give me a ledger, a dataset or a market and I find what it is actually saying — then turn it into a decision a board can act on. Eight years, four countries, 15+ industries: audit at Deloitte, enterprise BI in Sweden, PropTech and finance in Dubai, a national statistics bureau, and three business lines today as CDO at Naviora Group.</p>
+        <p class="lead"><strong>I am a numbers person before anything else.</strong> Give me a ledger, a dataset or a market and I find what it is actually saying — then turn it into a decision a board can act on. Eight years, four countries, 15+ industries: audit at Deloitte, enterprise BI in Sweden, PropTech and finance in Dubai, and three business lines today as CDO at Naviora Group.</p>
+        <p class="lead">I run <strong>deep research on any subject</strong> — a company, a market, a person, a technology — and turn the findings into products, models and AI systems. That is what the New Era platform does at scale: I designed and built <strong>AI research agents</strong> that take a question in any field to institutional depth, and the products around them.</p>
         <p class="lead">Beyond the CV, I built the <strong>New Era</strong> ecosystem end-to-end — an institutional investment operating system, live at <a href="https://neifcapital.com">neifcapital.com</a>. One method throughout: <strong>complexity in, clarity out.</strong></p>
       </div></div>
     </div>
@@ -422,14 +418,14 @@ footer .sig{margin-top:30px;font-family:var(--italic);font-style:italic;color:rg
         <div class="caps" style="margin-top:16px">
           <div class="capCard"><span class="k">Deals</span><h4>Data Rooms &amp; Due Diligence</h4>
             <p>Investment-grade data rooms end-to-end — ProForma, sensitivity, exit &amp; liquidity, price validation. Built so a committee can decide and an auditor can trace every number.</p></div>
-          <div class="capCard"><span class="k">Valuation</span><h4>Evaluation &amp; Investment Memos</h4>
-            <p>DCF, comparables and scenario modelling; risk frameworks and memos written bear-case-first — analysis that survives scrutiny, not pitches.</p></div>
+          <div class="capCard"><span class="k">Research</span><h4>Deep Research on Anything</h4>
+            <p>I take a company, market, person, technology or scientific question to institutional depth — structured, evidenced, decision-ready. The same rigour a fund applies to a deal, applied to any subject.</p></div>
+          <div class="capCard"><span class="k">AI</span><h4>AI Agents &amp; Products</h4>
+            <p>I design and build AI research agents — councils of specialists that investigate a field and return institutional-grade output — and turn that intelligence into working products.</p></div>
           <div class="capCard"><span class="k">Finance</span><h4>Financial Modelling &amp; Reporting</h4>
             <p>Three-statement models, cash-flow forecasting, plan-vs-actual, unit economics — plus the reporting infrastructure owners and boards actually use.</p></div>
           <div class="capCard"><span class="k">Analytics</span><h4>BI &amp; Analytics Platforms</h4>
             <p>Production Power BI across 15+ industries — GL-to-invoice drill-downs, row-level security, daily-refresh intelligence used by hundreds of people.</p></div>
-          <div class="capCard"><span class="k">Architecture</span><h4>Data Architecture &amp; Governance</h4>
-            <p>From a national statistics bureau's lakehouse design to a live platform — pipelines, quality gates, disclosure control. Data an institution can sign its name to.</p></div>
           <div class="capCard"><span class="k">Delivery</span><h4>Zero to Running System</h4>
             <p>Requirements to production, personally. neifcapital.com is the proof: an institutional investment OS shipped end-to-end by one person.</p></div>
         </div>
@@ -570,9 +566,9 @@ footer .sig{margin-top:30px;font-family:var(--italic);font-style:italic;color:rg
       </div>
       <div class="blockBody"><div class="blockInner">
         <div class="live">
-          <a class="liveCard flag" href="https://neifcapital.com" target="_blank" rel="noopener">
+          <a class="liveCard" href="https://neifcapital.com" target="_blank" rel="noopener">
             <h4>New Era Investment Fund</h4><span class="u">neifcapital.com</span>
-            <p>The flagship. An institutional operating system with a research engine at its core — councils of specialist analysts that can take <strong>any field</strong> to institutional depth: a company, a market, a person, a property, a scientific question. It runs the full discipline of a fund — due diligence, valuation, risk analytics, quantitative models, audit-grade reporting — and it is live: clients connect their own AI to the platform and draw on that intelligence, with hard privacy isolation by design. Architecture, data, engineering, product: designed and built end-to-end by one person.</p>
+            <p>An institutional operating system with an AI research engine at its core — agents that take any field to institutional depth: due diligence, valuation, risk, reporting. Live; clients connect their own AI. Built end-to-end by one person.</p>
           </a>
           <a class="liveCard" href="https://jiangyushan.online" target="_blank" rel="noopener">
             <h4>Jiang Yu Shan</h4><span class="u">jiangyushan.online</span>
@@ -601,7 +597,7 @@ footer .sig{margin-top:30px;font-family:var(--italic);font-style:italic;color:rg
       </div>
       <div class="blockBody"><div class="blockInner">
         <p class="lead">Lecture at the <strong>University of Latvia Innovation &amp; Acceleration Center</strong> — pre-incubation program in cooperation with Latvenergo and Sadales Tīkls. How entrepreneurs turn ideas into sustainable businesses: market validation and customer research, go-to-market and customer acquisition, financial modelling and unit economics, AI as a tool for faster decision-making, and data-driven risk management.</p>
-        <p class="lead" style="margin-top:14px">Presented to the <strong>Central Statistical Bureau of Latvia</strong> a remodelling of the national statistics agency's data architecture — a sovereign, standards-based design for how a country's official numbers are produced, protected and published. The full presentation is below.</p>
+        <p class="lead" style="margin-top:14px">A recurring theme in my talks: how <strong>deep research and AI</strong> compress the distance between a question and a decision — how to investigate any field rigorously, and turn the findings into products, models and agents rather than slides.</p>
         <div class="takeaway">“Vision creates direction — but evidence validates the path.”</div>
         <div class="photos">
           <img src="assets/lu-1.webp" alt="Lecture at University of Latvia" data-lb="assets/lu-1.webp" data-cap="University of Latvia — Innovation & Acceleration Center" loading="lazy">
@@ -610,7 +606,6 @@ footer .sig{margin-top:30px;font-family:var(--italic);font-style:italic;color:rg
           <img src="assets/lu-4.webp" alt="Discussion" data-lb="assets/lu-4.webp" data-cap="Q&A with future founders" loading="lazy">
         </div>
         <a class="pdfBtn" href="assets/lu-lecture-business-solution-development.pdf" target="_blank" rel="noopener">Open the lecture deck (PDF)</a>
-        <a class="pdfBtn" href="assets/csp-data-architecture.pdf" target="_blank" rel="noopener">CSP data-architecture presentation (PDF)</a>
       </div></div>
     </div>
   </section>
