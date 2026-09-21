@@ -28,6 +28,14 @@ h1 em{color:var(--gold);font-weight:500;font-size:1.02em}
 .cta{display:inline-block;background:var(--ink);color:#fff;font-weight:600;font-size:16px;padding:16px 26px;text-decoration:none;letter-spacing:.02em;border:1px solid var(--ink);box-shadow:0 12px 34px rgba(15,30,48,.22)}
 .cta:hover{background:#1a3050}
 .cta small{display:block;font-weight:400;font-size:12px;color:var(--gold-light);margin-top:2px;letter-spacing:.06em;text-transform:uppercase}
+.think{margin-top:36px;background:#fff;border:1px solid var(--line);border-left:4px solid var(--gold-light);padding:26px 30px 24px}
+.think .k{font-size:12px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:8px}
+.think .in{font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;line-height:1.35;color:var(--ink);margin-bottom:18px;max-width:900px}
+.think ol{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.think li{position:relative;padding-top:12px;border-top:1px solid var(--line)}
+.think li i{display:block;font-style:normal;font-family:'Playfair Display',Georgia,serif;font-size:13px;letter-spacing:2px;color:var(--gold);margin-bottom:6px}
+.think li b{display:block;font-family:'Playfair Display',Georgia,serif;font-size:19px;line-height:1.25;color:var(--ink);margin-bottom:6px;font-weight:700}
+.think li p{font-size:15px;color:var(--text)}
 .sey{font-size:12px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);font-weight:600;margin:56px 0 10px;display:flex;align-items:center;gap:16px}
 .sey::before{content:'';width:34px;height:1px;background:var(--gold)}
 h2{font-size:clamp(26px,3vw,38px);font-weight:700;margin-bottom:26px}
@@ -54,7 +62,7 @@ h2 em{color:var(--gold);font-weight:500}
 .total .big{font-family:'Playfair Display',Georgia,serif;font-size:56px;font-weight:700;color:#fff;line-height:1;white-space:nowrap}
 .total p{font-family:'Cormorant Garamond',Georgia,serif;font-size:21px;line-height:1.4;color:#e8e2d6}
 .total .cta{background:#e4c97a;color:#0f1e30;border-color:#e4c97a;box-shadow:none}.total .cta small{color:#0f1e30;opacity:.7}.total .cta:hover{background:#f0d98c}
-@media (max-width:980px){.phases{grid-template-columns:1fr;grid-template-rows:none}.phase{display:flex;flex-direction:column;grid-row:auto}.phase ul{flex:1}.trust{grid-template-columns:1fr}.phase h3{min-height:0}.total{grid-template-columns:1fr;text-align:left}}
+@media (max-width:980px){.phases{grid-template-columns:1fr;grid-template-rows:none}.phase{display:flex;flex-direction:column;grid-row:auto}.phase ul{flex:1}.trust,.think ol{grid-template-columns:1fr}.phase h3{min-height:0}.total{grid-template-columns:1fr;text-align:left}}
 @media print{body{background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 </style>
 </head>
@@ -68,6 +76,16 @@ h2 em{color:var(--gold);font-weight:500}
     <p class="lead">Сегодня отчёты приходят на почту, в WhatsApp и в таблицы от шести человек, и картина складывается вручную. Мы соберём всё в одну базу, добавим контрольные точки с уведомлениями и дадим финансовую прозрачность по каждому центру прибыли.</p>
   </div>
 </section>
+
+<div class="think">
+  <div class="k">Есть о чём подумать до старта</div>
+  <div class="in">Первый шаг руководителя, который задаёт ИИ-стратегию компании, — ясность: какие именно возможности вы хотите построить и зачем. Три вопроса, на которые стоит ответить до того, как что-то строить:</div>
+  <ol>
+    <li><i>01</i><b>Что должно уметь?</b><p>Какие способности с ИИ вам нужны — видеть всё каждое утро, ловить отклонения, освободить руки менеджеров — и почему именно они.</p></li>
+    <li><i>02</i><b>Какая отдача?</b><p>Рост выручки ресторана, снижение затрат по отелю или новые возможности команды — и в чём вы будете это измерять через полгода.</p></li>
+    <li><i>03</i><b>Кто ведёт и кто пользуется?</b><p>Как вы сформулируете эту цель для команды, кто отвечает за результат и что будет первым действием на этой неделе.</p></li>
+  </ol>
+</div>
 
 
 <div class="sey">Три этапа</div>
