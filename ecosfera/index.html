@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Ecosfera · Operations Control · Offer</title>
+<meta name="description" content="Three-phase offer for the Ecosfera Hotel & Green Spot Cafe operations control system: Discovery, Telegram bot with notifications and reporting, and a financial overview platform.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&family=Cormorant+Garamond:ital,wght@1,500&display=swap">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#f4f1ea;--surface:#fff;--surface-2:#faf8f3;--ink:#0d1b2a;--text:#33312c;--muted:#6e6a60;--gold:#a8842c;--gold-deep:#8a6e2a;--gold-bright:#c9a84c;--green:#2f6344;--border:rgba(13,27,42,.12);--border-gold:rgba(168,132,44,.28)}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-apple-system,sans-serif;font-size:15px;line-height:1.7;padding-inline:20px}
+h1,h2,h3{font-family:'Playfair Display',Georgia,serif;font-weight:700;color:var(--ink);text-wrap:balance}
+em{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.12em}
+a{color:var(--gold-deep)}
+.wrap{max-width:1040px;margin:0 auto}
+/* cover */
+#cover{background:radial-gradient(ellipse at 28% 36%,rgba(201,168,76,.14) 0%,var(--bg) 62%);padding:64px 0 44px;position:relative}
+#cover::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold-bright),transparent)}
+.tag{display:inline-flex;align-items:center;gap:8px;font-size:10px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;padding:5px 14px;border:1px solid currentColor;margin-bottom:22px;color:var(--gold-deep)}
+.eyebrow{font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold-deep);margin-bottom:22px;display:flex;align-items:center;gap:16px}
+.eyebrow::before{content:'';display:block;width:40px;height:1px;background:var(--gold-deep)}
+.cover-name{font-size:clamp(34px,5vw,54px);line-height:1.08;margin-bottom:14px}
+.cover-name span{display:block;font-size:.5em;font-weight:600;color:var(--gold-deep);margin-top:10px;letter-spacing:.01em}
+.cover-role{max-width:680px;font-size:17px;color:var(--muted);margin-bottom:30px}
+.meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px 22px;border-top:1px solid var(--border);padding-top:22px}
+.meta .l{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+.meta .v{font-weight:600;color:var(--ink)}
+/* sections */
+section.s{padding:44px 0 8px}
+h2{font-size:26px;margin-bottom:6px}
+.lead{color:var(--muted);max-width:720px;margin-bottom:22px}
+.num{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold-deep);font-weight:600;margin-bottom:8px}
+/* agreed strip */
+.agreed{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:8px}
+.agreed div{background:var(--surface);border:1px solid var(--border);border-top:3px solid var(--gold);padding:16px 18px}
+.agreed b{display:block;color:var(--ink);margin-bottom:4px;font-family:'Playfair Display',Georgia,serif;font-size:17px}
+.agreed p{font-size:14px;color:var(--muted)}
+/* phases */
+.phases{display:grid;gap:22px;margin-top:10px}
+.phase{background:var(--surface);border:1px solid var(--border);display:grid;grid-template-columns:230px 1fr;position:relative}
+.phase::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--gold)}
+.phase.p3::before{background:var(--green)}
+.phase .head{padding:26px 24px 24px 30px;border-right:1px solid var(--border);background:var(--surface-2)}
+.phase .n{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold-deep);font-weight:600}
+.phase h3{font-size:22px;line-height:1.2;margin:6px 0 14px}
+.price{font-family:'Playfair Display',Georgia,serif;font-size:34px;font-weight:700;color:var(--ink);line-height:1;font-variant-numeric:tabular-nums}
+.price small{display:block;font-family:'Inter',sans-serif;font-size:12px;font-weight:500;color:var(--muted);margin-top:6px;letter-spacing:.02em}
+.dur{margin-top:16px;font-size:13px;color:var(--muted)}
+.dur b{color:var(--ink);font-weight:600}
+.phase .body{padding:24px 28px 22px}
+.phase .body p.goal{font-size:15.5px;color:var(--ink);margin-bottom:14px}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:18px 28px}
+.cols h4{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold-deep);margin-bottom:8px;font-weight:600}
+.cols ul{list-style:none}
+.cols li{position:relative;padding-left:16px;margin-bottom:6px;font-size:14px}
+.cols li::before{content:'';position:absolute;left:0;top:10px;width:6px;height:6px;background:var(--gold);border-radius:50%}
+.p3 .cols li::before{background:var(--green)}
+.done{margin-top:16px;padding-top:14px;border-top:1px dashed var(--border);font-size:14px}
+.done b{color:var(--green);font-weight:600}
+/* summary table */
+.tw{overflow-x:auto;background:var(--surface);border:1px solid var(--border);margin-top:10px}
+table{border-collapse:collapse;width:100%;font-size:14.5px}
+th{background:var(--surface-2);text-align:left;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:12px 16px;border-bottom:1px solid var(--border);font-weight:600}
+td{padding:13px 16px;border-bottom:1px solid var(--border);vertical-align:top}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+tr.total td{font-weight:600;color:var(--ink);background:rgba(168,132,44,.06);border-bottom:0}
+tr.total td.n{font-family:'Playfair Display',Georgia,serif;font-size:20px}
+/* two columns text */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:10px}
+.card{background:var(--surface);border:1px solid var(--border);padding:20px 22px}
+.card h3{font-size:18px;margin-bottom:10px}
+.card ul{list-style:none}
+.card li{position:relative;padding-left:18px;margin-bottom:7px;font-size:14.5px}
+.card li::before{content:'—';position:absolute;left:0;color:var(--gold)}
+.quote{margin:26px 0 6px;padding:18px 24px;border-left:3px solid var(--gold-bright);background:var(--surface);font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:19px;color:var(--ink)}
+/* footer */
+footer{margin-top:52px;padding:26px 0 46px;border-top:1px solid var(--border);display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+footer b{color:var(--ink)}
+@media (max-width:760px){.phase{grid-template-columns:1fr}.phase .head{border-right:0;border-bottom:1px solid var(--border)}.cols,.two{grid-template-columns:1fr}}
+@media print{body{padding-inline:0;background:#fff}#cover{padding-top:20px}.phase{break-inside:avoid}footer{margin-top:24px}}
+</style>
+</head>
+<body>
+
+<section id="cover"><div class="wrap">
+  <div class="tag">Offer · after the meeting of 21 September 2026</div>
+  <div class="eyebrow">Ecosfera Hotel &amp; Green Spot Cafe · Canggu, Bali</div>
+  <h1 class="cover-name">Operations Control System<span>Three phases, one system — each phase useful on its own</span></h1>
+  <p class="cover-role">We start by putting every source of truth in one place and showing you a first real example. Then the Telegram bot with notifications and reporting on one database. Then the platform with the detailed financial picture. You decide after each phase.</p>
+  <div class="meta">
+    <div><div class="l">Prepared for</div><div class="v">Ecosfera management</div></div>
+    <div><div class="l">Prepared by</div><div class="v">Dmitrijs Olenicenko</div></div>
+    <div><div class="l">Date</div><div class="v">21 September 2026</div></div>
+    <div><div class="l">Total, three phases</div><div class="v">US$ 5,250</div></div>
+    <div><div class="l">Valid until</div><div class="v">21 October 2026</div></div>
+  </div>
+</div></section>
+
+<section class="s"><div class="wrap">
+  <div class="num">What we agreed today</div>
+  <h2>The problem is not the tools — it is that the numbers live in six places and the process lives in WhatsApp</h2>
+  <p class="lead">Google Sheets dashboards, BI exports, wastage reports, the PMS, the café POS, a task tool and a WhatsApp thread — each correct on its own, none of them the whole picture. The work is to connect them once, add simple checkpoints with notifications, and give management one financial view.</p>
+  <div class="agreed">
+    <div><b>One place for the sources</b><p>Every report and system you use today is collected, mapped and reconciled before anything is built.</p></div>
+    <div><b>Simple process with checkpoints</b><p>Notifications and reporting in Telegram, on one database — no new habits beyond answering the bot.</p></div>
+    <div><b>A detailed financial overview</b><p>Revenue, costs and margin by profit centre on a platform the company owns — built on the same database.</p></div>
+  </div>
+</div></section>
+
+<section class="s"><div class="wrap">
+  <div class="num">The three phases</div>
+  <h2>Fixed price per phase. The next phase starts only when you say so.</h2>
+  <p class="lead">Each phase ends with something you keep and use even if we stop there. Prices are fixed; durations are indicative and start when we have access to the systems named in each phase.</p>
+
+  <div class="phases">
+
+    <article class="phase p1">
+      <div class="head">
+        <div class="n">Phase 1</div>
+        <h3>Discovery</h3>
+        <div class="price">US$ 1,250<small>fixed</small></div>
+        <div class="dur"><b>1–2 weeks</b><br>after access to the sources</div>
+      </div>
+      <div class="body">
+        <p class="goal">All sources together, definitions agreed, and a first real example of the numbers you will see every day.</p>
+        <div class="cols">
+          <div><h4>You get</h4><ul>
+            <li>A map of every source: Cloudbeds (PMS), Olsera (café POS), the Google Sheets dashboards and BI exports, wastage reports, the task tool, WhatsApp flows — who enters what, where it ends up, what is missing.</li>
+            <li>The definitions written down once: hotel revenue, café revenue, occupancy, ADR, cancellations, wastage, the profit centres and who is responsible for each.</li>
+            <li>The management structure and permissions as they are and as they should be — who sees what, who approves what.</li>
+            <li>A working example on your own data: a first daily report and one weekly financial summary, computed the agreed way.</li>
+            <li>A short specification for Phase 2 with the exact list of notifications and reports.</li>
+          </ul></div>
+          <div><h4>We need from you</h4><ul>
+            <li>A read-only Cloudbeds API key (you create it yourself in Settings → API).</li>
+            <li>An Olsera export sample and the way you receive it today.</li>
+            <li>Access to the current Sheets and reports.</li>
+            <li>Two hours of management time for the definitions and roles.</li>
+          </ul></div>
+        </div>
+        <div class="done"><b>Done when</b> you look at the example report and say: yes, these are our numbers, computed the way we want.</div>
+      </div>
+    </article>
+
+    <article class="phase p2">
+      <div class="head">
+        <div class="n">Phase 2</div>
+        <h3>Telegram bot: notifications &amp; reporting on one database</h3>
+        <div class="price">US$ 2,000<small>fixed</small></div>
+        <div class="dur"><b>about 3 weeks</b><br>after Phase 1 is accepted</div>
+      </div>
+      <div class="body">
+        <p class="goal">The process leaves WhatsApp. Every checkpoint sends a notification, every number lands in one database, and management gets the report without asking.</p>
+        <div class="cols">
+          <div><h4>You get</h4><ul>
+            <li>A Telegram bot: staff act in a private chat, management receives the reports in a group, complaints and maintenance have their own topics.</li>
+            <li>Notifications at the checkpoints agreed in Phase 1 — data not entered by the deadline, a task overdue, a complaint open longer than 24 hours, a deviation from normal — with escalation to the responsible person.</li>
+            <li>Automatic reporting: the daily morning report and the weekly summary, sent on schedule; on-demand reports by command.</li>
+            <li>One database that stores every entry, task, notification and report — history from day one, exportable to Sheets.</li>
+            <li>Hosting under the company's own account (≈ US$ 6 per month), documentation, and training for the person who will run it.</li>
+          </ul></div>
+          <div><h4>We need from you</h4><ul>
+            <li>Staff on Telegram (or the decision to move them) and the list of departments and responsible people.</li>
+            <li>The thresholds for "normal" — or we start the alerts silently and you switch each one on when it proves right.</li>
+            <li>An account for hosting (we set it up together; it stays yours).</li>
+          </ul></div>
+        </div>
+        <div class="done"><b>Done when</b> the bot has run for one full week on live data with the reports arriving on schedule and the notifications reaching the right people.</div>
+      </div>
+    </article>
+
+    <article class="phase p3">
+      <div class="head">
+        <div class="n">Phase 3</div>
+        <h3>Platform: the detailed financial overview</h3>
+        <div class="price">US$ 2,000<small>fixed</small></div>
+        <div class="dur"><b>3–4 weeks</b><br>after Phase 2 is accepted</div>
+      </div>
+      <div class="body">
+        <p class="goal">A web platform on top of the same database — the financial picture of the whole property for the owner and management, built on Elixir, the stack our live products run on.</p>
+        <div class="cols">
+          <div><h4>You get</h4><ul>
+            <li>Revenue by profit centre — hotel, café, extras — by day, week, month and season; occupancy, ADR and RevPAR trends.</li>
+            <li>Costs and margin per profit centre from the cost data you provide, with wastage and purchases where they are recorded.</li>
+            <li>Comparison against plan and against the same period earlier; deviations highlighted the same way the bot flags them.</li>
+            <li>Roles: owner, general manager, department — each sees what is theirs; the task, complaint and maintenance history in the same place.</li>
+            <li>Works on a phone; exports to Excel; the code and the data belong to the company.</li>
+          </ul></div>
+          <div><h4>We need from you</h4><ul>
+            <li>The cost side: payroll, purchases and fixed costs in whatever form you keep them.</li>
+            <li>The plan or budget figures you want to compare against.</li>
+            <li>Two review sessions during the build to shape the screens.</li>
+          </ul></div>
+        </div>
+        <div class="done"><b>Done when</b> the owner opens one screen and sees the property's month — revenue, costs, margin by profit centre — without asking anyone for a spreadsheet.</div>
+      </div>
+    </article>
+
+  </div>
+</div></section>
+
+<section class="s"><div class="wrap">
+  <div class="num">Summary</div>
+  <h2>Investment</h2>
+  <div class="tw"><table>
+    <thead><tr><th>Phase</th><th>What you keep</th><th>Indicative duration</th><th class="n">Price, US$</th></tr></thead>
+    <tbody>
+      <tr><td><b>1 · Discovery</b></td><td>Source map, definitions, roles and permissions, a first real report, the Phase 2 specification</td><td>1–2 weeks</td><td class="n">1,250</td></tr>
+      <tr><td><b>2 · Telegram bot</b></td><td>Notifications at checkpoints, scheduled reporting, one database with full history, hosting under your account, training</td><td>≈ 3 weeks</td><td class="n">2,000</td></tr>
+      <tr><td><b>3 · Platform</b></td><td>Detailed financial overview by profit centre, roles, comparisons, exports — on Elixir, owned by the company</td><td>3–4 weeks</td><td class="n">2,000</td></tr>
+      <tr class="total"><td>Total</td><td>Three phases, one system</td><td>≈ 8–9 weeks end to end</td><td class="n">5,250</td></tr>
+    </tbody>
+  </table></div>
+</div></section>
+
+<section class="s"><div class="wrap">
+  <div class="num">How we work</div>
+  <h2>Small, owned, and yours to run</h2>
+  <div class="two">
+    <div class="card"><h3>Terms</h3><ul>
+      <li>Fixed price per phase, invoiced per phase. No subscription to us.</li>
+      <li>A phase starts on your written go-ahead and ends with the acceptance written next to it above.</li>
+      <li>Everything built — code, database, bot, hosting account — is registered to the company. If we part ways, nothing stops working.</li>
+      <li>Documentation and hands-on training are part of every phase: the system belongs to the company, not to the vendor.</li>
+      <li>Running costs after handover ≈ US$ 6 per month for hosting; Telegram, Cloudbeds API and Google Sheets carry no extra fee.</li>
+    </ul></div>
+    <div class="card"><h3>What we do not do</h3><ul>
+      <li>We do not replace Cloudbeds, Olsera or your accounting — we read from them and connect them.</li>
+      <li>We do not let an AI touch the numbers or send anything on its own; it only drafts, a person confirms.</li>
+      <li>We do not build a big system first and ask questions later — Phase 1 exists so that Phases 2 and 3 are built on facts.</li>
+      <li>We do not lock you in: Phase 2 stands on its own, and Phase 3 is optional until you have seen Phase 2 run.</li>
+    </ul></div>
+  </div>
+  <div class="quote">“Simple process, clear checkpoints, one place for the numbers — and the company owns it.”</div>
+</div></section>
+
+<section class="s"><div class="wrap">
+  <div class="num">Next step</div>
+  <h2>To start Phase 1 this week</h2>
+  <div class="card"><ul>
+    <li>Confirm this offer by reply — Phase 1 only is enough to begin.</li>
+    <li>Create a read-only Cloudbeds API key and share one Olsera export.</li>
+    <li>Give access to the current Sheets and reports, and name the person on your side for definitions and roles.</li>
+    <li>We book the two-hour definitions session and start collecting the sources the same day.</li>
+  </ul></div>
+</div></section>
+
+<footer class="wrap">
+  <div><b>Dmitrijs Olenicenko</b> · New Era Product Studio · <a href="https://olenicenko.com">olenicenko.com</a></div>
+  <div>Offer of 21 September 2026 · prices in US dollars, fixed per phase · valid until 21 October 2026</div>
+</footer>
+
+</body>
+</html>
