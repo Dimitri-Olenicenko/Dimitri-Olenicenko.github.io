@@ -4,32 +4,38 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow, noarchive">
-<title>Atlas AML/KYC — Stage 0</title>
+<title>atlas AML/KYC — Stage 0</title>
+<link rel="icon" href="atlas-icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600&display=swap">
 <style>
-  :root { --bg: #f6f6f4; --card: #fff; --ink: #141414; --muted: #6b6b6b; --line: #e4e4e0; --accent: #141414; --err: #b42318; }
+  :root { --bg: #F0EDE6; --card: #FFFDFA; --ink: #2E2E2D; --muted: #6B6B66; --line: rgba(46,46,45,.12); --accent: #2563EB; --accent-2: #1D4ED8; --err: #b42318; }
   * { box-sizing: border-box; }
-  body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--ink); font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; display: grid; place-items: center; padding: 24px 16px; }
-  .box { width: 100%; max-width: 560px; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 32px 28px; }
-  h1 { font-size: 22px; margin: 0 0 4px; letter-spacing: -.3px; }
+  body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--ink); font: 15px/1.5 "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; font-feature-settings: "cv01", "cv12", "cv13";
+    background-image: linear-gradient(rgba(37,99,235,.10) 1px, transparent 1px), linear-gradient(90deg, rgba(37,99,235,.10) 1px, transparent 1px); background-size: 44px 44px; display: grid; place-items: center; padding: 24px 16px; }
+  .box { width: 100%; max-width: 560px; background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 32px 28px; box-shadow: 0 24px 60px -30px rgba(46,46,45,.25); }
+  h1 { font-size: 24px; font-weight: 400; margin: 0 0 4px; letter-spacing: -.02em; }
+  .logo { display: block; height: 30px; width: auto; margin-bottom: 26px; }
   p.sub { margin: 0 0 22px; color: var(--muted); }
   label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px; }
-  input { width: 100%; font: inherit; padding: 11px 12px; border: 1px solid var(--line); border-radius: 8px; background: #fff; color: var(--ink); }
-  input:focus { outline: 2px solid var(--ink); outline-offset: 1px; }
-  button { margin-top: 14px; width: 100%; font: inherit; font-weight: 600; padding: 11px; border: 0; border-radius: 8px; background: var(--accent); color: #fff; cursor: pointer; }
+  input { width: 100%; font: inherit; padding: 11px 12px; border: 1px solid var(--line); border-radius: 10px; background: #fff; color: var(--ink); }
+  input:focus { outline: 0; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(37,99,235,.12); }
+  button { margin-top: 14px; width: 100%; font: inherit; font-weight: 600; padding: 11px; border: 0; border-radius: 10px; background: var(--accent); color: #fff; cursor: pointer; }
+  button:hover { background: var(--accent-2); }
   button[disabled] { opacity: .6; cursor: wait; }
   .err { color: var(--err); font-size: 13px; min-height: 20px; margin: 8px 0 0; }
   .grp { margin: 18px 0 0; } .grp h2 { font-size: 12px; text-transform: uppercase; letter-spacing: .6px; color: var(--muted); margin: 0 0 6px; font-weight: 600; }
   .grp a { display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-top: 1px solid var(--line); color: var(--ink); text-decoration: none; }
-  .grp a:hover b { text-decoration: underline; } .grp a span { color: var(--muted); font-size: 13px; text-align: right; }
+  .grp a:hover b { color: var(--accent); } .grp a span { color: var(--muted); font-size: 13px; text-align: right; }
   .foot { margin-top: 22px; display: flex; justify-content: space-between; align-items: center; color: var(--muted); font-size: 12.5px; }
-  .foot button { width: auto; margin: 0; padding: 6px 12px; background: transparent; color: var(--muted); border: 1px solid var(--line); font-weight: 500; }
+  .foot button { width: auto; margin: 0; padding: 6px 12px; background: transparent !important; color: var(--muted); border: 1px solid var(--line); font-weight: 500; }
   [hidden] { display: none !important; }
 </style>
 </head>
 <body>
 <main class="box">
   <section id="gate">
-    <h1>Atlas · AML/KYC</h1>
+    <img class="logo" src="atlas-logo.svg" alt="atlas">
+    <h1>AML/KYC — Stage 0</h1>
     <p class="sub">Материалы Stage 0 для обсуждения. Доступ по паролю.</p>
     <form id="f" autocomplete="off">
       <label for="pw">Пароль</label>
@@ -40,17 +46,18 @@
   </section>
 
   <section id="hub" hidden>
-    <h1>Atlas · AML/KYC — Stage 0</h1>
+    <img class="logo" src="atlas-logo.svg" alt="atlas">
+    <h1>AML/KYC — Stage 0</h1>
     <p class="sub">Пример платформы, база знаний и рабочие материалы. Покупатель видит только первую группу.</p>
     <div class="grp"><h2>Что видит покупатель</h2>
-      <a href="app/stage0-platform-build/prototype/index.html"><b>Главная страница</b><span>сайт Atlas</span></a>
+      <a href="app/stage0-platform-build/prototype/index.html"><b>Главная страница</b><span>сайт atlas</span></a>
       <a href="app/stage0-platform-build/prototype/journey.html"><b>Проверка покупателя</b><span>от аккаунта до оплаты</span></a>
       <a href="app/stage0-platform-build/prototype/cabinet.html"><b>Кабинет</b><span>доли и план развития</span></a>
     </div>
     <div class="grp"><h2>Внутренняя часть</h2>
       <a href="app/stage0-platform-build/prototype/backoffice.html"><b>Бэк-офис</b><span>очередь, проверка лиц, STR, запросы органов</span></a>
       <a href="app/stage0-platform-build/prototype/processes.html"><b>База знаний</b><span>процессы, договор, стандарты, архитектура</span></a>
-      <a href="app/stage0-platform-build/prototype/library.html"><b>Библиотека</b><span>наши файлы, документы Atlas, законы ОАЭ</span></a>
+      <a href="app/stage0-platform-build/prototype/library.html"><b>Библиотека</b><span>наши файлы, документы atlas, законы ОАЭ</span></a>
     </div>
     <div class="grp"><h2>Рабочие материалы</h2>
       <a href="app/stage0-platform-build/21-СЕССИЯ-2-ДЛЯ-АЛЕКСЕЯ.html"><b>Сессия 2</b><span>установлено и открытые вопросы</span></a>
