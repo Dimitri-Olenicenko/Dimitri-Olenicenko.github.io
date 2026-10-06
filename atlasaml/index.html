@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>Atlas AML/KYC — Stage 0</title>
+<style>
+  :root { --bg: #f6f6f4; --card: #fff; --ink: #141414; --muted: #6b6b6b; --line: #e4e4e0; --accent: #141414; --err: #b42318; }
+  * { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--ink); font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; display: grid; place-items: center; padding: 24px 16px; }
+  .box { width: 100%; max-width: 560px; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 32px 28px; }
+  h1 { font-size: 22px; margin: 0 0 4px; letter-spacing: -.3px; }
+  p.sub { margin: 0 0 22px; color: var(--muted); }
+  label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+  input { width: 100%; font: inherit; padding: 11px 12px; border: 1px solid var(--line); border-radius: 8px; background: #fff; color: var(--ink); }
+  input:focus { outline: 2px solid var(--ink); outline-offset: 1px; }
+  button { margin-top: 14px; width: 100%; font: inherit; font-weight: 600; padding: 11px; border: 0; border-radius: 8px; background: var(--accent); color: #fff; cursor: pointer; }
+  button[disabled] { opacity: .6; cursor: wait; }
+  .err { color: var(--err); font-size: 13px; min-height: 20px; margin: 8px 0 0; }
+  .grp { margin: 18px 0 0; } .grp h2 { font-size: 12px; text-transform: uppercase; letter-spacing: .6px; color: var(--muted); margin: 0 0 6px; font-weight: 600; }
+  .grp a { display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-top: 1px solid var(--line); color: var(--ink); text-decoration: none; }
+  .grp a:hover b { text-decoration: underline; } .grp a span { color: var(--muted); font-size: 13px; text-align: right; }
+  .foot { margin-top: 22px; display: flex; justify-content: space-between; align-items: center; color: var(--muted); font-size: 12.5px; }
+  .foot button { width: auto; margin: 0; padding: 6px 12px; background: transparent; color: var(--muted); border: 1px solid var(--line); font-weight: 500; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<main class="box">
+  <section id="gate">
+    <h1>Atlas · AML/KYC</h1>
+    <p class="sub">Материалы Stage 0 для обсуждения. Доступ по паролю.</p>
+    <form id="f" autocomplete="off">
+      <label for="pw">Пароль</label>
+      <input id="pw" type="password" autofocus required>
+      <button id="go" type="submit">Открыть</button>
+      <p class="err" id="err" role="alert"></p>
+    </form>
+  </section>
+
+  <section id="hub" hidden>
+    <h1>Atlas · AML/KYC — Stage 0</h1>
+    <p class="sub">Пример платформы, база знаний и рабочие материалы. Покупатель видит только первую группу.</p>
+    <div class="grp"><h2>Что видит покупатель</h2>
+      <a href="app/stage0-platform-build/prototype/index.html"><b>Главная страница</b><span>сайт Atlas</span></a>
+      <a href="app/stage0-platform-build/prototype/journey.html"><b>Проверка покупателя</b><span>от аккаунта до оплаты</span></a>
+      <a href="app/stage0-platform-build/prototype/cabinet.html"><b>Кабинет</b><span>доли и план развития</span></a>
+    </div>
+    <div class="grp"><h2>Внутренняя часть</h2>
+      <a href="app/stage0-platform-build/prototype/backoffice.html"><b>Бэк-офис</b><span>очередь, проверка лиц, STR, запросы органов</span></a>
+      <a href="app/stage0-platform-build/prototype/processes.html"><b>База знаний</b><span>процессы, договор, стандарты, архитектура</span></a>
+      <a href="app/stage0-platform-build/prototype/library.html"><b>Библиотека</b><span>наши файлы, документы Atlas, законы ОАЭ</span></a>
+    </div>
+    <div class="grp"><h2>Рабочие материалы</h2>
+      <a href="app/stage0-platform-build/21-СЕССИЯ-2-ДЛЯ-АЛЕКСЕЯ.html"><b>Сессия 2</b><span>установлено и открытые вопросы</span></a>
+      <a href="app/stage0-platform-build/00-START-HERE.html"><b>Вся папка Stage 0</b><span>ТЗ, комплект, исследования</span></a>
+    </div>
+    <div class="foot"><span>Не для распространения</span><button id="out" type="button">Выйти</button></div>
+  </section>
+</main>
+<script>
+const $ = (id) => document.getElementById(id);
+const hexb = (h) => new Uint8Array(h.match(/../g).map((x) => parseInt(x, 16)));
+function db() {
+  return new Promise((ok, no) => { const r = indexedDB.open("atlasaml", 1); r.onupgradeneeded = () => r.result.createObjectStore("k"); r.onsuccess = () => ok(r.result); r.onerror = () => no(r.error); });
+}
+async function idb(op, val) {
+  const d = await db();
+  return new Promise((ok, no) => {
+    const s = d.transaction("k", op === "get" ? "readonly" : "readwrite").objectStore("k");
+    const r = op === "get" ? s.get("key") : op === "put" ? s.put(val, "key") : s.delete("key");
+    r.onsuccess = () => ok(r.result); r.onerror = () => no(r.error);
+  });
+}
+async function check(key) {
+  const b = new Uint8Array(await (await fetch("check.bin", { cache: "no-cache" })).arrayBuffer());
+  try { await crypto.subtle.decrypt({ name: "AES-GCM", iv: b.slice(0, 12) }, key, b.slice(12)); return true; } catch { return false; }
+}
+async function sw() {
+  await navigator.serviceWorker.register("sw.js");
+  const reg = await navigator.serviceWorker.ready;
+  reg.active && reg.active.postMessage("reset");
+}
+const show = (open) => { $("gate").hidden = open; $("hub").hidden = !open; };
+
+$("f").addEventListener("submit", async (e) => {
+  e.preventDefault(); $("err").textContent = ""; $("go").disabled = true; $("go").textContent = "Проверяю…";
+  try {
+    const c = await (await fetch("config.json", { cache: "no-cache" })).json();
+    const base = await crypto.subtle.importKey("raw", new TextEncoder().encode($("pw").value.trim()), "PBKDF2", false, ["deriveKey"]);
+    const key = await crypto.subtle.deriveKey({ name: "PBKDF2", hash: "SHA-256", salt: hexb(c.salt), iterations: c.iterations }, base, { name: "AES-GCM", length: 256 }, false, ["decrypt"]);
+    if (!(await check(key))) { $("err").textContent = "Неверный пароль."; return; }
+    await idb("put", key); await sw(); show(true);
+  } catch (x) { $("err").textContent = "Не получилось открыть: " + (x && x.message || x); }
+  finally { $("go").disabled = false; $("go").textContent = "Открыть"; }
+});
+$("out").addEventListener("click", async () => { await idb("del"); await sw(); $("pw").value = ""; show(false); });
+
+(async () => {
+  if (!("serviceWorker" in navigator) || !crypto.subtle) { $("err").textContent = "Браузер не поддерживается — откройте в Chrome, Safari или Edge."; return; }
+  try { const k = await idb("get"); if (k && (await check(k))) { await sw(); show(true); } } catch {}
+})();
+</script>
+</body>
+</html>
