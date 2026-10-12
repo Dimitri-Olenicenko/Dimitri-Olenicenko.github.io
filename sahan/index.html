@@ -1,0 +1,596 @@
+<meta charset="utf-8">
+<title>Procurement Price Review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.5.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --paper:#F3F5EE;
+    --surface:#FFFFFF;
+    --surface-2:#E9ECE2;
+    --border:#D7DBCC;
+    --ink:#1A1E16;
+    --ink-soft:#5B6052;
+    --ink-faint:#8B9080;
+    --accent:#B9790F;
+    --accent-ink:#1A1E16;
+    --up:#C23B3B;
+    --up-bg:#F7E4E1;
+    --down:#2E7D4F;
+    --down-bg:#E3EFE4;
+    --shadow: 0 1px 2px rgba(26,30,22,.06), 0 6px 18px -8px rgba(26,30,22,.14);
+    --font-display:'Archivo', 'Arial Black', sans-serif;
+    --font-body:'IBM Plex Sans', 'Segoe UI', sans-serif;
+    --font-mono:'IBM Plex Mono', 'Consolas', monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#14160F; --surface:#1C1F16; --surface-2:#252920; --border:#383D2F;
+      --ink:#EEF0E7; --ink-soft:#AAB09C; --ink-faint:#747A68; --accent:#E3A738; --accent-ink:#14160F;
+      --up:#E2726E; --up-bg:#3A2320; --down:#5FBE87; --down-bg:#1E3327;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -10px rgba(0,0,0,.5);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#14160F; --surface:#1C1F16; --surface-2:#252920; --border:#383D2F;
+    --ink:#EEF0E7; --ink-soft:#AAB09C; --ink-faint:#747A68; --accent:#E3A738; --accent-ink:#14160F;
+    --up:#E2726E; --up-bg:#3A2320; --down:#5FBE87; --down-bg:#1E3327;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -10px rgba(0,0,0,.5);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    background:var(--paper); color:var(--ink); font-family:var(--font-body);
+    padding-inline:16px; padding-block:28px 56px;
+  }
+  .wrap{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:26px;}
+
+  header.report-head{display:flex;flex-direction:column;gap:9px;border-bottom:2px solid var(--ink);padding-bottom:16px;}
+  .eyebrow{font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);}
+  h1{font-family:var(--font-display);font-weight:900;font-size:clamp(26px,4vw,38px);line-height:1.04;margin:0;text-wrap:balance;letter-spacing:-.01em;}
+  .report-sub{color:var(--ink-soft);font-size:13.5px;max-width:64ch;line-height:1.5;}
+  .meta-row{display:flex;flex-wrap:wrap;gap:7px 16px;font-family:var(--font-mono);font-size:11.5px;color:var(--ink-faint);margin-top:2px;}
+  .meta-row b{color:var(--ink-soft);font-weight:600;}
+
+  .section-head{display:flex;align-items:baseline;gap:10px;margin-bottom:6px;}
+  .section-num{font-family:var(--font-mono);font-size:12px;color:var(--accent);font-weight:600;}
+  .section-title{font-family:var(--font-display);font-weight:800;font-size:18px;letter-spacing:-.005em;}
+
+  .kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--border);
+    border:1px solid var(--border);border-radius:10px;overflow:hidden;box-shadow:var(--shadow);}
+  .kpi{background:var(--surface);padding:15px 15px 13px;display:flex;flex-direction:column;gap:5px;min-width:0;}
+  .kpi-label{font-size:10.5px;font-weight:600;letter-spacing:.04em;color:var(--ink-faint);text-transform:uppercase;}
+  .kpi-value{font-family:var(--font-mono);font-weight:700;font-size:clamp(17px,2.3vw,23px);font-variant-numeric:tabular-nums;line-height:1.1;}
+  .kpi-value.up{color:var(--up);} .kpi-value.down{color:var(--down);}
+  .kpi-sub{font-size:11px;color:var(--ink-faint);font-family:var(--font-mono);}
+  @media (max-width:860px){ .kpi-grid{grid-template-columns:repeat(2,1fr);} .kpi:nth-child(5){grid-column:1/-1;} }
+
+  .row{display:grid;gap:16px;}
+  .row.cols-2{grid-template-columns:1fr 1fr;}
+  .row.cols-2-wide{grid-template-columns:1.6fr 1fr;}
+  @media (max-width:860px){ .row.cols-2, .row.cols-2-wide{grid-template-columns:1fr;} }
+
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:15px 17px 16px;box-shadow:var(--shadow);min-width:0;}
+  .card-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:3px;flex-wrap:wrap;}
+  .card-title{font-family:var(--font-display);font-weight:800;font-size:14px;}
+  .card-tag{font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);}
+  .card-note{font-size:11.5px;color:var(--ink-faint);margin-bottom:9px;line-height:1.4;}
+  .chart-box{position:relative;width:100%;}
+
+  .table-scroll{overflow-x:auto;}
+  table{width:100%;border-collapse:collapse;font-size:12px;}
+  thead th{text-align:left;font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:.04em;
+    text-transform:uppercase;color:var(--ink-faint);border-bottom:1px solid var(--border);padding:0 8px 6px;white-space:nowrap;}
+  tbody td{padding:6px 8px;border-bottom:1px solid var(--border);vertical-align:middle;}
+  tbody tr:last-child td{border-bottom:none;}
+  td.num,th.num{text-align:right;font-family:var(--font-mono);font-variant-numeric:tabular-nums;}
+  .item-name{font-weight:600;color:var(--ink);}
+  .item-meta{display:block;font-size:10.5px;color:var(--ink-faint);margin-top:1px;}
+  .pill{display:inline-flex;align-items:center;gap:3px;font-family:var(--font-mono);font-size:11px;font-weight:700;
+    padding:2px 7px;border-radius:999px;white-space:nowrap;font-variant-numeric:tabular-nums;}
+  .pill.up{background:var(--up-bg);color:var(--up);} .pill.down{background:var(--down-bg);color:var(--down);}
+  .pill.flat{background:var(--surface-2);color:var(--ink-soft);}
+  .outlet-tag{font-family:var(--font-mono);font-size:10px;font-weight:700;padding:1px 6px;border-radius:4px;
+    background:var(--surface-2);color:var(--ink-soft);border:1px solid var(--border);}
+
+  .heat-table td.cell{text-align:right;font-family:var(--font-mono);font-variant-numeric:tabular-nums;font-weight:600;}
+  .heat-table th.row-label{text-align:left;font-family:var(--font-body);font-weight:600;font-size:12px;color:var(--ink);text-transform:none;letter-spacing:0;}
+
+  .loc-compare{display:flex;flex-direction:column;gap:13px;margin-top:2px;}
+  .loc-row{display:flex;flex-direction:column;gap:4px;}
+  .loc-row-top{display:flex;justify-content:space-between;align-items:baseline;font-size:12px;}
+  .loc-row-top .lbl{font-weight:700;}
+  .loc-row-top .val{font-family:var(--font-mono);font-variant-numeric:tabular-nums;}
+  .loc-bar-track{height:9px;border-radius:5px;background:var(--surface-2);overflow:hidden;}
+  .loc-bar-fill{height:100%;border-radius:5px;background:var(--up);}
+
+  .insights{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:11px;}
+  .insight{display:grid;grid-template-columns:26px 1fr;gap:11px;align-items:start;}
+  .insight-num{font-family:var(--font-mono);font-weight:700;font-size:12px;color:var(--accent-ink);
+    background:var(--accent);width:24px;height:24px;border-radius:7px;display:flex;align-items:center;justify-content:center;}
+  .insight-body{font-size:12.5px;line-height:1.5;color:var(--ink);}
+  .insight-body b{font-weight:700;}
+
+  .flag-list{display:flex;flex-direction:column;gap:6px;margin-top:9px;}
+  .flag-row{display:flex;align-items:center;gap:8px;font-size:12px;padding:6px 10px;background:var(--surface-2);border-radius:7px;}
+  .flag-row .item-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
+  footer{border-top:1px solid var(--border);padding-top:13px;display:flex;flex-wrap:wrap;gap:5px 16px;
+    font-family:var(--font-mono);font-size:10.5px;color:var(--ink-faint);}
+
+  /* ---------- drilldown modal ---------- */
+  .modal-overlay{position:fixed;inset:0;background:rgba(10,12,8,.55);display:flex;align-items:flex-end;justify-content:center;z-index:50;padding:0;backdrop-filter:blur(1px);}
+  .modal-overlay[hidden]{display:none;}
+  .modal-panel{background:var(--surface);width:100%;max-width:760px;max-height:min(82vh,720px);border-radius:14px 14px 0 0;
+    box-shadow:0 -8px 40px rgba(0,0,0,.25);display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--border);border-bottom:none;}
+  @media (min-width:640px){ .modal-overlay{align-items:center;padding:16px;} .modal-panel{border-radius:14px;border-bottom:1px solid var(--border);} }
+  .modal-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:16px 18px;border-bottom:1px solid var(--border);flex-shrink:0;}
+  .modal-title{font-family:var(--font-display);font-weight:800;font-size:16px;}
+  .modal-sub{font-size:11.5px;color:var(--ink-faint);margin-top:3px;font-family:var(--font-mono);}
+  .modal-close{font-family:var(--font-mono);font-size:13px;font-weight:700;color:var(--ink-soft);background:var(--surface-2);
+    border:1px solid var(--border);border-radius:7px;width:30px;height:30px;flex-shrink:0;cursor:pointer;line-height:1;}
+  .modal-close:hover{color:var(--ink);border-color:var(--ink-faint);}
+  .modal-close:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  .modal-body{overflow-y:auto;padding:16px 18px 20px;display:flex;flex-direction:column;gap:16px;}
+  .modal-group-title{display:flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:10.5px;font-weight:700;
+    letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:7px;}
+  .modal-group-title .n{color:var(--ink);font-weight:700;}
+  .modal-empty{font-size:12px;color:var(--ink-faint);padding:8px 0;}
+
+  /* ---------- access gate ---------- */
+  body:not(.gate-open) .wrap{display:none;}
+  .gate-screen{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--paper);z-index:100;padding:16px;}
+  body.gate-open .gate-screen{display:none;}
+  .gate-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);
+    padding:26px 24px;width:100%;max-width:320px;display:flex;flex-direction:column;gap:14px;text-align:center;}
+  .gate-icon{font-size:22px;}
+  .gate-title{font-family:var(--font-display);font-weight:800;font-size:16px;}
+  .gate-sub{font-size:12px;color:var(--ink-faint);line-height:1.4;}
+  .gate-input{font-family:var(--font-mono);font-size:14px;padding:10px 12px;border-radius:8px;border:1px solid var(--border);
+    background:var(--paper);color:var(--ink);text-align:center;}
+  .gate-input:focus{outline:2px solid var(--accent);outline-offset:1px;}
+  .gate-btn{font-family:var(--font-body);font-weight:700;font-size:13px;padding:10px 12px;border-radius:8px;border:none;
+    background:var(--accent);color:var(--accent-ink);cursor:pointer;}
+  .gate-btn:hover{filter:brightness(1.05);}
+  .gate-error{font-size:11.5px;color:var(--up);min-height:14px;}
+</style>
+
+<div class="gate-screen" id="gateScreen">
+  <form class="gate-box" id="gateForm">
+    <div class="gate-icon">🔒</div>
+    <div class="gate-title">Procurement Price Review</div>
+    <div class="gate-sub">This report contains supplier pricing. Enter the access word to continue.</div>
+    <input class="gate-input" id="gateInput" type="password" autocomplete="off" placeholder="Access word" autofocus>
+    <button class="gate-btn" type="submit">Unlock</button>
+    <div class="gate-error" id="gateError"></div>
+  </form>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var PASSWORD = "habibi";
+  try{
+    if (sessionStorage.getItem('sahan-unlocked') === '1') { document.body.classList.add('gate-open'); }
+  }catch(e){}
+  var form = document.getElementById('gateForm');
+  var input = document.getElementById('gateInput');
+  var err = document.getElementById('gateError');
+  form.addEventListener('submit', function(ev){
+    ev.preventDefault();
+    if (input.value === PASSWORD) {
+      document.body.classList.add('gate-open');
+      try{ sessionStorage.setItem('sahan-unlocked', '1'); }catch(e){}
+    } else {
+      err.textContent = 'Incorrect — try again.';
+      input.value = '';
+      input.focus();
+    }
+  });
+})();
+</script>
+
+<div class="wrap">
+
+  <header class="report-head">
+    <div class="eyebrow">Procurement · Board Exhibit</div>
+    <h1>Price Review — SHI, MEI &amp; MOLI</h1>
+    <p class="report-sub">248 items with a confirmed price change, after keeping only each item's latest recorded price and dropping its earlier update history.</p>
+    <div class="meta-row">
+      <span><b>248</b> items</span>
+      <span><b>23</b> suppliers</span>
+      <span><b>3</b> outlets</span>
+      <span>Deduplicated by latest "Updated At"</span>
+      <span>Figures in AED</span>
+    </div>
+  </header>
+
+  <section>
+    <div class="kpi-grid" id="kpiGrid"></div>
+  </section>
+
+  <section>
+    <div class="section-head"><span class="section-num">01</span><span class="section-title">Where the pressure sits</span></div>
+    <div class="row cols-2">
+      <div class="card">
+        <div class="card-head"><span class="card-title">Net impact by outlet</span><span class="card-tag">AED</span></div>
+        <div class="card-note">MEI's basket is smallest but moving fastest in %.</div>
+        <div class="chart-box" style="height:180px;"><canvas id="chartOutlet"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">% change by category</span><span class="card-tag">weighted</span></div>
+        <div class="card-note">Non Food and Non-Alcoholic are smaller spend but inflating fastest.</div>
+        <div class="chart-box" style="height:180px;"><canvas id="chartCategory"></canvas></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head"><span class="section-num">02</span><span class="section-title">Supplier picture</span></div>
+    <div class="row cols-2">
+      <div class="card">
+        <div class="card-head"><span class="card-title">Net AED by supplier</span><span class="card-tag">top 12</span></div>
+        <div class="card-note">Red = net increase, green = net decrease.</div>
+        <div class="chart-box" style="height:340px;"><canvas id="chartSupplier"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">Negotiation priority</span><span class="card-tag">bubble = AED</span></div>
+        <div class="card-note">Top-right and large = negotiate first.</div>
+        <div class="chart-box" style="height:300px;"><canvas id="chartSupplierRisk"></canvas></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head"><span class="section-num">03</span><span class="section-title">Outlet × category</span></div>
+    <div class="row cols-2-wide">
+      <div class="card">
+        <div class="card-head"><span class="card-title">Net impact, AED</span></div>
+        <div class="card-note">SHI's alcohol list carries the single largest exposure.</div>
+        <div class="table-scroll"><table class="heat-table" id="heatTable"></table></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">Kitchen vs. Bar</span></div>
+        <div class="card-note">Bar moves broad and small — almost nothing reverses. Kitchen moves rarer but sharper, and reverses far more often.</div>
+        <div class="loc-compare" id="locCompare"></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head"><span class="section-num">04</span><span class="section-title">Biggest movers</span></div>
+    <div class="row cols-2">
+      <div class="card">
+        <div class="card-head"><span class="card-title">Top increases</span><span class="card-tag">AED</span></div>
+        <div class="table-scroll"><table id="tableUp"></table></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">Top decreases</span><span class="card-tag">AED</span></div>
+        <div class="table-scroll"><table id="tableDown"></table></div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:16px;">
+      <div class="card-head"><span class="card-title">Sharpest % jumps on cheap items</span></div>
+      <div class="card-note">Small AED amounts, big percentage moves — easy to miss sorting by AED alone.</div>
+      <div class="flag-list" id="flagList"></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head"><span class="section-num">05</span><span class="section-title">Talking points</span></div>
+    <div class="card"><ol class="insights" id="insightsList"></ol></div>
+  </section>
+
+  <section>
+    <div class="section-head"><span class="section-num">06</span><span class="section-title">Corrections applied</span></div>
+    <p class="card-note" style="margin-bottom:10px;">18 items had more than one price update in the raw export. Keeping the latest "Updated At" per item resolved all but one to a single current price.</p>
+    <div class="card">
+      <div class="table-scroll"><table id="tableCorrections"></table></div>
+    </div>
+  </section>
+
+  <footer>
+    <span>Source: Procurement_ItemsByPriceChanges export (latest-price version) · 248 unique items from 363 raw history rows</span>
+    <span>Click any Outlet, Category or Supplier bar to see its line items</span>
+  </footer>
+
+</div>
+
+<div class="modal-overlay" id="drillOverlay" hidden>
+  <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="drillTitle">
+    <div class="modal-head">
+      <div><div class="modal-title" id="drillTitle">—</div><div class="modal-sub" id="drillSub">—</div></div>
+      <button class="modal-close" id="drillClose" aria-label="Close" type="button">✕</button>
+    </div>
+    <div class="modal-body" id="drillBody"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var DATA = {"kpis": {"total_lines": 248, "n_inc": 211, "n_dec": 37, "old_sum": 44097.36, "new_sum": 46411.48, "net_diff": 2314.12, "portfolio_pct": 5.25, "avg_inc_pct": 22.45, "avg_dec_pct": -15.92}, "outlet": [{"name": "SHI", "n": 116, "sum": 1183.84, "pct": 5.36, "inc": 99, "dec": 17, "old_sum": 22067.6, "new_sum": 23251.44}, {"name": "MEI", "n": 63, "sum": 619.68, "pct": 7.79, "inc": 54, "dec": 9, "old_sum": 7949.76, "new_sum": 8569.44}, {"name": "MOLI", "n": 69, "sum": 510.6, "pct": 3.63, "inc": 58, "dec": 11, "old_sum": 14080.0, "new_sum": 14590.6}], "category": [{"name": "Non - Alcoholic Beverages", "n": 17, "sum": 349.52, "pct": 25.3, "inc": 14, "dec": 3, "old_sum": 1381.77, "new_sum": 1731.29}, {"name": "Non Food", "n": 24, "sum": 149.0, "pct": 14.91, "inc": 16, "dec": 8, "old_sum": 999.5, "new_sum": 1148.5}, {"name": "Food", "n": 98, "sum": 911.11, "pct": 9.45, "inc": 74, "dec": 24, "old_sum": 9644.36, "new_sum": 10555.47}, {"name": "Alcoholic Beverages", "n": 109, "sum": 904.49, "pct": 2.82, "inc": 107, "dec": 2, "old_sum": 32071.73, "new_sum": 32976.22}], "supplier": [{"name": "MMI", "n": 56, "sum": 638.71, "pct": 4.17, "inc": 55, "dec": 1, "old_sum": 15332.31, "new_sum": 15971.02}, {"name": "AFRICAN & EASTERN", "n": 53, "sum": 265.78, "pct": 1.59, "inc": 52, "dec": 1, "old_sum": 16739.42, "new_sum": 17005.2}, {"name": "Yang Susheng Foodstuff Trading LLC", "n": 16, "sum": 202.42, "pct": 11.6, "inc": 14, "dec": 2, "old_sum": 1744.58, "new_sum": 1947.0}, {"name": "SAFCO", "n": 10, "sum": 178.8, "pct": 29.97, "inc": 7, "dec": 3, "old_sum": 596.52, "new_sum": 775.32}, {"name": "MH ENTERPRISES", "n": 23, "sum": 145.2, "pct": 10.9, "inc": 16, "dec": 7, "old_sum": 1331.58, "new_sum": 1476.78}, {"name": "HORECA TRADE LLC", "n": 5, "sum": 137.0, "pct": 13.02, "inc": 4, "dec": 1, "old_sum": 1052.0, "new_sum": 1189.0}, {"name": "EMF EMIRATES LLC", "n": 4, "sum": 135.0, "pct": 9.89, "inc": 3, "dec": 1, "old_sum": 1365.0, "new_sum": 1500.0}, {"name": "SIMPLY GOURMET", "n": 6, "sum": 100.0, "pct": 10.87, "inc": 3, "dec": 3, "old_sum": 920.0, "new_sum": 1020.0}, {"name": "Taste Masters", "n": 12, "sum": 90.5, "pct": 19.72, "inc": 11, "dec": 1, "old_sum": 459.0, "new_sum": 549.5}, {"name": "SPARKLEAN GENERAL TRADING L.L.C", "n": 11, "sum": 84.5, "pct": 12.88, "inc": 7, "dec": 4, "old_sum": 656.0, "new_sum": 740.5}, {"name": "Chef Middle East", "n": 6, "sum": 69.6, "pct": 23.59, "inc": 5, "dec": 1, "old_sum": 295.0, "new_sum": 364.6}, {"name": "Biopack", "n": 13, "sum": 69.5, "pct": 18.86, "inc": 9, "dec": 4, "old_sum": 368.5, "new_sum": 438.0}, {"name": "CLASSIC FINE FOODS", "n": 5, "sum": 62.46, "pct": 3.76, "inc": 3, "dec": 2, "old_sum": 1661.0, "new_sum": 1723.46}, {"name": "SUMMIT TRADING COMPANY LLC", "n": 1, "sum": 60.0, "pct": 30.0, "inc": 1, "dec": 0, "old_sum": 200.0, "new_sum": 260.0}, {"name": "Deep SeaFood", "n": 7, "sum": 43.25, "pct": 7.98, "inc": 7, "dec": 0, "old_sum": 541.75, "new_sum": 585.0}, {"name": "WILD NORTH FISH GENERAL TRADING L.L.C", "n": 1, "sum": 42.0, "pct": 47.73, "inc": 1, "dec": 0, "old_sum": 88.0, "new_sum": 130.0}, {"name": "Deans Fujiya Supermarket LLC.", "n": 2, "sum": 12.62, "pct": 22.56, "inc": 2, "dec": 0, "old_sum": 55.95, "new_sum": 68.57}, {"name": "AL MIMAS GENERAL TRADING", "n": 1, "sum": 10.0, "pct": 16.67, "inc": 1, "dec": 0, "old_sum": 60.0, "new_sum": 70.0}, {"name": "Barakat Quality Plus LLC", "n": 4, "sum": 1.25, "pct": 2.11, "inc": 3, "dec": 1, "old_sum": 59.25, "new_sum": 60.5}, {"name": "FRESHESCO FOODSTUFF TRADING CO. L.L.C", "n": 1, "sum": -1.0, "pct": -5.71, "inc": 0, "dec": 1, "old_sum": 17.5, "new_sum": 16.5}, {"name": "Tyriana Foods For Vegetables & Fruits Trading", "n": 2, "sum": -3.0, "pct": -2.31, "inc": 1, "dec": 1, "old_sum": 130.0, "new_sum": 127.0}, {"name": "KAMI FOODSTUFF TRADING LLC", "n": 5, "sum": -15.0, "pct": -5.38, "inc": 4, "dec": 1, "old_sum": 279.0, "new_sum": 264.0}, {"name": "Barakat Vegetables & Fruits Co LLC", "n": 4, "sum": -15.47, "pct": -10.67, "inc": 2, "dec": 2, "old_sum": 145.0, "new_sum": 129.53}], "location": [{"name": "Bar", "n": 127, "sum": 1280.87, "pct": 3.83, "inc": 122, "dec": 5, "old_sum": 33474.5, "new_sum": 34755.37}, {"name": "Kitchen", "n": 121, "sum": 1033.25, "pct": 9.73, "inc": 89, "dec": 32, "old_sum": 10622.86, "new_sum": 11656.11}], "matrix": {"Alcoholic Beverages": {"SHI": 693.14, "MEI": 81.16, "MOLI": 130.19}, "Food": {"SHI": 309.85, "MEI": 332.99, "MOLI": 268.27}, "Non - Alcoholic Beverages": {"SHI": 126.85, "MEI": 161.53, "MOLI": 61.14}, "Non Food": {"SHI": 54.0, "MEI": 44.0, "MOLI": 51.0}}, "outlets_sorted": ["SHI", "MEI", "MOLI"], "cats_sorted": ["Alcoholic Beverages", "Food", "Non - Alcoholic Beverages", "Non Food"], "top_inc": [{"updated": "2026-09-15T11:45:53.000Z", "outlet": "MOLI", "loc": "Kitchen", "code": "c7655d", "item": "HAZELNUTS PASTE CALLEBOUT 5Kg", "cat": "Food", "subcat": "Pastry", "supplier": "EMF EMIRATES LLC", "old": 480.0, "new": 625.0, "diff": 145.0, "pct": 30.21}, {"updated": "2026-09-28T12:00:54.000Z", "outlet": "SHI", "loc": "Kitchen", "code": "82b054", "item": "ROUND DARK CHOCOLATE CHINESE NEW YEAR 2026 3CM (480x1Piece)", "cat": "Food", "subcat": "Pastry", "supplier": "CLASSIC FINE FOODS", "old": 350.0, "new": 470.46, "diff": 120.46, "pct": 34.42}, {"updated": "2026-09-29T15:36:13.000Z", "outlet": "SHI", "loc": "Kitchen", "code": "046e3a", "item": "JAPANESE ANGUS RIBS 1Kg", "cat": "Food", "subcat": "Meat", "supplier": "SIMPLY GOURMET", "old": 75.0, "new": 180.0, "diff": 105.0, "pct": 140.0}, {"updated": "2026-09-14T15:35:06.000Z", "outlet": "SHI", "loc": "Bar", "code": "07e10f", "item": "ARTADI QUINTANILLA 2021 0.75L", "cat": "Alcoholic Beverages", "subcat": "Wine Red", "supplier": "MMI", "old": 433.42, "new": 525.2, "diff": 91.78, "pct": 21.18}, {"updated": "2026-09-12T13:54:23.000Z", "outlet": "MEI", "loc": "Bar", "code": "0ff14d", "item": "JASMINE PEARLS 1Kg", "cat": "Non - Alcoholic Beverages", "subcat": "Bar - Tea", "supplier": "HORECA TRADE LLC", "old": 505.0, "new": 595.0, "diff": 90.0, "pct": 17.82}, {"updated": "2026-09-09T16:05:25.000Z", "outlet": "SHI", "loc": "Bar", "code": "9ef031", "item": "SANCERRE COMTE LAFOND 0.75L", "cat": "Alcoholic Beverages", "subcat": "Wine White", "supplier": "AFRICAN & EASTERN", "old": 207.0, "new": 291.2, "diff": 84.2, "pct": 40.68}, {"updated": "2026-09-17T14:59:11.000Z", "outlet": "SHI", "loc": "Bar", "code": "955786", "item": "FROZEN BLUEBERRY IQF 1Kg", "cat": "Non - Alcoholic Beverages", "subcat": "Bar - Berries", "supplier": "SAFCO", "old": 50.0, "new": 125.0, "diff": 75.0, "pct": 150.0}, {"updated": "2026-09-25T17:35:26.000Z", "outlet": "SHI", "loc": "Bar", "code": "70c010", "item": "PINTIA  0.75L", "cat": "Alcoholic Beverages", "subcat": "Wine Red", "supplier": "MMI", "old": 468.0, "new": 538.2, "diff": 70.2, "pct": 15.0}, {"updated": "2026-09-15T17:13:22.000Z", "outlet": "MOLI", "loc": "Bar", "code": "72acd7", "item": "BEAUNE 1C BRESSANDES DOMAINE GAGEY 2020 0.75L", "cat": "Alcoholic Beverages", "subcat": "Wine White", "supplier": "MMI", "old": 421.07, "new": 488.15, "diff": 67.08, "pct": 15.93}, {"updated": "2026-09-17T10:43:44.000Z", "outlet": "MEI", "loc": "Kitchen", "code": "a898c7", "item": "POTATO STARCH 25Kg", "cat": "Food", "subcat": "Dry", "supplier": "Yang Susheng Foodstuff Trading LLC", "old": 285.0, "new": 350.0, "diff": 65.0, "pct": 22.81}, {"updated": "2026-09-12T12:43:47.000Z", "outlet": "SHI", "loc": "Kitchen", "code": "a898c7", "item": "POTATO STARCH 25Kg", "cat": "Food", "subcat": "Dry", "supplier": "Yang Susheng Foodstuff Trading LLC", "old": 285.0, "new": 350.0, "diff": 65.0, "pct": 22.81}, {"updated": "2026-09-09T12:12:53.000Z", "outlet": "MEI", "loc": "Kitchen", "code": "deec90", "item": "YUZU JUICE 1.8L", "cat": "Food", "subcat": "Dry", "supplier": "SUMMIT TRADING COMPANY LLC", "old": 200.0, "new": 260.0, "diff": 60.0, "pct": 30.0}, {"updated": "2026-09-17T14:59:11.000Z", "outlet": "SHI", "loc": "Bar", "code": "5a3889", "item": "FROZEN CHERRY MORELLO IQF 1Kg", "cat": "Non - Alcoholic Beverages", "subcat": "Bar - Berries", "supplier": "SAFCO", "old": 38.0, "new": 95.0, "diff": 57.0, "pct": 150.0}, {"updated": "2026-09-13T17:11:10.000Z", "outlet": "MEI", "loc": "Bar", "code": "5a3889", "item": "FROZEN CHERRY MORELLO IQF 1Kg", "cat": "Non - Alcoholic Beverages", "subcat": "Bar - Berries", "supplier": "SAFCO", "old": 38.0, "new": 95.0, "diff": 57.0, "pct": 150.0}, {"updated": "2026-09-30T11:10:10.000Z", "outlet": "MEI", "loc": "Kitchen", "code": "fc39ed", "item": "SUGAR CASTER - SIS 25Kg", "cat": "Food", "subcat": "Dry", "supplier": "MH ENTERPRISES", "old": 155.0, "new": 210.0, "diff": 55.0, "pct": 35.48}], "top_dec": [{"updated": "2026-09-15T17:26:42.000Z", "outlet": "MOLI", "loc": "Bar", "code": "e444f2", "item": "YAMAZAKI 12 0.7L", "cat": "Alcoholic Beverages", "subcat": "Whiskey", "supplier": "AFRICAN & EASTERN", "old": 1631.5, "new": 1508.0, "diff": -123.5, "pct": -7.57}, {"updated": "2026-09-15T11:49:08.000Z", "outlet": "SHI", "loc": "Kitchen", "code": "cdb202", "item": "WHITE CHOCOLATE CALLEBAUT 10Kg", "cat": "Food", "subcat": "Pastry", "supplier": "EMF EMIRATES LLC", "old": 705.0, "new": 630.0, "diff": -75.0, "pct": -10.64}, {"updated": "2026-09-01T12:13:01.000Z", "outlet": "SHI", "loc": "Kitchen", "code": "57f39b", "item": "70% DARK CHOCO DROPS 5Kg", "cat": "Food", "subcat": "Pastry", "supplier": "CLASSIC FINE FOODS", "old": 530.0, "new": 480.0, "diff": -50.0, "pct": -9.43}, {"updated": "2026-09-29T15:36:13.000Z", "outlet": "SHI", "loc": "Kitchen", "code": "cb0f55", "item": "AUSTRALIAN LAMB TENDERLION 1Kg", "cat": "Food", "subcat": "Meat", "supplier": "SIMPLY GOURMET", "old": 130.0, "new": 95.0, "diff": -35.0, "pct": -26.92}, {"updated": "2026-09-01T12:13:01.000Z", "outlet": "SHI", "loc": "Kitchen", "code": "09b784", "item": "WEISS SUPREME 38% LAIT/MILK CHOCO 5Kg", "cat": "Food", "subcat": "Pastry", "supplier": "CLASSIC FINE FOODS", "old": 575.0, "new": 540.0, "diff": -35.0, "pct": -6.09}, {"updated": "2026-09-01T16:42:07.000Z", "outlet": "MEI", "loc": "Kitchen", "code": "745c9b", "item": "QUAIL EGGS TIN (12x0.425Kg)", "cat": "Food", "subcat": "Poultry", "supplier": "SAFCO", "old": 117.0, "new": 84.0, "diff": -33.0, "pct": -28.21}, {"updated": "2026-09-20T22:12:07.000Z", "outlet": "MEI", "loc": "Kitchen", "code": "d19c31", "item": "SUSHI RICE 20Kg", "cat": "Food", "subcat": "Dry", "supplier": "KAMI FOODSTUFF TRADING LLC", "old": 150.0, "new": 120.0, "diff": -30.0, "pct": -20.0}, {"updated": "2026-09-18T12:47:30.000Z", "outlet": "SHI", "loc": "Kitchen", "code": "557bce", "item": "LETTUCE MESCLUN 1Kg", "cat": "Food", "subcat": "Vegetables Fresh", "supplier": "Barakat Vegetables & Fruits Co LLC", "old": 53.0, "new": 26.0, "diff": -27.0, "pct": -50.94}, {"updated": "2026-09-29T15:36:13.000Z", "outlet": "SHI", "loc": "Kitchen", "code": "cb1de5", "item": "AUSTRALIAN LAMB RIBS BONE IN 1Kg", "cat": "Food", "subcat": "Meat", "supplier": "SIMPLY GOURMET", "old": 95.0, "new": 75.0, "diff": -20.0, "pct": -21.05}, {"updated": "2026-09-26T15:18:52.000Z", "outlet": "MEI", "loc": "Kitchen", "code": "8ba567", "item": "DUCK (5x2.6Kg)", "cat": "Food", "subcat": "Poultry", "supplier": "Yang Susheng Foodstuff Trading LLC", "old": 312.0, "new": 300.0, "diff": -12.0, "pct": -3.85}, {"updated": "2026-09-26T13:36:54.000Z", "outlet": "MOLI", "loc": "Kitchen", "code": "8ba567", "item": "DUCK (5x2.6Kg)", "cat": "Food", "subcat": "Poultry", "supplier": "Yang Susheng Foodstuff Trading LLC", "old": 312.0, "new": 300.0, "diff": -12.0, "pct": -3.85}, {"updated": "2026-09-13T12:26:33.000Z", "outlet": "MEI", "loc": "Kitchen", "code": "4c8326", "item": "YUZU KOSHO RED 0.08Kg", "cat": "Food", "subcat": "Dry", "supplier": "Taste Masters", "old": 32.0, "new": 20.0, "diff": -12.0, "pct": -37.5}, {"updated": "2026-09-08T14:23:23.000Z", "outlet": "MOLI", "loc": "Bar", "code": "e03281", "item": "SPARKLING WATER SMALL (24x1Piece)", "cat": "Non - Alcoholic Beverages", "subcat": "Bar - Water", "supplier": "HORECA TRADE LLC", "old": 82.0, "new": 70.0, "diff": -12.0, "pct": -14.63}, {"updated": "2026-09-10T12:20:40.000Z", "outlet": "SHI", "loc": "Kitchen", "code": "1133b0", "item": "BRAZIL BEEF TENDERLOIN 1Kg", "cat": "Food", "subcat": "Meat", "supplier": "SAFCO", "old": 76.0, "new": 65.0, "diff": -11.0, "pct": -14.47}, {"updated": "2026-09-03T14:41:46.000Z", "outlet": "MOLI", "loc": "Kitchen", "code": "5e1dda", "item": "HAND GLOVE MEDIUM 1Piece", "cat": "Non Food", "subcat": "Consumables", "supplier": "SPARKLEAN GENERAL TRADING L.L.C", "old": 95.0, "new": 85.0, "diff": -10.0, "pct": -10.53}], "top_pct_inc": [{"updated": "2026-09-02T13:01:50.000Z", "outlet": "SHI", "loc": "Kitchen", "code": "3b45c9", "item": "RICE VERMICILLI 0.4Kg", "cat": "Food", "subcat": "Dry", "supplier": "Yang Susheng Foodstuff Trading LLC", "old": 6.5, "new": 35.0, "diff": 28.5, "pct": 438.46}, {"updated": "2026-09-22T14:06:35.000Z", "outlet": "SHI", "loc": "Kitchen", "code": "9717a2", "item": "ALUMIINIUM CUP CAKE (25x1Piece)", "cat": "Non Food", "subcat": "Consumables", "supplier": "Biopack", "old": 7.0, "new": 25.0, "diff": 18.0, "pct": 257.14}, {"updated": "2026-09-15T15:45:59.000Z", "outlet": "MOLI", "loc": "Kitchen", "code": "9717a2", "item": "ALUMIINIUM CUP CAKE (25x1Piece)", "cat": "Non Food", "subcat": "Consumables", "supplier": "Biopack", "old": 7.0, "new": 25.0, "diff": 18.0, "pct": 257.14}, {"updated": "2026-09-05T11:52:28.000Z", "outlet": "MEI", "loc": "Kitchen", "code": "9717a2", "item": "ALUMIINIUM CUP CAKE (25x1Piece)", "cat": "Non Food", "subcat": "Consumables", "supplier": "Biopack", "old": 7.0, "new": 25.0, "diff": 18.0, "pct": 257.14}, {"updated": "2026-09-25T15:48:27.000Z", "outlet": "MOLI", "loc": "Kitchen", "code": "976baf", "item": "DAMERARA SUGAR 0.5Kg", "cat": "Food", "subcat": "Pastry", "supplier": "Chef Middle East", "old": 9.0, "new": 28.6, "diff": 19.6, "pct": 217.78}, {"updated": "2026-09-17T14:59:11.000Z", "outlet": "SHI", "loc": "Bar", "code": "5a3889", "item": "FROZEN CHERRY MORELLO IQF 1Kg", "cat": "Non - Alcoholic Beverages", "subcat": "Bar - Berries", "supplier": "SAFCO", "old": 38.0, "new": 95.0, "diff": 57.0, "pct": 150.0}, {"updated": "2026-09-17T14:59:11.000Z", "outlet": "SHI", "loc": "Bar", "code": "955786", "item": "FROZEN BLUEBERRY IQF 1Kg", "cat": "Non - Alcoholic Beverages", "subcat": "Bar - Berries", "supplier": "SAFCO", "old": 50.0, "new": 125.0, "diff": 75.0, "pct": 150.0}, {"updated": "2026-09-13T17:11:10.000Z", "outlet": "MEI", "loc": "Bar", "code": "5a3889", "item": "FROZEN CHERRY MORELLO IQF 1Kg", "cat": "Non - Alcoholic Beverages", "subcat": "Bar - Berries", "supplier": "SAFCO", "old": 38.0, "new": 95.0, "diff": 57.0, "pct": 150.0}, {"updated": "2026-09-29T15:36:13.000Z", "outlet": "SHI", "loc": "Kitchen", "code": "046e3a", "item": "JAPANESE ANGUS RIBS 1Kg", "cat": "Food", "subcat": "Meat", "supplier": "SIMPLY GOURMET", "old": 75.0, "new": 180.0, "diff": 105.0, "pct": 140.0}, {"updated": "2026-09-13T12:26:33.000Z", "outlet": "MEI", "loc": "Kitchen", "code": "abbb33", "item": "YUZU KOSHO GREEN 0.05Kg", "cat": "Food", "subcat": "Dry", "supplier": "Taste Masters", "old": 17.0, "new": 32.0, "diff": 15.0, "pct": 88.24}, {"updated": "2026-09-08T12:21:01.000Z", "outlet": "MEI", "loc": "Kitchen", "code": "b9fa58", "item": "UDON NOODLE (4x0.25Kg)", "cat": "Food", "subcat": "Dry", "supplier": "Taste Masters", "old": 11.5, "new": 21.0, "diff": 9.5, "pct": 82.61}, {"updated": "2026-09-01T15:46:55.000Z", "outlet": "MOLI", "loc": "Kitchen", "code": "b9fa58", "item": "UDON NOODLE (4x0.25Kg)", "cat": "Food", "subcat": "Dry", "supplier": "Taste Masters", "old": 11.5, "new": 21.0, "diff": 9.5, "pct": 82.61}], "corrections": [{"outlet": "SHI", "code": "046e3a", "item": "JAPANESE ANGUS RIBS 1Kg", "supplier": "SIMPLY GOURMET", "n_updates": 4, "old": 75.0, "kept_new": 180.0, "kept_updated": "2026-09-29T15:36:13.000Z", "superseded": [{"new": 75.0, "updated": "2026-09-03T10:56:15.000Z"}, {"new": 95.0, "updated": "2026-09-22T14:15:47.000Z"}, {"new": 95.0, "updated": "2026-09-22T15:16:06.000Z"}], "is_tie": false}, {"outlet": "SHI", "code": "cb1de5", "item": "AUSTRALIAN LAMB RIBS BONE IN 1Kg", "supplier": "SIMPLY GOURMET", "n_updates": 3, "old": 95.0, "kept_new": 75.0, "kept_updated": "2026-09-29T15:36:13.000Z", "superseded": [{"new": 95.0, "updated": "2026-09-03T10:56:15.000Z"}, {"new": 75.0, "updated": "2026-09-22T15:16:06.000Z"}], "is_tie": false}, {"outlet": "MOLI", "code": "9717a2", "item": "ALUMIINIUM CUP CAKE (25x1Piece)", "supplier": "Biopack", "n_updates": 3, "old": 7.0, "kept_new": 25.0, "kept_updated": "2026-09-15T15:45:59.000Z", "superseded": [{"new": 30.0, "updated": "2026-09-08T15:59:02.000Z"}, {"new": 25.0, "updated": "2026-09-15T14:07:56.000Z"}], "is_tie": false}, {"outlet": "SHI", "code": "8ba567", "item": "DUCK (5x2.6Kg)", "supplier": "Yang Susheng Foodstuff Trading LLC", "n_updates": 3, "old": 300.0, "kept_new": 312.0, "kept_updated": "2026-09-30T15:28:20.000Z", "superseded": [{"new": 300.0, "updated": "2026-09-24T14:14:44.000Z"}, {"new": 165.0, "updated": "2026-09-30T15:28:20.000Z"}], "is_tie": true}, {"outlet": "MEI", "code": "f5b413", "item": "EDAMAME WITH SHELL (12x0.5Kg)", "supplier": "Taste Masters", "n_updates": 3, "old": 84.0, "kept_new": 96.0, "kept_updated": "2026-09-22T22:14:13.000Z", "superseded": [{"new": 192.0, "updated": "2026-09-01T12:19:18.000Z"}, {"new": 192.0, "updated": "2026-09-08T12:21:01.000Z"}], "is_tie": false}, {"outlet": "MEI", "code": "88a2bc", "item": "ANGOSTURA BITTERS 0.1L", "supplier": "MMI", "n_updates": 2, "old": 26.0, "kept_new": 33.8, "kept_updated": "2026-09-18T16:52:02.000Z", "superseded": [{"new": 97.5, "updated": "2026-09-17T16:48:21.000Z"}], "is_tie": false}, {"outlet": "SHI", "code": "db27e4", "item": "HEINZ TOMATO KETCHUP 5Kg", "supplier": "MH ENTERPRISES", "n_updates": 2, "old": 52.5, "kept_new": 46.02, "kept_updated": "2026-09-19T10:32:12.000Z", "superseded": [{"new": 46.03, "updated": "2026-09-14T14:56:42.000Z"}], "is_tie": false}, {"outlet": "MOLI", "code": "db27e4", "item": "HEINZ TOMATO KETCHUP 5Kg", "supplier": "MH ENTERPRISES", "n_updates": 2, "old": 52.5, "kept_new": 46.02, "kept_updated": "2026-09-15T15:39:53.000Z", "superseded": [{"new": 46.03, "updated": "2026-09-14T16:43:01.000Z"}], "is_tie": false}, {"outlet": "MEI", "code": "db27e4", "item": "HEINZ TOMATO KETCHUP 5Kg", "supplier": "MH ENTERPRISES", "n_updates": 2, "old": 52.5, "kept_new": 46.12, "kept_updated": "2026-09-14T16:11:09.000Z", "superseded": [{"new": 46.03, "updated": "2026-09-12T17:09:07.000Z"}], "is_tie": false}, {"outlet": "SHI", "code": "39f15d", "item": "STAFF CHICKEN 1Kg", "supplier": "MH ENTERPRISES", "n_updates": 3, "old": 16.0, "kept_new": 11.0, "kept_updated": "2026-09-29T15:51:03.000Z", "superseded": [{"new": 13.0, "updated": "2026-09-15T16:44:06.000Z"}, {"new": 16.0, "updated": "2026-09-16T10:27:48.000Z"}], "is_tie": false}, {"outlet": "SHI", "code": "53717c", "item": "WHIPPING CREAM 35% 1L", "supplier": "MH ENTERPRISES", "n_updates": 2, "old": 25.0, "kept_new": 20.0, "kept_updated": "2026-09-18T10:29:41.000Z", "superseded": [{"new": 29.59, "updated": "2026-09-05T14:11:21.000Z"}], "is_tie": false}, {"outlet": "SHI", "code": "6cfbad", "item": "LEMON JUICE 1L", "supplier": "Barakat Quality Plus LLC", "n_updates": 12, "old": 13.7, "kept_new": 15.95, "kept_updated": "2026-09-29T15:31:33.000Z", "superseded": [{"new": 15.95, "updated": "2026-09-19T12:27:50.000Z"}, {"new": 15.95, "updated": "2026-09-22T12:34:34.000Z"}, {"new": 15.95, "updated": "2026-09-24T14:17:49.000Z"}, {"new": 15.95, "updated": "2026-09-27T12:21:54.000Z"}], "is_tie": false}, {"outlet": "MEI", "code": "39f15d", "item": "STAFF CHICKEN 1Kg", "supplier": "MH ENTERPRISES", "n_updates": 4, "old": 11.0, "kept_new": 13.2, "kept_updated": "2026-09-22T10:35:13.000Z", "superseded": [{"new": 16.2, "updated": "2026-09-07T15:59:04.000Z"}, {"new": 13.0, "updated": "2026-09-12T16:05:29.000Z"}, {"new": 15.6, "updated": "2026-09-15T10:32:45.000Z"}], "is_tie": false}, {"outlet": "SHI", "code": "6de7d2", "item": "LIGHT SOYA SAUCE LKK 1.9L", "supplier": "Yang Susheng Foodstuff Trading LLC", "n_updates": 3, "old": 20.5, "kept_new": 22.0, "kept_updated": "2026-09-29T15:51:03.000Z", "superseded": [{"new": 24.0, "updated": "2026-09-22T15:05:00.000Z"}, {"new": 24.0, "updated": "2026-09-24T14:14:44.000Z"}], "is_tie": false}, {"outlet": "MOLI", "code": "6651a1", "item": "J CLOTH 1Piece", "supplier": "Biopack", "n_updates": 3, "old": 11.0, "kept_new": 12.0, "kept_updated": "2026-09-25T16:38:07.000Z", "superseded": [{"new": 10.0, "updated": "2026-09-03T14:41:46.000Z"}, {"new": 12.5, "updated": "2026-09-12T15:41:04.000Z"}], "is_tie": false}, {"outlet": "SHI", "code": "21dcd8", "item": "CRAB STICK 0.5Kg", "supplier": "KAMI FOODSTUFF TRADING LLC", "n_updates": 4, "old": 22.0, "kept_new": 23.0, "kept_updated": "2026-09-21T14:07:30.000Z", "superseded": [{"new": 28.0, "updated": "2026-09-10T11:54:05.000Z"}, {"new": 37.0, "updated": "2026-09-12T11:50:30.000Z"}, {"new": 23.0, "updated": "2026-09-18T11:57:33.000Z"}], "is_tie": false}, {"outlet": "SHI", "code": "c0f12d", "item": "NESCAFFE COFFE MATTE CREAMER 0.45Kg", "supplier": "SAFCO", "n_updates": 5, "old": 15.65, "kept_new": 16.56, "kept_updated": "2026-09-24T14:17:49.000Z", "superseded": [{"new": 31.0, "updated": "2026-09-01T14:35:23.000Z"}, {"new": 31.0, "updated": "2026-09-05T14:14:21.000Z"}, {"new": 31.0, "updated": "2026-09-11T13:48:38.000Z"}, {"new": 31.0, "updated": "2026-09-15T10:26:24.000Z"}], "is_tie": false}, {"outlet": "MOLI", "code": "53717c", "item": "WHIPPING CREAM 35% 1L", "supplier": "MH ENTERPRISES", "n_updates": 2, "old": 25.0, "kept_new": 25.82, "kept_updated": "2026-09-06T13:49:24.000Z", "superseded": [{"new": 25.85, "updated": "2026-09-03T14:41:46.000Z"}], "is_tie": false}], "rows": [{"o": "SHI", "l": "Kitchen", "i": "DUCK (5x2.6Kg)", "c": "Food", "s": "Yang Susheng Foodstuff Trading LLC", "old": 300.0, "new": 312.0, "diff": 12.0, "pct": 4.0, "u": "2026-09-30T15:28:20.000Z"}, {"o": "MEI", "l": "Kitchen", "i": "SUGAR CASTER - SIS 25Kg", "c": "Food", "s": "MH ENTERPRISES", "old": 155.0, "new": 210.0, "diff": 55.0, "pct": 35.48, "u": "2026-09-30T11:10:10.000Z"}, {"o": "MEI", "l": "Kitchen", "i": "CLING FILM 45CM - Small - 1 x 6 Rolls 1Piece", "c": "Non Food", "s": "SPARKLEAN GENERAL TRADING L.L.C", "old": 90.0, "new": 120.0, "diff": 30.0, "pct": 33.33, "u": "2026-09-30T11:01:46.000Z"}, {"o": "SHI", "l": "Kitchen", "i": "LIGHT SOYA SAUCE LKK 1.9L", "c": "Food", "s": "Yang Susheng Foodstuff Trading LLC", "old": 20.5, "new": 22.0, "diff": 1.5, "pct": 7.32, "u": "2026-09-29T15:51:03.000Z"}, {"o": "SHI", "l": "Kitchen", "i": "STAFF CHICKEN 1Kg", "c": "Food", "s": "MH ENTERPRISES", "old": 16.0, "new": 11.0, "diff": -5.0, "pct": -31.25, "u": "2026-09-29T15:51:03.000Z"}, {"o": "SHI", "l": "Kitchen", "i": "AUSTRALIAN LAMB RIBS BONE IN 1Kg", "c": "Food", "s": "SIMPLY GOURMET", "old": 95.0, "new": 75.0, "diff": -20.0, "pct": -21.05, "u": "2026-09-29T15:36:13.000Z"}, {"o": "SHI", "l": "Kitchen", "i": "AUSTRALIAN LAMB TENDERLION 1Kg", "c": "Food", "s": "SIMPLY GOURMET", "old": 130.0, "new": 95.0, "diff": -35.0, "pct": -26.92, "u": "2026-09-29T15:36:13.000Z"}, {"o": "SHI", "l": "Kitchen", "i": "JAPANESE ANGUS RIBS 1Kg", "c": "Food", "s": "SIMPLY GOURMET", "old": 75.0, "new": 180.0, "diff": 105.0, "pct": 140.0, "u": "2026-09-29T15:36:13.000Z"}, {"o": "SHI", "l": "Bar", "i": "GREEN APPLE JUICE 1L", "c": "Non - Alcoholic Beverages", "s": "Barakat Quality Plus LLC", "old": 16.73, "new": 17.6, "diff": 0.87, "pct": 5.2, "u": "2026-09-29T15:31:33.000Z"}, {"o": "SHI", "l": "Bar", "i": "LEMON JUICE 1L", "c": "Non - Alcoholic Beverages", "s": "Barakat Quality Plus LLC", "old": 13.7, "new": 15.95, "diff": 2.25, "pct": 16.42, "u": "2026-09-29T15:31:33.000Z"}, {"o": "SHI", "l": "Bar", "i": "PINEAPPLE JUICE 1L", "c": "Non - Alcoholic Beverages", "s": "Barakat Quality Plus LLC", "old": 20.72, "new": 17.6, "diff": -3.12, "pct": -15.06, "u": "2026-09-29T15:31:33.000Z"}, {"o": "SHI", "l": "Bar", "i": "ORANGE JUICE 1L", "c": "Non - Alcoholic Beverages", "s": "Barakat Quality Plus LLC", "old": 8.1, "new": 9.35, "diff": 1.25, "pct": 15.43, "u": "2026-09-29T15:31:33.000Z"}, {"o": "MOLI", "l": "Bar", "i": "STILL WATER LARGE (12x1Piece)", "c": "Non - Alcoholic Beverages", "s": "HORECA TRADE LLC", "old": 70.0, "new": 77.0, "diff": 7.0, "pct": 10.0, "u": "2026-09-29T13:19:30.000Z"}, {"o": "MOLI", "l": "Kitchen", "i": "NESCAFFE COFFE MATTE CREAMER 0.45Kg", "c": "Non - Alcoholic Beverages", "s": "MH ENTERPRISES", "old": 31.0, "new": 34.14, "diff": 3.14, "pct": 10.13, "u": "2026-09-29T13:17:57.000Z"}, {"o": "MOLI", "l": "Kitchen", "i": "ASIAN MIX KITCHEN 1Kg", "c": "Food", "s": "Tyriana Foods For Vegetables & Fruits Trading", "old": 70.0, "new": 65.0, "diff": -5.0, "pct": -7.14, "u": "2026-09-29T13:16:00.000Z"}, {"o": "MOLI", "l": "Bar", "i": "NIKKA FROM BARREL 0.5L", "c": "Alcoholic Beverages", "s": "MMI", "old": 240.5, "new": 243.1, "diff": 2.6, "pct": 1.08, "u": "2026-09-29T11:48:06.000Z"}, {"o": "MOLI", "l": "Bar", "i": "PATRON ANEJO 0.75L", "c": "Alcoholic Beverages", "s": "MMI", "old": 518.7, "new": 523.9, "diff": 5.2, "pct": 1.0, "u": "2026-09-29T11:48:06.000Z"}, {"o": "MOLI", "l": "Bar", "i": "HAKUTSURU 0.72L", "c": "Alcoholic Beverages", "s": "MMI", "old": 124.0, "new": 166.4, "diff": 42.4, "pct": 34.19, "u": "2026-09-29T11:48:06.000Z"}, {"o": "MEI", "l": "Kitchen", "i": "BAKING SHEET 500 SHEET 1Piece", "c": "Food", "s": "Biopack", "old": 85.0, "new": 95.0, "diff": 10.0, "pct": 11.76, "u": "2026-09-29T11:03:13.000Z"}, {"o": "MEI", "l": "Kitchen", "i": "HAJIKAMI  WHITE &AMP, PINK GINGER STICK (55x1Piece)", "c": "Food", "s": "Taste Masters", "old": 17.5, "new": 29.0, "diff": 11.5, "pct": 65.71, "u": "2026-09-29T10:54:56.000Z"}, {"o": "MOLI", "l": "Bar", "i": "IMADA MOON ON THE WATER 0.72L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 241.8, "new": 247.0, "diff": 5.2, "pct": 2.15, "u": "2026-09-28T17:50:08.000Z"}, {"o": "MOLI", "l": "Bar", "i": "CANTINA TERLANO VORBERG PINOT BIANCO RISERVA ALTO ADIGE 0.75L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 258.7, "new": 263.9, "diff": 5.2, "pct": 2.01, "u": "2026-09-28T17:50:08.000Z"}, {"o": "SHI", "l": "Bar", "i": "PEWSEY VALE VINEYARD RIESLING 0.75L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 136.5, "new": 148.2, "diff": 11.7, "pct": 8.57, "u": "2026-09-28T16:11:49.000Z"}, {"o": "SHI", "l": "Bar", "i": "MANCINO ROSSO 0.75L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 178.1, "new": 183.3, "diff": 5.2, "pct": 2.92, "u": "2026-09-28T16:11:49.000Z"}, {"o": "SHI", "l": "Bar", "i": "LADOUCETTE, POUILLY-FUME, LOIRE 2019 0.75L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 301.6, "new": 306.8, "diff": 5.2, "pct": 1.72, "u": "2026-09-28T16:11:49.000Z"}, {"o": "SHI", "l": "Bar", "i": "FAUSTINO CAVA BRUT RESERVA 0.75L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 63.7, "new": 68.9, "diff": 5.2, "pct": 8.16, "u": "2026-09-28T16:11:49.000Z"}, {"o": "SHI", "l": "Kitchen", "i": "ROUND DARK CHOCOLATE CHINESE NEW YEAR 2026 3CM (480x1Piece)", "c": "Food", "s": "CLASSIC FINE FOODS", "old": 350.0, "new": 470.46, "diff": 120.46, "pct": 34.42, "u": "2026-09-28T12:00:54.000Z"}, {"o": "MEI", "l": "Kitchen", "i": "KEWPIE JAPANESE MAYO 0.45Kg", "c": "Food", "s": "MH ENTERPRISES", "old": 16.0, "new": 19.0, "diff": 3.0, "pct": 18.75, "u": "2026-09-27T11:08:12.000Z"}, {"o": "MOLI", "l": "Bar", "i": "BAILEYS 0.75L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 258.7, "new": 263.9, "diff": 5.2, "pct": 2.01, "u": "2026-09-26T17:54:01.000Z"}, {"o": "MEI", "l": "Kitchen", "i": "DUCK (5x2.6Kg)", "c": "Food", "s": "Yang Susheng Foodstuff Trading LLC", "old": 312.0, "new": 300.0, "diff": -12.0, "pct": -3.85, "u": "2026-09-26T15:18:52.000Z"}, {"o": "MEI", "l": "Kitchen", "i": "SALMON NORWAY 1Kg", "c": "Food", "s": "Deep SeaFood", "old": 44.0, "new": 46.0, "diff": 2.0, "pct": 4.55, "u": "2026-09-26T15:15:54.000Z"}, {"o": "MOLI", "l": "Kitchen", "i": "DUCK (5x2.6Kg)", "c": "Food", "s": "Yang Susheng Foodstuff Trading LLC", "old": 312.0, "new": 300.0, "diff": -12.0, "pct": -3.85, "u": "2026-09-26T13:36:54.000Z"}, {"o": "MOLI", "l": "Kitchen", "i": "CLING FILM 45CM - Small - 1 x 6 Rolls 1Piece", "c": "Non Food", "s": "SPARKLEAN GENERAL TRADING L.L.C", "old": 90.0, "new": 120.0, "diff": 30.0, "pct": 33.33, "u": "2026-09-26T13:36:54.000Z"}, {"o": "MOLI", "l": "Bar", "i": "ESCUDO ROJO BARON PHILIPPE DE ROTHSCHILD 0.75L", "c": "Alcoholic Beverages", "s": "MMI", "old": 100.1, "new": 105.3, "diff": 5.2, "pct": 5.19, "u": "2026-09-26T12:23:46.000Z"}, {"o": "MEI", "l": "Kitchen", "i": "CRAB STICK 0.5Kg", "c": "Food", "s": "KAMI FOODSTUFF TRADING LLC", "old": 22.0, "new": 23.0, "diff": 1.0, "pct": 4.55, "u": "2026-09-25T22:10:26.000Z"}, {"o": "SHI", "l": "Bar", "i": "PINTIA  0.75L", "c": "Alcoholic Beverages", "s": "MMI", "old": 468.0, "new": 538.2, "diff": 70.2, "pct": 15.0, "u": "2026-09-25T17:35:26.000Z"}, {"o": "SHI", "l": "Bar", "i": "HAKUTSURU  JUNMAI DAIGINJO 0.72L", "c": "Alcoholic Beverages", "s": "MMI", "old": 161.2, "new": 166.4, "diff": 5.2, "pct": 3.23, "u": "2026-09-25T17:35:26.000Z"}, {"o": "SHI", "l": "Bar", "i": "CLOUDY BAY SAUVIGNON BLANC 0.75L", "c": "Alcoholic Beverages", "s": "MMI", "old": 195.0, "new": 200.2, "diff": 5.2, "pct": 2.67, "u": "2026-09-25T17:35:26.000Z"}, {"o": "SHI", "l": "Bar", "i": "ERATH PINOT NOIR OREGON 0.75L", "c": "Alcoholic Beverages", "s": "MMI", "old": 156.0, "new": 161.2, "diff": 5.2, "pct": 3.33, "u": "2026-09-25T17:35:26.000Z"}, {"o": "MOLI", "l": "Kitchen", "i": "PLASTIC APRON (1000x1Piece)", "c": "Non Food", "s": "Biopack", "old": 75.0, "new": 85.0, "diff": 10.0, "pct": 13.33, "u": "2026-09-25T16:38:07.000Z"}, {"o": "MOLI", "l": "Kitchen", "i": "J CLOTH 1Piece", "c": "Non Food", "s": "Biopack", "old": 11.0, "new": 12.0, "diff": 1.0, "pct": 9.09, "u": "2026-09-25T16:38:07.000Z"}, {"o": "MOLI", "l": "Kitchen", "i": "CRAB STICK 0.5Kg", "c": "Food", "s": "KAMI FOODSTUFF TRADING LLC", "old": 20.0, "new": 23.0, "diff": 3.0, "pct": 15.0, "u": "2026-09-25T15:48:27.000Z"}, {"o": "MOLI", "l": "Kitchen", "i": "DAMERARA SUGAR 0.5Kg", "c": "Food", "s": "Chef Middle East", "old": 9.0, "new": 28.6, "diff": 19.6, "pct": 217.78, "u": "2026-09-25T15:48:27.000Z"}, {"o": "SHI", "l": "Kitchen", "i": "FROZEN SCALLOPS (M) 1Kg", "c": "Food", "s": "Deep SeaFood", "old": 290.0, "new": 305.0, "diff": 15.0, "pct": 5.17, "u": "2026-09-25T15:45:03.000Z"}, {"o": "MEI", "l": "Kitchen", "i": "FACE MASK BLACK 1Piece", "c": "Non Food", "s": "Biopack", "old": 4.5, "new": 5.0, "diff": 0.5, "pct": 11.11, "u": "2026-09-25T13:15:23.000Z"}, {"o": "MOLI", "l": "Bar", "i": "SEGLA 0.75L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 403.0, "new": 408.2, "diff": 5.2, "pct": 1.29, "u": "2026-09-25T11:37:11.000Z"}, {"o": "MOLI", "l": "Bar", "i": "VETTE DI SAN LEONARDO SAUVIGNON BLANC TRENTINO 0.75L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 141.7, "new": 146.9, "diff": 5.2, "pct": 3.67, "u": "2026-09-25T11:37:11.000Z"}, {"o": "SHI", "l": "Kitchen", "i": "PHILADELPHIA CREAM CHEESE 1.65Kg", "c": "Food", "s": "MH ENTERPRISES", "old": 56.25, "new": 65.0, "diff": 8.75, "pct": 15.56, "u": "2026-09-25T11:23:30.000Z"}, {"o": "MOLI", "l": "Bar", "i": "HENRI GIRAUD BRUT DAME JANE ROSE 0.75L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 773.5, "new": 778.7, "diff": 5.2, "pct": 0.67, "u": "2026-09-25T11:18:05.000Z"}, {"o": "MOLI", "l": "Bar", "i": "ETIENNE CALSAC ROSE DE CRAIE 0.75L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 624.0, "new": 629.2, "diff": 5.2, "pct": 0.83, "u": "2026-09-25T11:18:05.000Z"}, {"o": "MEI", "l": "Bar", "i": "STILL WATER LARGE (12x1Piece)", "c": "Non - Alcoholic Beverages", "s": "HORECA TRADE LLC", "old": 70.0, "new": 77.0, "diff": 7.0, "pct": 10.0, "u": "2026-09-24T22:04:49.000Z"}, {"o": "SHI", "l": "Bar", "i": "NESCAFFE COFFE MATTE CREAMER 0.45Kg", "c": "Non - Alcoholic Beverages", "s": "SAFCO", "old": 15.65, "new": 16.56, "diff": 0.91, "pct": 5.81, "u": "2026-09-24T14:17:49.000Z"}, {"o": "SHI", "l": "Kitchen", "i": "MASAGO ARARE 0.3Kg", "c": "Food", "s": "Taste Masters", "old": 28.0, "new": 32.0, "diff": 4.0, "pct": 14.29, "u": "2026-09-24T14:14:44.000Z"}, {"o": "MOLI", "l": "Bar", "i": "KESSELER DAILY AUGUST PINOT NOIR 0.75L", "c": "Alcoholic Beverages", "s": "MMI", "old": 130.0, "new": 135.2, "diff": 5.2, "pct": 4.0, "u": "2026-09-24T12:29:52.000Z"}, {"o": "SHI", "l": "Kitchen", "i": "YAKINORI SEAWEED HANA 0.28Kg", "c": "Food", "s": "Taste Masters", "old": 55.0, "new": 63.0, "diff": 8.0, "pct": 14.55, "u": "2026-09-23T14:08:33.000Z"}, {"o": "SHI", "l": "Kitchen", "i": "ORANGE TOBIKO 0.5Kg", "c": "Food", "s": "Deep SeaFood", "old": 66.75, "new": 77.0, "diff": 10.25, "pct": 15.36, "u": "2026-09-23T14:05:23.000Z"}, {"o": "MEI", "l": "Kitchen", "i": "EDAMAME WITH SHELL (12x0.5Kg)", "c": "Food", "s": "Taste Masters", "old": 84.0, "new": 96.0, "diff": 12.0, "pct": 14.29, "u": "2026-09-22T22:14:13.000Z"}, {"o": "MEI", "l": "Bar", "i": "MINT 1Kg", "c": "Food", "s": "Barakat Vegetables & Fruits Co LLC", "old": 7.0, "new": 12.0, "diff": 5.0, "pct": 71.43, "u": "2026-09-22T22:03:33.000Z"}, {"o": "MOLI", "l": "Kitchen", "i": "WHOLE PISTACHIOS, WITHOUT SKIN 1Kg", "c": "Food", "s": "MH ENTERPRISES", "old": 80.0, "new": 105.0, "diff": 25.0, "pct": 31.25, "u": "2026-09-22T17:37:57.000Z"}, {"o": "MOLI", "l": "Bar", "i": "ST.GERMAIN ELDERFLOWER 0.7L", "c": "Alcoholic Beverages", "s": "MMI", "old": 234.0, "new": 239.2, "diff": 5.2, "pct": 2.22, "u": "2026-09-22T17:08:02.000Z"}, {"o": "MOLI", "l": "Bar", "i": "CHENIN BLANC, SECATEUR BADENHORST 0.75L", "c": "Alcoholic Beverages", "s": "MMI", "old": 83.2, "new": 88.4, "diff": 5.2, "pct": 6.25, "u": "2026-09-22T17:08:02.000Z"}, {"o": "MOLI", "l": "Kitchen", "i": "FISH SAUCE 0.6L", "c": "Food", "s": "Yang Susheng Foodstuff Trading LLC", "old": 7.08, "new": 8.75, "diff": 1.67, "pct": 23.59, "u": "2026-09-22T15:18:48.000Z"}, {"o": "SHI", "l": "Kitchen", "i": "PLASTIC APRON (1000x1Piece)", "c": "Non Food", "s": "Biopack", "old": 75.0, "new": 85.0, "diff": 10.0, "pct": 13.33, "u": "2026-09-22T15:05:00.000Z"}, {"o": "SHI", "l": "Kitchen", "i": "SPRING ROLL SKIN 0.55Kg", "c": "Food", "s": "Yang Susheng Foodstuff Trading LLC", "old": 11.5, "new": 14.25, "diff": 2.75, "pct": 23.91, "u": "2026-09-22T15:05:00.000Z"}, {"o": "MOLI", "l": "Kitchen", "i": "GLUCOSE SYRUP 5Kg", "c": "Food", "s": "EMF EMIRATES LLC", "old": 90.0, "new": 122.5, "diff": 32.5, "pct": 36.11, "u": "2026-09-22T14:36:08.000Z"}, {"o": "SHI", "l": "Kitchen", "i": "SUGAR CASTER - SIS 25Kg", "c": "Food", "s": "MH ENTERPRISES", "old": 200.0, "new": 205.0, "diff": 5.0, "pct": 2.5, "u": "2026-09-22T14:14:41.000Z"}, {"o": "SHI", "l": "Kitchen", "i": "ALUMIINIUM CUP CAKE (25x1Piece)", "c": "Non Food", "s": "Biopack", "old": 7.0, "new": 25.0, "diff": 18.0, "pct": 257.14, "u": "2026-09-22T14:06:35.000Z"}, {"o": "MEI", "l": "Kitchen", "i": "FLAT MOP CLIP AND STICK 1Piece", "c": "Non Food", "s": "SPARKLEAN GENERAL TRADING L.L.C", "old": 22.0, "new": 20.0, "diff": -2.0, "pct": -9.09, "u": "2026-09-22T12:35:41.000Z"}, {"o": "MEI", "l": "Kitchen", "i": "BUTANE GAS - 190G 1Piece", "c": "Non Food", "s": "Biopack", "old": 19.0, "new": 18.0, "diff": -1.0, "pct": -5.26, "u": "2026-09-22T11:59:49.000Z"}, {"o": "MEI", "l": "Kitchen", "i": "CHICKEN FEET 1Kg", "c": "Food", "s": "Yang Susheng Foodstuff Trading LLC", "old": 7.5, "new": 12.0, "diff": 4.5, "pct": 60.0, "u": "2026-09-22T10:51:12.000Z"}, {"o": "MEI", "l": "Kitchen", "i": "LYLES GOLDEN SYRUP 0.454Kg", "c": "Food", "s": "Yang Susheng Foodstuff Trading LLC", "old": 10.0, "new": 14.0, "diff": 4.0, "pct": 40.0, "u": "2026-09-22T10:51:12.000Z"}, {"o": "MEI", "l": "Kitchen", "i": "STAFF CHICKEN 1Kg", "c": "Food", "s": "MH ENTERPRISES", "old": 11.0, "new": 13.2, "diff": 2.2, "pct": 20.0, "u": "2026-09-22T10:35:13.000Z"}, {"o": "SHI", "l": "Bar", "i": "MOET CHANDON ROSE IMPERIAL 0.75L", "c": "Alcoholic Beverages", "s": "MMI", "old": 357.5, "new": 388.7, "diff": 31.2, "pct": 8.73, "u": "2026-09-21T17:44:49.000Z"}, {"o": "SHI", "l": "Bar", "i": "PIO CESARE LANGHE CHARDONNAY PIODILEI 0.75L", "c": "Alcoholic Beverages", "s": "MMI", "old": 325.0, "new": 330.2, "diff": 5.2, "pct": 1.6, "u": "2026-09-21T17:44:49.000Z"}, {"o": "SHI", "l": "Bar", "i": "HEAVENSAKE JUNMAI 12 0.72L", "c": "Alcoholic Beverages", "s": "MMI", "old": 130.0, "new": 180.7, "diff": 50.7, "pct": 39.0, "u": "2026-09-21T17:33:10.000Z"}, {"o": "SHI", "l": "Bar", "i": "HAKUTSURU SUPERIOR JUNMAI GINJO 0.72L", "c": "Alcoholic Beverages", "s": "MMI", "old": 111.8, "new": 117.0, "diff": 5.2, "pct": 4.65, "u": "2026-09-21T17:33:10.000Z"}, {"o": "SHI", "l": "Kitchen", "i": "CRAB STICK 0.5Kg", "c": "Food", "s": "KAMI FOODSTUFF TRADING LLC", "old": 22.0, "new": 23.0, "diff": 1.0, "pct": 4.55, "u": "2026-09-21T14:07:30.000Z"}, {"o": "SHI", "l": "Kitchen", "i": "MIRIN 1L", "c": "Food", "s": "Yang Susheng Foodstuff Trading LLC", "old": 35.0, "new": 45.0, "diff": 10.0, "pct": 28.57, "u": "2026-09-21T13:03:45.000Z"}, {"o": "MEI", "l": "Kitchen", "i": "J CLOTH (12x1Piece)", "c": "Non Food", "s": "SPARKLEAN GENERAL TRADING L.L.C", "old": 9.0, "new": 12.5, "diff": 3.5, "pct": 38.89, "u": "2026-09-20T22:42:49.000Z"}, {"o": "MEI", "l": "Kitchen", "i": "RICE VINEGAR  MIZKAN 0.8L", "c": "Food", "s": "Taste Masters", "old": 14.0, "new": 18.0, "diff": 4.0, "pct": 28.57, "u": "2026-09-20T22:13:13.000Z"}, {"o": "MEI", "l": "Kitchen", "i": "SUSHI RICE 20Kg", "c": "Food", "s": "KAMI FOODSTUFF TRADING LLC", "old": 150.0, "new": 120.0, "diff": -30.0, "pct": -20.0, "u": "2026-09-20T22:12:07.000Z"}, {"o": "MOLI", "l": "Bar", "i": "FROZEN FIGS 1Kg", "c": "Non - Alcoholic Beverages", "s": "Chef Middle East", "old": 42.0, "new": 60.0, "diff": 18.0, "pct": 42.86, "u": "2026-09-20T16:07:38.000Z"}, {"o": "SHI", "l": "Kitchen", "i": "T Bone  1.2Kg", "c": "Food", "s": "SIMPLY GOURMET", "old": 140.0, "new": 165.0, "diff": 25.0, "pct": 17.86, "u": "2026-09-20T13:46:03.000Z"}, {"o": "MEI", "l": "Kitchen", "i": "ASIAN MIX KITCHEN 1Kg", "c": "Food", "s": "Tyriana Foods For Vegetables & Fruits Trading", "old": 60.0, "new": 62.0, "diff": 2.0, "pct": 3.33, "u": "2026-09-19T22:49:57.000Z"}, {"o": "MEI", "l": "Kitchen", "i": "CHARCOAL 10Kg", "c": "Food", "s": "AL MIMAS GENERAL TRADING", "old": 60.0, "new": 70.0, "diff": 10.0, "pct": 16.67, "u": "2026-09-19T21:25:43.000Z"}, {"o": "MOLI", "l": "Kitchen", "i": "QUAIL EGGS TIN (12x0.425Kg)", "c": "Food", "s": "Chef Middle East", "old": 120.0, "new": 126.0, "diff": 6.0, "pct": 5.0, "u": "2026-09-19T16:04:35.000Z"}, {"o": "MOLI", "l": "Bar", "i": "EL JIMADOR REPOSADO 0.7L", "c": "Alcoholic Beverages", "s": "MMI", "old": 140.4, "new": 141.05, "diff": 0.65, "pct": 0.46, "u": "2026-09-19T13:31:05.000Z"}, {"o": "SHI", "l": "Kitchen", "i": "JAPANESE WAGYU BEEF  TENDERLION 6-7 GRADE 1Kg", "c": "Food", "s": "SIMPLY GOURMET", "old": 295.0, "new": 290.0, "diff": -5.0, "pct": -1.69, "u": "2026-09-19T13:30:33.000Z"}, {"o": "MEI", "l": "Kitchen", "i": "STAFF SPAGHETTI 0.5Kg", "c": "Food", "s": "MH ENTERPRISES", "old": 6.87, "new": 6.46, "diff": -0.41, "pct": -5.97, "u": "2026-09-19T11:11:03.000Z"}, {"o": "MEI", "l": "Kitchen", "i": "LIGHT SOYA SAUCE LKK 1.9L", "c": "Food", "s": "Yang Susheng Foodstuff Trading LLC", "old": 20.5, "new": 24.0, "diff": 3.5, "pct": 17.07, "u": "2026-09-19T10:47:18.000Z"}, {"o": "SHI", "l": "Kitchen", "i": "HEINZ TOMATO KETCHUP 5Kg", "c": "Food", "s": "MH ENTERPRISES", "old": 52.5, "new": 46.02, "diff": -6.48, "pct": -12.34, "u": "2026-09-19T10:32:12.000Z"}, {"o": "MEI", "l": "Bar", "i": "GLENMORANGIE ORIGINAL 0.7L", "c": "Alcoholic Beverages", "s": "MMI", "old": 306.8, "new": 312.0, "diff": 5.2, "pct": 1.69, "u": "2026-09-18T16:52:02.000Z"}, {"o": "MEI", "l": "Bar", "i": "ANGOSTURA BITTERS 0.1L", "c": "Alcoholic Beverages", "s": "MMI", "old": 26.0, "new": 33.8, "diff": 7.8, "pct": 30.0, "u": "2026-09-18T16:52:02.000Z"}, {"o": "SHI", "l": "Kitchen", "i": "CLASSIC HELLMAN MAYONISE (4x3.65Kg)", "c": "Food", "s": "MH ENTERPRISES", "old": 235.0, "new": 270.3, "diff": 35.3, "pct": 15.02, "u": "2026-09-18T16:38:14.000Z"}, {"o": "MOLI", "l": "Kitchen", "i": "CRAB MEAT 0.454Kg", "c": "Food", "s": "Chef Middle East", "old": 70.0, "new": 65.0, "diff": -5.0, "pct": -7.14, "u": "2026-09-18T14:21:41.000Z"}, {"o": "MOLI", "l": "Bar", "i": "GREEN SENCHA 0.25Kg", "c": "Non - Alcoholic Beverages", "s": "HORECA TRADE LLC", "old": 325.0, "new": 370.0, "diff": 45.0, "pct": 13.85, "u": "2026-09-18T14:21:40.000Z"}, {"o": "SHI", "l": "Kitchen", "i": "CLING FILM 45 CM 1Piece", "c": "Non Food", "s": "SPARKLEAN GENERAL TRADING L.L.C", "old": 80.0, "new": 75.0, "diff": -5.0, "pct": -6.25, "u": "2026-09-18T14:09:52.000Z"}, {"o": "MOLI", "l": "Kitchen", "i": "LETTUCE MESCLUN 1Kg", "c": "Food", "s": "Barakat Vegetables & Fruits Co LLC", "old": 53.0, "new": 52.0, "diff": -1.0, "pct": -1.89, "u": "2026-09-18T14:07:16.000Z"}, {"o": "SHI", "l": "Kitchen", "i": "LETTUCE MESCLUN 1Kg", "c": "Food", "s": "Barakat Vegetables & Fruits Co LLC", "old": 53.0, "new": 26.0, "diff": -27.0, "pct": -50.94, "u": "2026-09-18T12:47:30.000Z"}, {"o": "SHI", "l": "Kitchen", "i": "BLACK TOBIKO 0.5Kg", "c": "Food", "s": "KAMI FOODSTUFF TRADING LLC", "old": 65.0, "new": 75.0, "diff": 10.0, "pct": 15.38, "u": "2026-09-18T11:57:33.000Z"}, {"o": "SHI", "l": "Kitchen", "i": "WHIPPING CREAM 35% 1L", "c": "Food", "s": "MH ENTERPRISES", "old": 25.0, "new": 20.0, "diff": -5.0, "pct": -20.0, "u": "2026-09-18T10:29:41.000Z"}, {"o": "SHI", "l": "Bar", "i": "BRIDE OF THE FOX 0.72L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 175.5, "new": 180.7, "diff": 5.2, "pct": 2.96, "u": "2026-09-17T16:50:52.000Z"}, {"o": "SHI", "l": "Bar", "i": "IMADA MOON ON THE WATER 0.72L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 241.8, "new": 247.0, "diff": 5.2, "pct": 2.15, "u": "2026-09-17T16:50:52.000Z"}, {"o": "SHI", "l": "Bar", "i": "KAETSU KANBARA TJUNMAI 0.72L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 145.0, "new": 180.7, "diff": 35.7, "pct": 24.62, "u": "2026-09-17T16:50:52.000Z"}, {"o": "SHI", "l": "Bar", "i": "TAKAMAKA WHITE RUM 0.7L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 136.5, "new": 141.7, "diff": 5.2, "pct": 3.81, "u": "2026-09-17T16:50:52.000Z"}, {"o": "SHI", "l": "Bar", "i": "GEKKEIKAN TOKUSEN HONJOZO 0.72L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 106.6, "new": 111.8, "diff": 5.2, "pct": 4.88, "u": "2026-09-17T16:50:52.000Z"}, {"o": "MEI", "l": "Bar", "i": "MACALLAN 12YRS 0.7L", "c": "Alcoholic Beverages", "s": "MMI", "old": 496.6, "new": 501.8, "diff": 5.2, "pct": 1.05, "u": "2026-09-17T16:48:21.000Z"}, {"o": "MEI", "l": "Bar", "i": "CAMPARI 1L", "c": "Alcoholic Beverages", "s": "MMI", "old": 148.2, "new": 153.4, "diff": 5.2, "pct": 3.51, "u": "2026-09-17T16:48:21.000Z"}, {"o": "SHI", "l": "Bar", "i": "NIMBUS CASABLANCA PINOT NOIR 0.75L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 183.3, "new": 193.7, "diff": 10.4, "pct": 5.67, "u": "2026-09-17T16:25:56.000Z"}, {"o": "SHI", "l": "Bar", "i": "CASTELGIOCONDO BRUNELLO DI MONTALCINO DOCG TUSCAN 0.75L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 452.4, "new": 457.6, "diff": 5.2, "pct": 1.15, "u": "2026-09-17T16:25:56.000Z"}, {"o": "MOLI", "l": "Kitchen", "i": "PASTA FUSILLI - 160 0.5Kg", "c": "Food", "s": "MH ENTERPRISES", "old": 6.46, "new": 6.87, "diff": 0.41, "pct": 6.35, "u": "2026-09-17T16:04:24.000Z"}, {"o": "SHI", "l": "Bar", "i": "FROZEN CHERRY MORELLO IQF 1Kg", "c": "Non - Alcoholic Beverages", "s": "SAFCO", "old": 38.0, "new": 95.0, "diff": 57.0, "pct": 150.0, "u": "2026-09-17T14:59:11.000Z"}, {"o": "SHI", "l": "Bar", "i": "FROZEN BLUEBERRY IQF 1Kg", "c": "Non - Alcoholic Beverages", "s": "SAFCO", "old": 50.0, "new": 125.0, "diff": 75.0, "pct": 150.0, "u": "2026-09-17T14:59:11.000Z"}, {"o": "SHI", "l": "Kitchen", "i": "JAPANESE WAGYU BEEF RIBEYE 1Kg", "c": "Food", "s": "SIMPLY GOURMET", "old": 185.0, "new": 215.0, "diff": 30.0, "pct": 16.22, "u": "2026-09-17T13:28:10.000Z"}, {"o": "MEI", "l": "Kitchen", "i": "POTATO STARCH 25Kg", "c": "Food", "s": "Yang Susheng Foodstuff Trading LLC", "old": 285.0, "new": 350.0, "diff": 65.0, "pct": 22.81, "u": "2026-09-17T10:43:44.000Z"}, {"o": "MOLI", "l": "Bar", "i": "JHONY WALKER BLUE 0.75L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 2039.7, "new": 2044.9, "diff": 5.2, "pct": 0.25, "u": "2026-09-16T17:25:37.000Z"}, {"o": "SHI", "l": "Bar", "i": "NESCAFFE COFFEE 0.19Kg", "c": "Non - Alcoholic Beverages", "s": "SAFCO", "old": 23.87, "new": 16.56, "diff": -7.31, "pct": -30.62, "u": "2026-09-16T15:01:11.000Z"}, {"o": "MOLI", "l": "Kitchen", "i": "BISCUIT SAVIORDI BONOMI 0.2Kg", "c": "Food", "s": "Chef Middle East", "old": 9.0, "new": 15.0, "diff": 6.0, "pct": 66.67, "u": "2026-09-16T14:55:30.000Z"}, {"o": "SHI", "l": "Kitchen", "i": "TURMERIC POWDER 1Kg", "c": "Food", "s": "MH ENTERPRISES", "old": 6.0, "new": 9.0, "diff": 3.0, "pct": 50.0, "u": "2026-09-16T10:27:48.000Z"}, {"o": "MOLI", "l": "Bar", "i": "MANCINO SECCO 0.75L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 178.1, "new": 183.3, "diff": 5.2, "pct": 2.92, "u": "2026-09-15T17:26:42.000Z"}, {"o": "MOLI", "l": "Bar", "i": "YAMAZAKI 12 0.7L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 1631.5, "new": 1508.0, "diff": -123.5, "pct": -7.57, "u": "2026-09-15T17:26:42.000Z"}, {"o": "MOLI", "l": "Bar", "i": "TANQUERAY GIN 0.75L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 147.64, "new": 153.4, "diff": 5.76, "pct": 3.9, "u": "2026-09-15T17:26:42.000Z"}, {"o": "MOLI", "l": "Bar", "i": "JIM BEAM 0.75L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 178.1, "new": 183.3, "diff": 5.2, "pct": 2.92, "u": "2026-09-15T17:26:42.000Z"}, {"o": "MOLI", "l": "Bar", "i": "MANCINO ROSSO 0.75L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 178.1, "new": 183.3, "diff": 5.2, "pct": 2.92, "u": "2026-09-15T17:23:07.000Z"}, {"o": "MOLI", "l": "Bar", "i": "FIXIN CLOS DU CHAPITRE MEO CAMUZET 2021 0.75L", "c": "Alcoholic Beverages", "s": "MMI", "old": 637.0, "new": 642.2, "diff": 5.2, "pct": 0.82, "u": "2026-09-15T17:13:22.000Z"}, {"o": "MOLI", "l": "Bar", "i": "FATTORIE DEI DOLFIE ONORIUS TUSCANY 0.75L", "c": "Alcoholic Beverages", "s": "MMI", "old": 136.5, "new": 141.7, "diff": 5.2, "pct": 3.81, "u": "2026-09-15T17:13:22.000Z"}, {"o": "MOLI", "l": "Bar", "i": "BEAUNE 1C BRESSANDES DOMAINE GAGEY 2020 0.75L", "c": "Alcoholic Beverages", "s": "MMI", "old": 421.07, "new": 488.15, "diff": 67.08, "pct": 15.93, "u": "2026-09-15T17:13:22.000Z"}, {"o": "SHI", "l": "Bar", "i": "DON JULIO REPOSADO 0.75L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 631.8, "new": 637.0, "diff": 5.2, "pct": 0.82, "u": "2026-09-15T16:45:30.000Z"}, {"o": "SHI", "l": "Bar", "i": "TSINGTAO 0.33L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 11.7, "new": 12.895972, "diff": 1.195972, "pct": 10.22, "u": "2026-09-15T16:45:30.000Z"}, {"o": "SHI", "l": "Bar", "i": "GLENFIDICH 12YRS 0.75L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 405.6, "new": 410.8, "diff": 5.2, "pct": 1.28, "u": "2026-09-15T16:45:30.000Z"}, {"o": "SHI", "l": "Bar", "i": "QUEBRANTA PISCO 0.7L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 136.5, "new": 141.7, "diff": 5.2, "pct": 3.81, "u": "2026-09-15T16:45:30.000Z"}, {"o": "SHI", "l": "Bar", "i": "JIM BEAM 0.75L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 178.1, "new": 183.3, "diff": 5.2, "pct": 2.92, "u": "2026-09-15T16:45:30.000Z"}, {"o": "SHI", "l": "Bar", "i": "GORDONS PINK 0.7L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 144.3, "new": 149.5, "diff": 5.2, "pct": 3.6, "u": "2026-09-15T16:45:30.000Z"}, {"o": "MOLI", "l": "Kitchen", "i": "ALUMIINIUM CUP CAKE (25x1Piece)", "c": "Non Food", "s": "Biopack", "old": 7.0, "new": 25.0, "diff": 18.0, "pct": 257.14, "u": "2026-09-15T15:45:59.000Z"}, {"o": "MOLI", "l": "Kitchen", "i": "STAFF CHICKEN 1Kg", "c": "Food", "s": "MH ENTERPRISES", "old": 11.0, "new": 15.0, "diff": 4.0, "pct": 36.36, "u": "2026-09-15T15:39:53.000Z"}, {"o": "MOLI", "l": "Kitchen", "i": "HEINZ TOMATO KETCHUP 5Kg", "c": "Food", "s": "MH ENTERPRISES", "old": 52.5, "new": 46.02, "diff": -6.48, "pct": -12.34, "u": "2026-09-15T15:39:53.000Z"}, {"o": "MEI", "l": "Kitchen", "i": "GREEN TOBIKO 0.5Kg", "c": "Food", "s": "Deep SeaFood", "old": 66.75, "new": 75.0, "diff": 8.25, "pct": 12.36, "u": "2026-09-15T15:27:55.000Z"}, {"o": "MOLI", "l": "Bar", "i": "ERATH PINOT NOIR OREGON 0.75L", "c": "Alcoholic Beverages", "s": "MMI", "old": 156.0, "new": 161.2, "diff": 5.2, "pct": 3.33, "u": "2026-09-15T12:32:23.000Z"}, {"o": "SHI", "l": "Kitchen", "i": "CHICKEN THIGHS 1Kg", "c": "Food", "s": "FRESHESCO FOODSTUFF TRADING CO. L.L.C", "old": 17.5, "new": 16.5, "diff": -1.0, "pct": -5.71, "u": "2026-09-15T11:53:18.000Z"}, {"o": "SHI", "l": "Kitchen", "i": "WHITE CHOCOLATE CALLEBAUT 10Kg", "c": "Food", "s": "EMF EMIRATES LLC", "old": 705.0, "new": 630.0, "diff": -75.0, "pct": -10.64, "u": "2026-09-15T11:49:08.000Z"}, {"o": "MOLI", "l": "Kitchen", "i": "HAZELNUTS PASTE CALLEBOUT 5Kg", "c": "Food", "s": "EMF EMIRATES LLC", "old": 480.0, "new": 625.0, "diff": 145.0, "pct": 30.21, "u": "2026-09-15T11:45:53.000Z"}, {"o": "MEI", "l": "Kitchen", "i": "HEINZ TOMATO KETCHUP 5Kg", "c": "Food", "s": "MH ENTERPRISES", "old": 52.5, "new": 46.12, "diff": -6.38, "pct": -12.15, "u": "2026-09-14T16:11:09.000Z"}, {"o": "SHI", "l": "Bar", "i": "ATARAXIA CHARDONNAY  0.75L", "c": "Alcoholic Beverages", "s": "MMI", "old": 239.2, "new": 244.4, "diff": 5.2, "pct": 2.17, "u": "2026-09-14T15:35:06.000Z"}, {"o": "SHI", "l": "Bar", "i": "RUINART ROSE 0.75L", "c": "Alcoholic Beverages", "s": "MMI", "old": 546.0, "new": 590.2, "diff": 44.2, "pct": 8.1, "u": "2026-09-14T15:35:06.000Z"}, {"o": "SHI", "l": "Bar", "i": "LAGRANGE A POMEROL 2015 0.75L", "c": "Alcoholic Beverages", "s": "MMI", "old": 416.0, "new": 421.2, "diff": 5.2, "pct": 1.25, "u": "2026-09-14T15:35:06.000Z"}, {"o": "SHI", "l": "Bar", "i": "SAINT ROMAIN BLANC SOUS CHATEAU B LEROUX 0.75L", "c": "Alcoholic Beverages", "s": "MMI", "old": 351.0, "new": 343.2, "diff": -7.8, "pct": -2.22, "u": "2026-09-14T15:35:06.000Z"}, {"o": "SHI", "l": "Bar", "i": "ARTADI QUINTANILLA 2021 0.75L", "c": "Alcoholic Beverages", "s": "MMI", "old": 433.42, "new": 525.2, "diff": 91.78, "pct": 21.18, "u": "2026-09-14T15:35:06.000Z"}, {"o": "SHI", "l": "Bar", "i": "TAPANAPPA FOGGY HILL VINEYARD PINOT NOIR 0.75L", "c": "Alcoholic Beverages", "s": "MMI", "old": 198.12, "new": 203.32, "diff": 5.2, "pct": 2.62, "u": "2026-09-14T15:35:06.000Z"}, {"o": "SHI", "l": "Bar", "i": "TERRAZAS DE LOS ANDES RESERVA MALBEC MENDOZA 0.75L", "c": "Alcoholic Beverages", "s": "MMI", "old": 135.2, "new": 140.4, "diff": 5.2, "pct": 3.85, "u": "2026-09-14T15:35:06.000Z"}, {"o": "SHI", "l": "Bar", "i": "RUINART BLANC DE BLNC 0.75L", "c": "Alcoholic Beverages", "s": "MMI", "old": 617.5, "new": 622.7, "diff": 5.2, "pct": 0.84, "u": "2026-09-14T15:35:06.000Z"}, {"o": "SHI", "l": "Kitchen", "i": "FROZEN BABY SQUID 20/40 1Kg", "c": "Food", "s": "Deep SeaFood", "old": 26.0, "new": 30.0, "diff": 4.0, "pct": 15.38, "u": "2026-09-14T14:33:16.000Z"}, {"o": "SHI", "l": "Kitchen", "i": "CLING FILM 45CM - Small - 1 x 6 Rolls 1Piece", "c": "Non Food", "s": "SPARKLEAN GENERAL TRADING L.L.C", "old": 90.0, "new": 120.0, "diff": 30.0, "pct": 33.33, "u": "2026-09-14T14:12:58.000Z"}, {"o": "MEI", "l": "Bar", "i": "FROZEN CHERRY MORELLO IQF 1Kg", "c": "Non - Alcoholic Beverages", "s": "SAFCO", "old": 38.0, "new": 95.0, "diff": 57.0, "pct": 150.0, "u": "2026-09-13T17:11:10.000Z"}, {"o": "MOLI", "l": "Kitchen", "i": "WHOLE CHICKEN LEGS 15Kg", "c": "Food", "s": "MH ENTERPRISES", "old": 162.5, "new": 160.0, "diff": -2.5, "pct": -1.54, "u": "2026-09-13T14:22:07.000Z"}, {"o": "MEI", "l": "Kitchen", "i": "FOIE GRA TERRINE 0.5Kg", "c": "Food", "s": "CLASSIC FINE FOODS", "old": 159.0, "new": 164.5, "diff": 5.5, "pct": 3.46, "u": "2026-09-13T13:27:55.000Z"}, {"o": "MEI", "l": "Kitchen", "i": "YUZU KOSHO GREEN 0.05Kg", "c": "Food", "s": "Taste Masters", "old": 17.0, "new": 32.0, "diff": 15.0, "pct": 88.24, "u": "2026-09-13T12:26:33.000Z"}, {"o": "MEI", "l": "Kitchen", "i": "YUZU KOSHO RED 0.08Kg", "c": "Food", "s": "Taste Masters", "old": 32.0, "new": 20.0, "diff": -12.0, "pct": -37.5, "u": "2026-09-13T12:26:33.000Z"}, {"o": "MEI", "l": "Bar", "i": "DOMAINE CHANDON DE BRIAILLES SAVIGNY LES BEAUNE AUX FOURNEAUX ROUGE 0.75L", "c": "Alcoholic Beverages", "s": "MMI", "old": 325.65, "new": 330.85, "diff": 5.2, "pct": 1.6, "u": "2026-09-12T16:19:39.000Z"}, {"o": "MOLI", "l": "Kitchen", "i": "WHITE TOWEL 1Piece", "c": "Non Food", "s": "Biopack", "old": 15.0, "new": 9.0, "diff": -6.0, "pct": -40.0, "u": "2026-09-12T15:47:13.000Z"}, {"o": "MOLI", "l": "Kitchen", "i": "HOISIN SAUCE LKK 2.27L", "c": "Food", "s": "Yang Susheng Foodstuff Trading LLC", "old": 52.0, "new": 60.0, "diff": 8.0, "pct": 15.38, "u": "2026-09-12T15:41:04.000Z"}, {"o": "MEI", "l": "Bar", "i": "JASMINE PEARLS 1Kg", "c": "Non - Alcoholic Beverages", "s": "HORECA TRADE LLC", "old": 505.0, "new": 595.0, "diff": 90.0, "pct": 17.82, "u": "2026-09-12T13:54:23.000Z"}, {"o": "SHI", "l": "Kitchen", "i": "POTATO STARCH 25Kg", "c": "Food", "s": "Yang Susheng Foodstuff Trading LLC", "old": 285.0, "new": 350.0, "diff": 65.0, "pct": 22.81, "u": "2026-09-12T12:43:47.000Z"}, {"o": "SHI", "l": "Kitchen", "i": "EDAMAME WITH SHELL (24x0.5Kg)", "c": "Food", "s": "Taste Masters", "old": 168.0, "new": 192.0, "diff": 24.0, "pct": 14.29, "u": "2026-09-12T11:51:21.000Z"}, {"o": "MOLI", "l": "Bar", "i": "DR LOOSEN RIESLING 0.75L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 87.1, "new": 92.3, "diff": 5.2, "pct": 5.97, "u": "2026-09-12T11:01:54.000Z"}, {"o": "SHI", "l": "Bar", "i": "MACALLAN 12YRS 0.7L", "c": "Alcoholic Beverages", "s": "MMI", "old": 496.6, "new": 501.8, "diff": 5.2, "pct": 1.05, "u": "2026-09-11T14:41:52.000Z"}, {"o": "SHI", "l": "Bar", "i": "DEL MAGUEY VIDA MEZCAL 0.7L", "c": "Alcoholic Beverages", "s": "MMI", "old": 241.8, "new": 247.0, "diff": 5.2, "pct": 2.15, "u": "2026-09-11T14:41:52.000Z"}, {"o": "SHI", "l": "Bar", "i": "HENNESY VSOP 0.7L", "c": "Alcoholic Beverages", "s": "MMI", "old": 440.7, "new": 445.9, "diff": 5.2, "pct": 1.18, "u": "2026-09-11T14:41:52.000Z"}, {"o": "SHI", "l": "Bar", "i": "MARTELL VSOP 0.7L", "c": "Alcoholic Beverages", "s": "MMI", "old": 439.4, "new": 444.6, "diff": 5.2, "pct": 1.18, "u": "2026-09-11T14:41:52.000Z"}, {"o": "SHI", "l": "Bar", "i": "WHISPERING ANGEL 0.75L", "c": "Alcoholic Beverages", "s": "MMI", "old": 149.5, "new": 154.7, "diff": 5.2, "pct": 3.48, "u": "2026-09-11T14:35:47.000Z"}, {"o": "SHI", "l": "Bar", "i": "SCHIEFERKOPF TROCKEN SEC RIESLING 0.75L", "c": "Alcoholic Beverages", "s": "MMI", "old": 85.8, "new": 91.0, "diff": 5.2, "pct": 6.06, "u": "2026-09-11T14:35:47.000Z"}, {"o": "SHI", "l": "Bar", "i": "LA SCOLCA GAVI DEI GAVI &-39,BLACK LABEL&-39, DOC 0.75L", "c": "Alcoholic Beverages", "s": "MMI", "old": 312.0, "new": 317.2, "diff": 5.2, "pct": 1.67, "u": "2026-09-11T14:35:47.000Z"}, {"o": "SHI", "l": "Kitchen", "i": "RICE SEASONING MIX-FURIKAKE SETO FUMI 0.045Kg", "c": "Food", "s": "Deans Fujiya Supermarket LLC.", "old": 20.95, "new": 28.57, "diff": 7.62, "pct": 36.37, "u": "2026-09-10T17:26:47.000Z"}, {"o": "MEI", "l": "Kitchen", "i": "MONOHYDRATED DEXTROSE  1Kg", "c": "Food", "s": "CLASSIC FINE FOODS", "old": 47.0, "new": 68.5, "diff": 21.5, "pct": 45.74, "u": "2026-09-10T13:24:45.000Z"}, {"o": "MEI", "l": "Kitchen", "i": "GYOZA SKIN 0.14Kg", "c": "Food", "s": "Taste Masters", "old": 6.5, "new": 7.5, "diff": 1.0, "pct": 15.38, "u": "2026-09-10T12:25:32.000Z"}, {"o": "SHI", "l": "Kitchen", "i": "INDOMIE NODLES (40x0.08Kg)", "c": "Food", "s": "SAFCO", "old": 53.0, "new": 53.2, "diff": 0.2, "pct": 0.38, "u": "2026-09-10T12:20:40.000Z"}, {"o": "SHI", "l": "Kitchen", "i": "BRAZIL BEEF TENDERLOIN 1Kg", "c": "Food", "s": "SAFCO", "old": 76.0, "new": 65.0, "diff": -11.0, "pct": -14.47, "u": "2026-09-10T12:20:40.000Z"}, {"o": "MEI", "l": "Kitchen", "i": "MIRIN 1L", "c": "Food", "s": "Yang Susheng Foodstuff Trading LLC", "old": 35.0, "new": 45.0, "diff": 10.0, "pct": 28.57, "u": "2026-09-09T16:51:27.000Z"}, {"o": "SHI", "l": "Bar", "i": "HENDRICKS 0.7L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 273.0, "new": 278.2, "diff": 5.2, "pct": 1.9, "u": "2026-09-09T16:29:28.000Z"}, {"o": "SHI", "l": "Bar", "i": "TANQUERAY GIN 0.75L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 147.64, "new": 153.4, "diff": 5.76, "pct": 3.9, "u": "2026-09-09T16:29:28.000Z"}, {"o": "SHI", "l": "Bar", "i": "RON ZACAPA 23 0.75L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 608.4, "new": 613.6, "diff": 5.2, "pct": 0.85, "u": "2026-09-09T16:29:28.000Z"}, {"o": "SHI", "l": "Bar", "i": "DON JULIO BLANCO 0.75L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 521.3, "new": 526.5, "diff": 5.2, "pct": 1.0, "u": "2026-09-09T16:29:28.000Z"}, {"o": "SHI", "l": "Bar", "i": "BELUGA NOBLE 0.7L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 364.0, "new": 369.2, "diff": 5.2, "pct": 1.43, "u": "2026-09-09T16:29:28.000Z"}, {"o": "SHI", "l": "Bar", "i": "SANCERRE COMTE LAFOND 0.75L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 207.0, "new": 291.2, "diff": 84.2, "pct": 40.68, "u": "2026-09-09T16:05:25.000Z"}, {"o": "SHI", "l": "Bar", "i": "CANTINA TERLANO VORBERG PINOT BIANCO RISERVA ALTO ADIGE 0.75L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 258.7, "new": 263.9, "diff": 5.2, "pct": 2.01, "u": "2026-09-09T16:05:25.000Z"}, {"o": "MEI", "l": "Kitchen", "i": "CASHEW NUTS 1Kg", "c": "Food", "s": "MH ENTERPRISES", "old": 40.0, "new": 55.0, "diff": 15.0, "pct": 37.5, "u": "2026-09-09T14:14:02.000Z"}, {"o": "MEI", "l": "Kitchen", "i": "YUZU JUICE 1.8L", "c": "Food", "s": "SUMMIT TRADING COMPANY LLC", "old": 200.0, "new": 260.0, "diff": 60.0, "pct": 30.0, "u": "2026-09-09T12:12:53.000Z"}, {"o": "SHI", "l": "Kitchen", "i": "RICE VINEGAR  MIZKAN 0.8L", "c": "Food", "s": "Taste Masters", "old": 14.0, "new": 18.0, "diff": 4.0, "pct": 28.57, "u": "2026-09-09T12:03:23.000Z"}, {"o": "MEI", "l": "Bar", "i": "STRAWBERRY 1Kg", "c": "Non - Alcoholic Beverages", "s": "Barakat Vegetables & Fruits Co LLC", "old": 32.0, "new": 39.53, "diff": 7.53, "pct": 23.53, "u": "2026-09-09T11:09:12.000Z"}, {"o": "MOLI", "l": "Bar", "i": "BLOOD RED PEACH PUREE 1Kg", "c": "Food", "s": "Chef Middle East", "old": 45.0, "new": 70.0, "diff": 25.0, "pct": 55.56, "u": "2026-09-08T16:15:37.000Z"}, {"o": "MOLI", "l": "Kitchen", "i": "MAXI ROLL 1Piece", "c": "Non Food", "s": "SPARKLEAN GENERAL TRADING L.L.C", "old": 28.0, "new": 32.0, "diff": 4.0, "pct": 14.29, "u": "2026-09-08T15:59:02.000Z"}, {"o": "MOLI", "l": "Bar", "i": "SPARKLING WATER SMALL (24x1Piece)", "c": "Non - Alcoholic Beverages", "s": "HORECA TRADE LLC", "old": 82.0, "new": 70.0, "diff": -12.0, "pct": -14.63, "u": "2026-09-08T14:23:23.000Z"}, {"o": "SHI", "l": "Kitchen", "i": "WHOLE ALMONDS, WITH SKIN 1Kg", "c": "Food", "s": "MH ENTERPRISES", "old": 32.0, "new": 37.0, "diff": 5.0, "pct": 15.62, "u": "2026-09-08T13:53:07.000Z"}, {"o": "MEI", "l": "Kitchen", "i": "UDON NOODLE (4x0.25Kg)", "c": "Food", "s": "Taste Masters", "old": 11.5, "new": 21.0, "diff": 9.5, "pct": 82.61, "u": "2026-09-08T12:21:01.000Z"}, {"o": "MOLI", "l": "Bar", "i": "MARQUES DE RISCAL RIOJA RESERVA 0.75L", "c": "Alcoholic Beverages", "s": "MMI", "old": 153.4, "new": 158.6, "diff": 5.2, "pct": 3.39, "u": "2026-09-08T11:58:36.000Z"}, {"o": "MOLI", "l": "Bar", "i": "CHIVAS 12YRS 0.75L", "c": "Alcoholic Beverages", "s": "MMI", "old": 331.5, "new": 336.7, "diff": 5.2, "pct": 1.57, "u": "2026-09-08T11:58:36.000Z"}, {"o": "MEI", "l": "Kitchen", "i": "CUTTLE FISH 1Kg", "c": "Food", "s": "Deep SeaFood", "old": 25.0, "new": 26.0, "diff": 1.0, "pct": 4.0, "u": "2026-09-07T15:23:12.000Z"}, {"o": "SHI", "l": "Kitchen", "i": "LIDS FOR SALAD BOWL 1000ML (300x1Piece)", "c": "Non Food", "s": "SAFCO", "old": 60.0, "new": 65.0, "diff": 5.0, "pct": 8.33, "u": "2026-09-07T12:29:09.000Z"}, {"o": "SHI", "l": "Kitchen", "i": "AAA BATTERY 1Piece", "c": "Non Food", "s": "Biopack", "old": 27.0, "new": 28.0, "diff": 1.0, "pct": 3.7, "u": "2026-09-07T12:22:39.000Z"}, {"o": "MOLI", "l": "Kitchen", "i": "WHIPPING CREAM 35% 1L", "c": "Food", "s": "MH ENTERPRISES", "old": 25.0, "new": 25.82, "diff": 0.82, "pct": 3.28, "u": "2026-09-06T13:49:24.000Z"}, {"o": "SHI", "l": "Kitchen", "i": "GELATINE SHEETS 1Kg", "c": "Food", "s": "SAFCO", "old": 125.0, "new": 160.0, "diff": 35.0, "pct": 28.0, "u": "2026-09-06T12:25:22.000Z"}, {"o": "MOLI", "l": "Kitchen", "i": "FINE SALT (12x1Kg)", "c": "Food", "s": "MH ENTERPRISES", "old": 34.0, "new": 45.0, "diff": 11.0, "pct": 32.35, "u": "2026-09-05T12:07:22.000Z"}, {"o": "MEI", "l": "Kitchen", "i": "ALUMIINIUM CUP CAKE (25x1Piece)", "c": "Non Food", "s": "Biopack", "old": 7.0, "new": 25.0, "diff": 18.0, "pct": 257.14, "u": "2026-09-05T11:52:28.000Z"}, {"o": "MEI", "l": "Kitchen", "i": "GOMA DRESSING 1.8L", "c": "Food", "s": "Yang Susheng Foodstuff Trading LLC", "old": 45.0, "new": 55.0, "diff": 10.0, "pct": 22.22, "u": "2026-09-04T17:21:03.000Z"}, {"o": "MEI", "l": "Bar", "i": "TITOS HANDMADE TEXAN VODKA 0.75L", "c": "Alcoholic Beverages", "s": "MMI", "old": 140.4, "new": 145.6, "diff": 5.2, "pct": 3.7, "u": "2026-09-04T16:29:50.000Z"}, {"o": "MEI", "l": "Bar", "i": "ITALICUS 0.7L", "c": "Alcoholic Beverages", "s": "MMI", "old": 292.5, "new": 297.7, "diff": 5.2, "pct": 1.78, "u": "2026-09-04T16:29:50.000Z"}, {"o": "MEI", "l": "Bar", "i": "GLENLIVET 12YO 75CL 0.75L", "c": "Alcoholic Beverages", "s": "MMI", "old": 374.4, "new": 379.6, "diff": 5.2, "pct": 1.39, "u": "2026-09-04T16:29:50.000Z"}, {"o": "MEI", "l": "Bar", "i": "HENNESY VSOP 0.7L", "c": "Alcoholic Beverages", "s": "MMI", "old": 440.7, "new": 445.9, "diff": 5.2, "pct": 1.18, "u": "2026-09-04T16:29:50.000Z"}, {"o": "MEI", "l": "Bar", "i": "EL JIMADOR BLANCO 0.7L", "c": "Alcoholic Beverages", "s": "MMI", "old": 135.85, "new": 141.05, "diff": 5.2, "pct": 3.83, "u": "2026-09-04T16:29:50.000Z"}, {"o": "MEI", "l": "Bar", "i": "NIKKA FROM BARREL 0.5L", "c": "Alcoholic Beverages", "s": "MMI", "old": 240.5, "new": 243.1, "diff": 2.6, "pct": 1.08, "u": "2026-09-04T16:29:50.000Z"}, {"o": "MEI", "l": "Bar", "i": "MONKEY 47 0.5L", "c": "Alcoholic Beverages", "s": "MMI", "old": 351.0, "new": 353.6, "diff": 2.6, "pct": 0.74, "u": "2026-09-04T16:29:50.000Z"}, {"o": "SHI", "l": "Bar", "i": "HAVANA 7 0.7L", "c": "Alcoholic Beverages", "s": "MMI", "old": 227.5, "new": 232.7, "diff": 5.2, "pct": 2.29, "u": "2026-09-04T14:10:59.000Z"}, {"o": "SHI", "l": "Bar", "i": "APEROL 0.7L", "c": "Alcoholic Beverages", "s": "MMI", "old": 106.6, "new": 111.8, "diff": 5.2, "pct": 4.88, "u": "2026-09-04T14:10:59.000Z"}, {"o": "SHI", "l": "Bar", "i": "GREYGOOSE 0.75L", "c": "Alcoholic Beverages", "s": "MMI", "old": 391.3, "new": 396.5, "diff": 5.2, "pct": 1.33, "u": "2026-09-04T14:10:59.000Z"}, {"o": "SHI", "l": "Bar", "i": "CAMPARI 1L", "c": "Alcoholic Beverages", "s": "MMI", "old": 148.2, "new": 153.4, "diff": 5.2, "pct": 3.51, "u": "2026-09-04T14:10:59.000Z"}, {"o": "SHI", "l": "Bar", "i": "KAHLUA 0.7L", "c": "Alcoholic Beverages", "s": "MMI", "old": 156.0, "new": 161.2, "diff": 5.2, "pct": 3.33, "u": "2026-09-04T14:10:59.000Z"}, {"o": "SHI", "l": "Bar", "i": "JACK DANIEL 0.75L", "c": "Alcoholic Beverages", "s": "MMI", "old": 234.0, "new": 248.3, "diff": 14.3, "pct": 6.11, "u": "2026-09-04T14:10:59.000Z"}, {"o": "SHI", "l": "Bar", "i": "AMELIA CHARDONNAY 2019 0.75L", "c": "Alcoholic Beverages", "s": "MMI", "old": 377.0, "new": 382.2, "diff": 5.2, "pct": 1.38, "u": "2026-09-04T13:52:11.000Z"}, {"o": "SHI", "l": "Kitchen", "i": "DREID SEAWEED - KAISO SALAD (TOKON) 0.1Kg", "c": "Food", "s": "Deans Fujiya Supermarket LLC.", "old": 35.0, "new": 40.0, "diff": 5.0, "pct": 14.29, "u": "2026-09-03T17:26:06.000Z"}, {"o": "MEI", "l": "Bar", "i": "MAISON ANTOINE GEOFFROY BOURGOGNE BLANC 0.75L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 154.7, "new": 159.9, "diff": 5.2, "pct": 3.36, "u": "2026-09-03T17:05:26.000Z"}, {"o": "MEI", "l": "Bar", "i": "TANQUERAY GIN 0.75L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 147.64, "new": 153.4, "diff": 5.76, "pct": 3.9, "u": "2026-09-03T17:05:26.000Z"}, {"o": "MEI", "l": "Bar", "i": "DON JULIO BLANCO 0.75L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 521.3, "new": 526.5, "diff": 5.2, "pct": 1.0, "u": "2026-09-03T17:05:26.000Z"}, {"o": "MEI", "l": "Bar", "i": "RON ZACAPA 23 0.75L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 608.4, "new": 613.6, "diff": 5.2, "pct": 0.85, "u": "2026-09-03T17:05:26.000Z"}, {"o": "SHI", "l": "Bar", "i": "KETEL ONE 0.75L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 140.4, "new": 145.6, "diff": 5.2, "pct": 3.7, "u": "2026-09-03T16:34:54.000Z"}, {"o": "SHI", "l": "Bar", "i": "JHONY WALKER BLACK 0.7L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 309.4, "new": 314.6, "diff": 5.2, "pct": 1.68, "u": "2026-09-03T16:34:54.000Z"}, {"o": "SHI", "l": "Bar", "i": "ARCHERS PEACH SCNAPPS 0.7L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 136.5, "new": 141.7, "diff": 5.2, "pct": 3.81, "u": "2026-09-03T16:34:54.000Z"}, {"o": "SHI", "l": "Bar", "i": "JOSE QUERVO SILVER 0.75L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 145.6, "new": 150.8, "diff": 5.2, "pct": 3.57, "u": "2026-09-03T16:34:54.000Z"}, {"o": "MEI", "l": "Kitchen", "i": "WHIPPING CREAM 35% 1L", "c": "Food", "s": "MH ENTERPRISES", "old": 25.0, "new": 25.83, "diff": 0.83, "pct": 3.32, "u": "2026-09-03T15:44:03.000Z"}, {"o": "MOLI", "l": "Kitchen", "i": "HAND GLOVE MEDIUM 1Piece", "c": "Non Food", "s": "SPARKLEAN GENERAL TRADING L.L.C", "old": 95.0, "new": 85.0, "diff": -10.0, "pct": -10.53, "u": "2026-09-03T14:41:46.000Z"}, {"o": "MOLI", "l": "Kitchen", "i": "SHRIMPS 16/20 CLEANED PD TAIL OF 1Kg", "c": "Food", "s": "Deep SeaFood", "old": 23.25, "new": 26.0, "diff": 2.75, "pct": 11.83, "u": "2026-09-03T14:41:46.000Z"}, {"o": "MOLI", "l": "Kitchen", "i": "FLOOR MOP 1Piece", "c": "Non Food", "s": "SPARKLEAN GENERAL TRADING L.L.C", "old": 20.0, "new": 12.0, "diff": -8.0, "pct": -40.0, "u": "2026-09-03T14:41:46.000Z"}, {"o": "MEI", "l": "Kitchen", "i": "GLUCOSE SYRUP 5Kg", "c": "Food", "s": "EMF EMIRATES LLC", "old": 90.0, "new": 122.5, "diff": 32.5, "pct": 36.11, "u": "2026-09-03T10:54:06.000Z"}, {"o": "MOLI", "l": "Bar", "i": "PEWSEY VALE VINEYARD RIESLING 0.75L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 143.0, "new": 148.2, "diff": 5.2, "pct": 3.64, "u": "2026-09-02T17:30:17.000Z"}, {"o": "MOLI", "l": "Bar", "i": "JHONY WALKER BLACK 0.7L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 309.4, "new": 314.6, "diff": 5.2, "pct": 1.68, "u": "2026-09-02T17:30:17.000Z"}, {"o": "MOLI", "l": "Bar", "i": "JEAN DES VIGNES ROUGE 0.75L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 45.5, "new": 50.7, "diff": 5.2, "pct": 11.43, "u": "2026-09-02T17:30:17.000Z"}, {"o": "MOLI", "l": "Bar", "i": "TANQUERAY 10 0.75L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 267.8, "new": 273.0, "diff": 5.2, "pct": 1.94, "u": "2026-09-02T17:30:17.000Z"}, {"o": "SHI", "l": "Bar", "i": "GAJA PROMIS CA MARCANDA TOSCANA IGP 0.75L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 343.2, "new": 348.4, "diff": 5.2, "pct": 1.52, "u": "2026-09-02T16:21:00.000Z"}, {"o": "SHI", "l": "Bar", "i": "KAIKEN, MALBEC ULTRA, MENDOZA 2018 0.75L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 135.2, "new": 140.4, "diff": 5.2, "pct": 3.85, "u": "2026-09-02T16:21:00.000Z"}, {"o": "SHI", "l": "Bar", "i": "PAPAGIANNAKOS ASSYRTIKO 0.75L", "c": "Alcoholic Beverages", "s": "AFRICAN & EASTERN", "old": 180.7, "new": 185.9, "diff": 5.2, "pct": 2.88, "u": "2026-09-02T16:21:00.000Z"}, {"o": "MOLI", "l": "Kitchen", "i": "FLAT MOP CLIP AND STICK 1Piece", "c": "Non Food", "s": "SPARKLEAN GENERAL TRADING L.L.C", "old": 22.0, "new": 24.0, "diff": 2.0, "pct": 9.09, "u": "2026-09-02T15:37:35.000Z"}, {"o": "MOLI", "l": "Kitchen", "i": "CLING FILM 45 CM 1Piece", "c": "Non Food", "s": "SPARKLEAN GENERAL TRADING L.L.C", "old": 110.0, "new": 120.0, "diff": 10.0, "pct": 9.09, "u": "2026-09-02T15:37:35.000Z"}, {"o": "SHI", "l": "Kitchen", "i": "RICE VERMICILLI 0.4Kg", "c": "Food", "s": "Yang Susheng Foodstuff Trading LLC", "old": 6.5, "new": 35.0, "diff": 28.5, "pct": 438.46, "u": "2026-09-02T13:01:50.000Z"}, {"o": "SHI", "l": "Kitchen", "i": "GREEN PAD (12x1Piece)", "c": "Non Food", "s": "Biopack", "old": 18.0, "new": 13.0, "diff": -5.0, "pct": -27.78, "u": "2026-09-02T12:24:01.000Z"}, {"o": "MEI", "l": "Kitchen", "i": "GREEN PAD (12x1Piece)", "c": "Non Food", "s": "Biopack", "old": 18.0, "new": 13.0, "diff": -5.0, "pct": -27.78, "u": "2026-09-02T11:58:08.000Z"}, {"o": "MEI", "l": "Kitchen", "i": "HAMACHI 1Kg", "c": "Food", "s": "WILD NORTH FISH GENERAL TRADING L.L.C", "old": 88.0, "new": 130.0, "diff": 42.0, "pct": 47.73, "u": "2026-09-01T17:15:01.000Z"}, {"o": "MEI", "l": "Kitchen", "i": "QUAIL EGGS TIN (12x0.425Kg)", "c": "Food", "s": "SAFCO", "old": 117.0, "new": 84.0, "diff": -33.0, "pct": -28.21, "u": "2026-09-01T16:42:07.000Z"}, {"o": "MOLI", "l": "Kitchen", "i": "UDON NOODLE (4x0.25Kg)", "c": "Food", "s": "Taste Masters", "old": 11.5, "new": 21.0, "diff": 9.5, "pct": 82.61, "u": "2026-09-01T15:46:55.000Z"}, {"o": "SHI", "l": "Kitchen", "i": "WEISS SUPREME 38% LAIT/MILK CHOCO 5Kg", "c": "Food", "s": "CLASSIC FINE FOODS", "old": 575.0, "new": 540.0, "diff": -35.0, "pct": -6.09, "u": "2026-09-01T12:13:01.000Z"}, {"o": "SHI", "l": "Kitchen", "i": "70% DARK CHOCO DROPS 5Kg", "c": "Food", "s": "CLASSIC FINE FOODS", "old": 530.0, "new": 480.0, "diff": -50.0, "pct": -9.43, "u": "2026-09-01T12:13:01.000Z"}]};
+
+  var cs = getComputedStyle(document.documentElement);
+  var tok = function(n){ return cs.getPropertyValue(n).trim(); };
+  var COL = { ink: tok('--ink'), inkSoft: tok('--ink-soft'), inkFaint: tok('--ink-faint'),
+    border: tok('--border'), surface: tok('--surface'), accent: tok('--accent'), up: tok('--up'), down: tok('--down') };
+
+  function fmtAED(n, decimals){
+    decimals = decimals === undefined ? 0 : decimals;
+    var sign = n < 0 ? '-' : '';
+    return sign + Math.abs(n).toLocaleString('en-AE', {minimumFractionDigits:decimals, maximumFractionDigits:decimals});
+  }
+  function fmtPct(n, decimals){
+    decimals = decimals === undefined ? 1 : decimals;
+    var sign = n > 0 ? '+' : '';
+    return sign + n.toFixed(decimals) + '%';
+  }
+  function esc(s){ return String(s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function fmtDate(iso){ try{ return iso.slice(0,10); }catch(e){ return iso; } }
+
+  Chart.defaults.font.family = "'IBM Plex Mono', monospace";
+  Chart.defaults.color = COL.inkSoft;
+  Chart.defaults.borderColor = COL.border;
+
+  /* ========== DRILLDOWN MODAL ========== */
+  var drillOverlay, drillClose, drillTitle, drillSub, drillBody;
+  (function(){
+  try{
+    drillOverlay = document.getElementById('drillOverlay');
+    drillClose = document.getElementById('drillClose');
+    drillTitle = document.getElementById('drillTitle');
+    drillSub = document.getElementById('drillSub');
+    drillBody = document.getElementById('drillBody');
+    drillClose.addEventListener('click', closeDrilldown);
+    drillOverlay.addEventListener('click', function(e){ if(e.target === drillOverlay) closeDrilldown(); });
+    document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && !drillOverlay.hidden) closeDrilldown(); });
+  }catch(e){ console.error('DRILLDOWN MODAL init failed:', e); }
+  })();
+
+  function itemsTable(list, kind){
+    if(!list.length) return '<div class="modal-empty">None.</div>';
+    var head = '<thead><tr><th>Item</th><th>Outlet</th><th>Supplier</th><th class="num">Old → New</th><th class="num">Diff</th></tr></thead>';
+    var body = '<tbody>' + list.map(function(r){
+      return '<tr>'+
+        '<td><span class="item-name">'+esc(r.i)+'</span><span class="item-meta">'+esc(r.c)+' · '+esc(r.l)+'</span></td>'+
+        '<td><span class="outlet-tag">'+esc(r.o)+'</span></td>'+
+        '<td style="color:var(--ink-soft);">'+esc(r.s.length>24? r.s.slice(0,22)+'…' : r.s)+'</td>'+
+        '<td class="num">'+fmtAED(r.old,2)+' → '+fmtAED(r.new,2)+'</td>'+
+        '<td class="num"><span class="pill '+kind+'">'+fmtAED(r.diff,2)+' · '+fmtPct(r.pct)+'</span></td>'+
+        '</tr>';
+    }).join('') + '</tbody>';
+    return '<div class="table-scroll"><table>'+head+body+'</table></div>';
+  }
+
+  function openDrilldown(field, value, label, kindLabel){
+    try{
+      var all = DATA.rows.filter(function(r){ return r[field] === value; });
+      var inc = all.filter(function(r){ return r.diff > 0; }).sort(function(a,b){ return b.diff - a.diff; });
+      var dec = all.filter(function(r){ return r.diff < 0; }).sort(function(a,b){ return a.diff - b.diff; });
+      drillTitle.textContent = label;
+      drillSub.textContent = (kindLabel||'') + ' · ' + all.length + ' items · ' + inc.length + ' up · ' + dec.length + ' down';
+      drillBody.innerHTML =
+        '<div><div class="modal-group-title">Increased <span class="n">(' + inc.length + ')</span></div>' + itemsTable(inc, 'up') + '</div>' +
+        '<div><div class="modal-group-title">Decreased <span class="n">(' + dec.length + ')</span></div>' + itemsTable(dec, 'down') + '</div>';
+      drillOverlay.hidden = false;
+    }catch(e){ console.error('openDrilldown failed:', e); }
+  }
+  function closeDrilldown(){ try{ drillOverlay.hidden = true; }catch(e){ console.error('closeDrilldown failed:', e); } }
+
+  /* ========== KPI STRIP ========== */
+  (function(){
+  try{
+    var k = DATA.kpis;
+    var items = [
+      {label:'Net impact', value: 'AED ' + fmtAED(k.net_diff), cls: k.net_diff>=0?'up':'down',
+        sub: fmtAED(k.old_sum) + ' → ' + fmtAED(k.new_sum)},
+      {label:'Weighted change', value: fmtPct(k.portfolio_pct), cls: k.portfolio_pct>=0?'up':'down', sub: 'across the basket'},
+      {label:'Items up', value: k.n_inc + ' / ' + k.total_lines, cls:'up', sub: 'avg ' + fmtPct(k.avg_inc_pct)},
+      {label:'Items down', value: k.n_dec + ' / ' + k.total_lines, cls:'down', sub: 'avg ' + fmtPct(k.avg_dec_pct)},
+      {label:'Biggest mover', value: 'AED ' + fmtAED(DATA.top_inc[0].diff), cls:'up',
+        sub: DATA.top_inc[0].item.slice(0,26) + ' (' + fmtPct(DATA.top_inc[0].pct) + ')'}
+    ];
+    document.getElementById('kpiGrid').innerHTML = items.map(function(it){
+      return '<div class="kpi"><span class="kpi-label">'+esc(it.label)+'</span>'+
+        '<span class="kpi-value '+it.cls+'">'+esc(it.value)+'</span>'+
+        '<span class="kpi-sub">'+esc(it.sub)+'</span></div>';
+    }).join('');
+  }catch(e){ console.error('KPI STRIP failed:', e); }
+  })();
+
+  /* ========== CHART: OUTLET ========== */
+  (function(){
+  try{
+    var rows = DATA.outlet.slice().sort(function(a,b){ return b.sum - a.sum; });
+    new Chart(document.getElementById('chartOutlet'), {
+      type:'bar',
+      data:{ labels: rows.map(function(r){return r.name;}),
+        datasets:[{ data: rows.map(function(r){return r.sum;}), backgroundColor: COL.up, borderRadius:4, barThickness: 26 }] },
+      options:{
+        indexAxis:'y', responsive:true, maintainAspectRatio:false,
+        onClick:function(evt, els){ if(els.length){ var r = rows[els[0].index]; openDrilldown('o', r.name, r.name, 'Outlet'); } },
+        onHover:function(evt, els){ evt.native.target.style.cursor = els.length ? 'pointer' : 'default'; },
+        plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label:function(ctx){
+          var r = rows[ctx.dataIndex]; return 'AED ' + fmtAED(r.sum) + '  (' + fmtPct(r.pct) + ', ' + r.n + ' items) — click for items';
+        }}}},
+        scales:{ x:{ grid:{color:COL.border}, ticks:{callback:function(v){return fmtAED(v);}} },
+          y:{ grid:{display:false}, ticks:{font:{family:"'IBM Plex Sans', sans-serif", weight:'600', size:12}, color:COL.ink} } }
+      }
+    });
+  }catch(e){ console.error('CHART: OUTLET failed:', e); }
+  })();
+
+  /* ========== CHART: CATEGORY ========== */
+  (function(){
+  try{
+    var rows = DATA.category.slice().sort(function(a,b){ return b.pct - a.pct; });
+    new Chart(document.getElementById('chartCategory'), {
+      type:'bar',
+      data:{ labels: rows.map(function(r){return r.name;}),
+        datasets:[{ data: rows.map(function(r){return r.pct;}), backgroundColor: COL.up, borderRadius:4, barThickness: 20 }] },
+      options:{
+        indexAxis:'y', responsive:true, maintainAspectRatio:false,
+        onClick:function(evt, els){ if(els.length){ var r = rows[els[0].index]; openDrilldown('c', r.name, r.name, 'Category'); } },
+        onHover:function(evt, els){ evt.native.target.style.cursor = els.length ? 'pointer' : 'default'; },
+        plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label:function(ctx){
+          var r = rows[ctx.dataIndex]; return fmtPct(r.pct) + '  (AED ' + fmtAED(r.sum) + ', ' + r.n + ' items) — click for items';
+        }}}},
+        scales:{ x:{ grid:{color:COL.border}, ticks:{callback:function(v){return v+'%';}} },
+          y:{ grid:{display:false}, ticks:{font:{family:"'IBM Plex Sans', sans-serif", weight:'600', size:11}, color:COL.ink} } }
+      }
+    });
+  }catch(e){ console.error('CHART: CATEGORY failed:', e); }
+  })();
+
+  /* ========== CHART: SUPPLIER LEADERBOARD ========== */
+  (function(){
+  try{
+    var rows = DATA.supplier.slice().sort(function(a,b){ return Math.abs(b.sum) - Math.abs(a.sum); }).slice(0,12);
+    rows.sort(function(a,b){ return a.sum - b.sum; });
+    new Chart(document.getElementById('chartSupplier'), {
+      type:'bar',
+      data:{ labels: rows.map(function(r){ return r.name.length>26 ? r.name.slice(0,24)+'…' : r.name; }),
+        datasets:[{ data: rows.map(function(r){return r.sum;}),
+          backgroundColor: rows.map(function(r){ return r.sum>=0 ? COL.up : COL.down; }), borderRadius:4, barThickness:15 }] },
+      options:{
+        indexAxis:'y', responsive:true, maintainAspectRatio:false,
+        onClick:function(evt, els){ if(els.length){ var r = rows[els[0].index]; openDrilldown('s', r.name, r.name, 'Supplier'); } },
+        onHover:function(evt, els){ evt.native.target.style.cursor = els.length ? 'pointer' : 'default'; },
+        plugins:{ legend:{display:false}, tooltip:{ callbacks:{ title:function(ctx){ return rows[ctx[0].dataIndex].name; },
+          label:function(ctx){ var r = rows[ctx.dataIndex];
+            return 'AED ' + fmtAED(r.sum) + '  (' + fmtPct(r.pct) + ', ' + r.n + ' items) — click for items'; }}}},
+        scales:{ x:{ grid:{color:COL.border}, ticks:{callback:function(v){return fmtAED(v);}} },
+          y:{ grid:{display:false}, ticks:{font:{family:"'IBM Plex Mono', monospace", size:10}, color:COL.ink} } }
+      }
+    });
+  }catch(e){ console.error('CHART: SUPPLIER failed:', e); }
+  })();
+
+  /* ========== CHART: SUPPLIER RISK BUBBLE ========== */
+  (function(){
+  try{
+    var rows = DATA.supplier.filter(function(r){ return r.n >= 3; });
+    var maxAbs = Math.max.apply(null, rows.map(function(r){ return Math.abs(r.sum); }));
+    var pts = rows.map(function(r){ return { x:r.n, y:r.pct, r: 5 + Math.sqrt(Math.abs(r.sum)/maxAbs) * 20, name:r.name, sum:r.sum, n:r.n }; });
+    new Chart(document.getElementById('chartSupplierRisk'), {
+      type:'bubble',
+      data:{ datasets:[{ data: pts,
+        backgroundColor: pts.map(function(p){ return p.sum>=0 ? 'rgba(194,59,59,.55)' : 'rgba(46,125,79,.55)'; }),
+        borderColor: pts.map(function(p){ return p.sum>=0 ? COL.up : COL.down; }), borderWidth:1.5 }] },
+      options:{ responsive:true, maintainAspectRatio:false,
+        plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label:function(ctx){
+          var p = ctx.raw; return p.name + ': ' + p.n + ' items, ' + fmtPct(p.y) + ', AED ' + fmtAED(p.sum); } } } },
+        scales:{ x:{ title:{display:true, text:'Items affected', color:COL.inkFaint, font:{size:11}}, grid:{color:COL.border}, ticks:{color:COL.inkSoft} },
+          y:{ title:{display:true, text:'% change', color:COL.inkFaint, font:{size:11}}, grid:{color:COL.border}, ticks:{callback:function(v){return v+'%';}, color:COL.inkSoft} } }
+      }
+    });
+  }catch(e){ console.error('CHART: SUPPLIER RISK failed:', e); }
+  })();
+
+  /* ========== HEAT MATRIX ========== */
+  (function(){
+  try{
+    var outlets = DATA.outlets_sorted, cats = DATA.cats_sorted, m = DATA.matrix;
+    var all = []; cats.forEach(function(c){ outlets.forEach(function(o){ all.push(m[c][o]); }); });
+    var max = Math.max.apply(null, all);
+    function cellStyle(v){ var t = Math.max(0, Math.min(1, v / max)); return 'background:rgba(194,59,59,'+(0.08+t*0.55).toFixed(2)+');'; }
+    var html = '<thead><tr><th class="row-label"></th>' + outlets.map(function(o){return '<th class="num">'+esc(o)+'</th>';}).join('') + '</tr></thead><tbody>';
+    cats.forEach(function(c){
+      html += '<tr><th class="row-label">'+esc(c)+'</th>' + outlets.map(function(o){
+        return '<td class="cell" style="'+cellStyle(m[c][o])+'">'+fmtAED(m[c][o])+'</td>'; }).join('') + '</tr>';
+    });
+    document.getElementById('heatTable').innerHTML = html + '</tbody>';
+  }catch(e){ console.error('HEAT MATRIX failed:', e); }
+  })();
+
+  /* ========== LOCATION COMPARE ========== */
+  (function(){
+  try{
+    var rows = DATA.location.slice().sort(function(a,b){ return b.pct - a.pct; });
+    var maxPct = Math.max.apply(null, rows.map(function(r){return r.pct;}));
+    document.getElementById('locCompare').innerHTML = rows.map(function(r){
+      var w = (r.pct/maxPct*100).toFixed(0);
+      return '<div class="loc-row">'+
+        '<div class="loc-row-top"><span class="lbl">'+esc(r.name)+'</span><span class="val">'+fmtPct(r.pct)+' · AED '+fmtAED(r.sum)+'</span></div>'+
+        '<div class="loc-bar-track"><div class="loc-bar-fill" style="width:'+w+'%;"></div></div>'+
+        '<div class="loc-row-top" style="font-size:11px;color:var(--ink-faint);"><span>'+r.n+' items</span><span>'+r.inc+'↑ / '+r.dec+'↓</span></div></div>';
+    }).join('');
+  }catch(e){ console.error('LOCATION COMPARE failed:', e); }
+  })();
+
+  /* ========== MOVERS TABLES ========== */
+  function moversTable(rows){
+    var head = '<thead><tr><th>Item</th><th>Outlet</th><th class="num">Old → New</th><th class="num">Diff</th></tr></thead>';
+    var body = '<tbody>' + rows.slice(0,10).map(function(r){
+      var cls = r.diff >= 0 ? 'up' : 'down';
+      return '<tr><td><span class="item-name">'+esc(r.item.length>34? r.item.slice(0,32)+'…' : r.item)+'</span>'+
+        '<span class="item-meta">'+esc(r.supplier.length>28? r.supplier.slice(0,26)+'…':r.supplier)+'</span></td>'+
+        '<td><span class="outlet-tag">'+esc(r.outlet)+'</span></td>'+
+        '<td class="num">'+fmtAED(r.old,2)+' → '+fmtAED(r.new,2)+'</td>'+
+        '<td class="num"><span class="pill '+cls+'">'+fmtAED(r.diff,2)+' · '+fmtPct(r.pct)+'</span></td></tr>';
+    }).join('') + '</tbody>';
+    return head + body;
+  }
+  (function(){
+  try{
+    document.getElementById('tableUp').innerHTML = moversTable(DATA.top_inc);
+    document.getElementById('tableDown').innerHTML = moversTable(DATA.top_dec);
+  }catch(e){ console.error('MOVERS TABLES failed:', e); }
+  })();
+
+  /* ========== SMALL-TICKET % SPIKE FLAGS ========== */
+  (function(){
+  try{
+    document.getElementById('flagList').innerHTML = DATA.top_pct_inc.slice(0,7).map(function(r){
+      return '<div class="flag-row"><span class="outlet-tag">'+esc(r.outlet)+'</span>'+
+        '<span class="item-name">'+esc(r.item)+'</span>'+
+        '<span style="color:var(--ink-faint);font-family:var(--font-mono);font-size:11px;">'+fmtAED(r.old,2)+'→'+fmtAED(r.new,2)+'</span>'+
+        '<span class="pill up">'+fmtPct(r.pct)+'</span></div>';
+    }).join('');
+  }catch(e){ console.error('SMALL-TICKET SPIKE FLAGS failed:', e); }
+  })();
+
+  /* ========== TALKING POINTS ========== */
+  (function(){
+  try{
+    var k = DATA.kpis;
+    var mei = DATA.outlet.filter(function(r){return r.name==='MEI';})[0];
+    var mmi = DATA.supplier.filter(function(r){return r.name==='MMI';})[0];
+    var safco = DATA.supplier.filter(function(r){return r.name==='SAFCO';})[0];
+    var points = [
+      '<b>Basket is up '+fmtPct(k.portfolio_pct)+'</b> (AED '+fmtAED(k.old_sum)+' → '+fmtAED(k.new_sum)+') — '+k.n_inc+' of '+k.total_lines+' items rose, only '+k.n_dec+' fell.',
+      '<b>MEI faces the steepest pressure</b> ('+fmtPct(mei.pct)+'), not SHI — despite carrying the smallest basket.',
+      '<b>Alcohol is nearly flat</b> ('+fmtPct(DATA.category.filter(function(c){return c.name==='Alcoholic Beverages';})[0].pct)+') despite 107 of 109 lines rising — many small bumps, little basket damage. Non Food and Non-Alcoholic Beverages are the real inflation.',
+      '<b>MMI and SAFCO need different conversations.</b> MMI is broad and shallow ('+mmi.n+' items, mostly up, only '+fmtPct(mmi.pct)+') — a volume renegotiation. SAFCO is narrow and steep ('+fmtPct(safco.pct)+' average) — a unit-price one.',
+      '<b>18 items had conflicting price history</b> in the raw export. Using the latest update resolved all but one — see §06.'
+    ];
+    document.getElementById('insightsList').innerHTML = points.map(function(p,i){
+      return '<li class="insight"><span class="insight-num">'+(i+1)+'</span><span class="insight-body">'+p+'</span></li>';
+    }).join('');
+  }catch(e){ console.error('TALKING POINTS failed:', e); }
+  })();
+
+  /* ========== CORRECTIONS APPLIED ========== */
+  (function(){
+  try{
+    var head = '<thead><tr><th>Item</th><th>Outlet</th><th>Supplier</th><th class="num">Updates</th><th class="num">Old</th><th class="num">Kept price</th><th>As of</th></tr></thead>';
+    var body = '<tbody>' + DATA.corrections.map(function(c){
+      var cls = (c.kept_new - c.old) >= 0 ? 'up' : 'down';
+      return '<tr>'+
+        '<td><span class="item-name">'+esc(c.item)+'</span>'+(c.is_tie ? '<span class="item-meta" style="color:var(--up);">Tied timestamp — needs manual confirmation</span>' : '')+'</td>'+
+        '<td><span class="outlet-tag">'+esc(c.outlet)+'</span></td>'+
+        '<td style="color:var(--ink-soft);">'+esc(c.supplier.length>22? c.supplier.slice(0,20)+'…' : c.supplier)+'</td>'+
+        '<td class="num">'+c.n_updates+'</td>'+
+        '<td class="num">'+fmtAED(c.old,2)+'</td>'+
+        '<td class="num"><span class="pill '+cls+'">'+fmtAED(c.kept_new,2)+'</span></td>'+
+        '<td style="font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);">'+fmtDate(c.kept_updated)+'</td>'+
+        '</tr>';
+    }).join('') + '</tbody>';
+    document.getElementById('tableCorrections').innerHTML = head + body;
+  }catch(e){ console.error('CORRECTIONS APPLIED failed:', e); }
+  })();
+
+})();
+</script>
