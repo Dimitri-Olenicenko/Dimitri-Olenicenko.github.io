@@ -340,8 +340,8 @@
         '<td><span class="item-name">'+esc(r.i)+'</span><span class="item-meta">'+esc(r.c)+' · '+esc(r.l)+'</span></td>'+
         '<td><span class="outlet-tag">'+esc(r.o)+'</span></td>'+
         '<td style="color:var(--ink-soft);">'+esc(r.s.length>24? r.s.slice(0,22)+'…' : r.s)+'</td>'+
-        '<td class="num">'+fmtAED(r.old,2)+' → '+fmtAED(r.new,2)+'</td>'+
-        '<td class="num"><span class="pill '+kind+'">'+fmtAED(r.diff,2)+' · '+fmtPct(r.pct)+'</span></td>'+
+        '<td class="num">'+fmtAED(r.old)+' → '+fmtAED(r.new)+'</td>'+
+        '<td class="num"><span class="pill '+kind+'">'+fmtAED(r.diff)+' · '+fmtPct(r.pct)+'</span></td>'+
         '</tr>';
     }).join('') + '</tbody>';
     return '<div class="table-scroll"><table>'+head+body+'</table></div>';
@@ -511,8 +511,8 @@
       return '<tr><td><span class="item-name">'+esc(r.item.length>34? r.item.slice(0,32)+'…' : r.item)+'</span>'+
         '<span class="item-meta">'+esc(r.supplier.length>28? r.supplier.slice(0,26)+'…':r.supplier)+'</span></td>'+
         '<td><span class="outlet-tag">'+esc(r.outlet)+'</span></td>'+
-        '<td class="num">'+fmtAED(r.old,2)+' → '+fmtAED(r.new,2)+'</td>'+
-        '<td class="num"><span class="pill '+cls+'">'+fmtAED(r.diff,2)+' · '+fmtPct(r.pct)+'</span></td></tr>';
+        '<td class="num">'+fmtAED(r.old)+' → '+fmtAED(r.new)+'</td>'+
+        '<td class="num"><span class="pill '+cls+'">'+fmtAED(r.diff)+' · '+fmtPct(r.pct)+'</span></td></tr>';
     }).join('') + '</tbody>';
     return head + body;
   }
@@ -529,7 +529,7 @@
     document.getElementById('flagList').innerHTML = DATA.top_pct_inc.slice(0,7).map(function(r){
       return '<div class="flag-row"><span class="outlet-tag">'+esc(r.outlet)+'</span>'+
         '<span class="item-name">'+esc(r.item)+'</span>'+
-        '<span style="color:var(--ink-faint);font-family:var(--font-mono);font-size:11px;">'+fmtAED(r.old,2)+'→'+fmtAED(r.new,2)+'</span>'+
+        '<span style="color:var(--ink-faint);font-family:var(--font-mono);font-size:11px;">'+fmtAED(r.old)+'→'+fmtAED(r.new)+'</span>'+
         '<span class="pill up">'+fmtPct(r.pct)+'</span></div>';
     }).join('');
   }catch(e){ console.error('SMALL-TICKET SPIKE FLAGS failed:', e); }
@@ -546,8 +546,8 @@
         '<td><span class="outlet-tag">'+esc(c.outlet)+'</span></td>'+
         '<td style="color:var(--ink-soft);">'+esc(c.supplier.length>22? c.supplier.slice(0,20)+'…' : c.supplier)+'</td>'+
         '<td class="num">'+c.n_updates+'</td>'+
-        '<td class="num">'+fmtAED(c.old,2)+'</td>'+
-        '<td class="num"><span class="pill '+cls+'">'+fmtAED(c.kept_new,2)+'</span></td>'+
+        '<td class="num">'+fmtAED(c.old)+'</td>'+
+        '<td class="num"><span class="pill '+cls+'">'+fmtAED(c.kept_new)+'</span></td>'+
         '<td style="font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);">'+fmtDate(c.kept_updated)+'</td>'+
         '</tr>';
     }).join('') + '</tbody>';
