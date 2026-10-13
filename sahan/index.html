@@ -407,7 +407,7 @@
   function openImpactDrilldown(field, value, label, kindLabel){
     try{
       var all = DATA.impact_rows.filter(function(r){ return r[field] === value; });
-      var mapRow = function(r){ return {item:r.i, outlet:r.o, supplier:r.s, qty:r.qty, diff:r.diff, monthly_increase:r.mi, pct:r.pct}; };
+      var mapRow = function(r){ return {item:r.i, outlet:r.o, supplier:r.s, qty:r.qty, old:r.old, new:r.new, diff:r.diff, monthly_increase:r.mi, pct:r.pct}; };
       var inc = all.filter(function(r){ return r.mi > 0; }).sort(function(a,b){ return b.mi - a.mi; }).map(mapRow);
       var dec = all.filter(function(r){ return r.mi < 0; }).sort(function(a,b){ return a.mi - b.mi; }).map(mapRow);
       var totalQty = all.reduce(function(s,r){ return s+r.qty; }, 0);
@@ -714,15 +714,18 @@
 
   /* ========== MONTHLY IMPACT TABLES ========== */
   function impactTable(rows){
-    var head = '<thead><tr><th>Item</th><th>Outlet</th><th class="num">Qty/mo</th><th class="num">Diff/unit</th><th class="num">Impact/mo</th></tr></thead>';
+    var head = '<thead><tr><th>Item</th><th>Outlet</th><th class="num">Qty/mo</th><th class="num">Total before</th><th class="num">Total now</th><th class="num">Increase/mo</th></tr></thead>';
     var body = '<tbody>' + rows.map(function(r){
       var cls = r.monthly_increase >= 0 ? 'up' : 'down';
+      var totalBefore = r.qty * r.old * 1.05;
+      var totalNow = r.qty * r.new * 1.05;
       return '<tr>'+
         '<td><span class="item-name">'+esc(r.item.length>32? r.item.slice(0,30)+'…' : r.item)+'</span>'+
         '<span class="item-meta">'+esc(r.supplier.length>26? r.supplier.slice(0,24)+'…':r.supplier)+'</span></td>'+
         '<td><span class="outlet-tag">'+esc(r.outlet)+'</span></td>'+
         '<td class="num">'+Math.round(r.qty)+'</td>'+
-        '<td class="num">'+fmtAED(r.diff)+'</td>'+
+        '<td class="num">'+fmtAED(totalBefore)+'</td>'+
+        '<td class="num">'+fmtAED(totalNow)+'</td>'+
         '<td class="num"><span class="pill '+cls+'">'+fmtAED(r.monthly_increase)+'</span></td></tr>';
     }).join('') + '</tbody>';
     return head + body;
