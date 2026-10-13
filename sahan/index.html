@@ -714,6 +714,7 @@
 
   /* ========== MONTHLY IMPACT TABLES ========== */
   function impactTable(rows){
+    if(!rows.length) return '<div class="modal-empty">None.</div>';
     var head = '<thead><tr><th>Item</th><th>Outlet</th><th class="num">Qty/mo</th><th class="num">Total before</th><th class="num">Total now</th><th class="num">Increase/mo</th></tr></thead>';
     var body = '<tbody>' + rows.map(function(r){
       var cls = r.monthly_increase >= 0 ? 'up' : 'down';
@@ -728,7 +729,7 @@
         '<td class="num">'+fmtAED(totalNow)+'</td>'+
         '<td class="num"><span class="pill '+cls+'">'+fmtAED(r.monthly_increase)+'</span></td></tr>';
     }).join('') + '</tbody>';
-    return head + body;
+    return '<div class="table-scroll"><table>'+head+body+'</table></div>';
   }
   (function(){
   try{
