@@ -1,0 +1,500 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Business Overview 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Jost:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.5.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --paper:#FFFFFF; --surface:#0F2219; --surface-2:#17301F; --border:#2E4A37;
+    --ink:#F2EFE6; --ink-soft:#B3BEB4; --ink-faint:#8AA18E;
+    --accent:#C3A570; --accent-ink:#0F2219;
+    --up:#D98F68; --up-bg:rgba(217,143,104,.16); --down:#8FC49E; --down-bg:rgba(143,196,158,.16);
+    --shadow:0 1px 2px rgba(15,30,20,.08), 0 16px 36px -18px rgba(15,30,20,.30);
+    --page-ink:#16211B; --page-ink-soft:#46574C; --page-ink-faint:#657566; --accent-page:#8C6B34; --border-page:#E1E6DF;
+    --font-display:'Cormorant Garamond', Georgia, serif; --font-label:'Jost','Segoe UI',sans-serif;
+    --font-body:'Jost','Segoe UI',sans-serif; --font-mono:'IBM Plex Mono','Consolas',monospace;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--page-ink);font-family:var(--font-body);padding:30px 16px 60px;}
+  .wrap{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:30px;}
+
+  header.report-head{display:flex;flex-direction:column;gap:11px;border-bottom:1px solid var(--border-page);padding-bottom:22px;}
+  .eyebrow{font-family:var(--font-label);font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--accent-page);}
+  h1{font-family:var(--font-display);font-weight:600;font-style:italic;font-size:clamp(34px,4.8vw,50px);line-height:1.04;margin:0;text-wrap:balance;color:var(--page-ink);}
+  .report-sub{color:var(--page-ink-soft);font-size:14px;max-width:72ch;line-height:1.65;font-weight:300;margin:0;}
+  .meta-row{display:flex;flex-wrap:wrap;gap:8px 18px;font-family:var(--font-label);font-size:11px;letter-spacing:.04em;color:var(--page-ink-faint);}
+  .meta-row b{color:var(--accent-page);font-weight:600;}
+
+  .section{display:flex;flex-direction:column;gap:12px;}
+  .section-head{display:flex;align-items:baseline;gap:12px;}
+  .section-num{font-family:var(--font-label);font-size:11px;color:var(--accent-page);font-weight:600;letter-spacing:.1em;}
+  .section-title{font-family:var(--font-label);font-weight:600;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--page-ink);}
+  .section-lede{font-size:13.5px;color:var(--page-ink-soft);line-height:1.65;max-width:80ch;margin:0;font-weight:300;}
+  .section-lede b{font-weight:600;color:var(--page-ink);}
+
+  .kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:4px;overflow:hidden;box-shadow:var(--shadow);}
+  .kpi-grid.k4{grid-template-columns:repeat(4,1fr);}
+  .kpi{background:var(--surface);padding:17px 16px 14px;display:flex;flex-direction:column;gap:6px;min-width:0;}
+  .kpi-label{font-family:var(--font-label);font-size:10.5px;font-weight:500;letter-spacing:.1em;color:var(--ink-faint);text-transform:uppercase;}
+  .kpi-value{font-family:var(--font-display);font-weight:700;font-size:clamp(21px,2.6vw,28px);font-variant-numeric:tabular-nums;line-height:1.1;color:var(--ink);}
+  .kpi-value.up{color:var(--up);} .kpi-value.down{color:var(--down);}
+  .kpi-sub{font-size:11px;color:var(--ink-faint);font-family:var(--font-mono);}
+  @media (max-width:860px){.kpi-grid,.kpi-grid.k4{grid-template-columns:repeat(2,1fr);} .kpi-grid .kpi:nth-child(5){grid-column:1/-1;}}
+
+  .row{display:grid;gap:16px;}
+  .row.cols-2{grid-template-columns:1fr 1fr;}
+  .row.cols-2-wide{grid-template-columns:1.6fr 1fr;}
+  @media (max-width:860px){.row.cols-2,.row.cols-2-wide{grid-template-columns:1fr;}}
+
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:16px 18px 17px;box-shadow:var(--shadow);min-width:0;color:var(--ink);}
+  .card-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:4px;flex-wrap:wrap;}
+  .card-title{font-family:var(--font-label);font-weight:600;font-size:13px;letter-spacing:.04em;color:var(--ink);}
+  .card-tag{font-family:var(--font-label);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint);}
+  .card-note{font-size:11.5px;color:var(--ink-faint);margin:0 0 10px;line-height:1.5;font-weight:300;}
+  .chart-box{position:relative;width:100%;height:280px;}
+  .chart-box.tall{height:340px;} .chart-box.short{height:230px;}
+
+  .table-scroll{overflow-x:auto;}
+  table{width:100%;border-collapse:collapse;font-size:12px;}
+  thead th{text-align:left;font-family:var(--font-label);font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);border-bottom:1px solid var(--border);padding:0 8px 8px;white-space:nowrap;}
+  tbody td{padding:8px;border-bottom:1px solid var(--border);vertical-align:middle;color:var(--ink);white-space:nowrap;}
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr:hover td{background:var(--surface-2);}
+  tfoot td{padding:9px 8px 0;border-top:1px solid var(--accent);font-weight:600;color:var(--accent);white-space:nowrap;}
+  td.num,th.num{text-align:right;font-family:var(--font-mono);font-variant-numeric:tabular-nums;}
+  .item-name{font-weight:500;color:var(--ink);}
+  .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:8px;vertical-align:1px;}
+  .pill{display:inline-flex;align-items:center;font-family:var(--font-mono);font-size:11px;font-weight:600;padding:2px 8px;border-radius:2px;white-space:nowrap;border:1px solid transparent;}
+  .pill.up{background:var(--up-bg);color:var(--up);border-color:rgba(192,125,90,.3);}
+  .pill.down{background:var(--down-bg);color:var(--down);border-color:rgba(127,174,140,.3);}
+  .pill.flat{background:var(--surface-2);color:var(--ink-soft);}
+  .status{font-family:var(--font-label);font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border-radius:2px;border:1px solid;}
+  .status.active{color:var(--down);border-color:rgba(143,196,158,.4);}
+  .status.closed{color:var(--ink-faint);border-color:var(--border);}
+
+  /* unit section */
+  .unit{display:flex;flex-direction:column;gap:14px;padding-top:6px;}
+  .unit-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px;border-bottom:1px solid var(--border-page);padding-bottom:10px;}
+  .unit-name{font-family:var(--font-display);font-style:italic;font-weight:600;font-size:clamp(26px,3.4vw,34px);margin:0;color:var(--page-ink);}
+  .unit-dates{display:flex;flex-wrap:wrap;gap:6px 18px;font-family:var(--font-label);font-size:11px;letter-spacing:.05em;color:var(--page-ink-faint);text-transform:uppercase;}
+  .unit-dates b{color:var(--accent-page);font-weight:600;}
+  .unit-summary{font-size:13.5px;line-height:1.65;color:var(--page-ink-soft);margin:0;max-width:85ch;font-weight:300;}
+  .unit-summary b{color:var(--page-ink);font-weight:600;}
+
+  .verdict{display:flex;flex-direction:column;gap:8px;margin:6px 0 0;padding:0;list-style:none;}
+  .verdict li{display:flex;gap:10px;font-size:12.5px;line-height:1.5;padding:9px 11px;background:var(--surface-2);border-radius:2px;color:var(--ink-soft);}
+  .verdict li b{color:var(--ink);font-weight:600;}
+  .verdict .mark{flex:none;font-family:var(--font-mono);font-weight:600;width:14px;}
+  .verdict.good .mark{color:var(--down);} .verdict.bad .mark{color:var(--up);}
+
+  details.months{margin-top:4px;}
+  details.months summary{cursor:pointer;font-family:var(--font-label);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);padding:6px 0;list-style:none;}
+  details.months summary::-webkit-details-marker{display:none;}
+  details.months summary::before{content:'+ ';}
+  details.months[open] summary::before{content:'– ';}
+  details.months summary:focus-visible{outline:1px solid var(--accent);outline-offset:3px;}
+
+  .findings{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+  @media (max-width:860px){.findings{grid-template-columns:1fr;}}
+  .finding h3{font-family:var(--font-display);font-style:italic;font-weight:600;font-size:21px;margin:0 0 8px;color:var(--ink);}
+  .finding p{font-size:12.5px;line-height:1.6;color:var(--ink-soft);margin:0;font-weight:300;}
+  .finding p b{color:var(--ink);font-weight:600;}
+  .finding .n{font-family:var(--font-label);font-size:10px;letter-spacing:.14em;color:var(--accent);font-weight:600;margin-bottom:6px;display:block;}
+
+  .rec-list{counter-reset:rec;display:flex;flex-direction:column;gap:9px;margin:0;padding:0;list-style:none;}
+  .rec-list li{counter-increment:rec;display:flex;gap:14px;font-size:13px;line-height:1.55;color:var(--ink-soft);padding:11px 13px;background:var(--surface-2);border-radius:2px;}
+  .rec-list li::before{content:counter(rec,decimal-leading-zero);font-family:var(--font-mono);color:var(--accent);font-weight:600;flex:none;}
+  .rec-list li b{color:var(--ink);font-weight:600;}
+
+  .notes{font-size:12px;line-height:1.65;color:var(--page-ink-soft);margin:0;padding-left:18px;}
+  .notes li{margin-bottom:4px;}
+  .unit-nav{display:flex;flex-wrap:wrap;gap:8px;}
+  .unit-nav a{font-family:var(--font-label);font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;color:var(--accent-page);border:1px solid var(--border-page);padding:6px 11px;border-radius:2px;}
+  .unit-nav a:hover{border-color:var(--accent-page);}
+  .unit-nav a:focus-visible{outline:2px solid var(--accent-page);outline-offset:2px;}
+  footer{border-top:1px solid var(--border-page);padding-top:14px;display:flex;flex-wrap:wrap;gap:6px 18px;font-family:var(--font-label);font-size:10.5px;letter-spacing:.03em;color:var(--page-ink-faint);}
+  .draft-banner{background:var(--surface);color:var(--accent);font-family:var(--font-label);font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;text-align:center;padding:8px;border-radius:2px;}
+  @media print{.draft-banner{display:none;} .card,.kpi-grid{box-shadow:none;} details.months{display:none;}}
+  /* ---------- access gate (same as /sahan) ---------- */
+  body:not(.gate-open) .wrap{display:none;}
+  .gate-screen{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--paper);z-index:100;padding:16px;}
+  body.gate-open .gate-screen{display:none;}
+  .gate-box{background:var(--surface);border:1px solid var(--border);border-radius:4px;box-shadow:var(--shadow);padding:30px 26px;width:100%;max-width:320px;display:flex;flex-direction:column;gap:15px;text-align:center;}
+  .gate-icon{font-size:20px;color:var(--accent);}
+  .gate-title{font-family:var(--font-display);font-weight:600;font-style:italic;font-size:19px;color:var(--ink);}
+  .gate-sub{font-size:11.5px;color:var(--ink-faint);line-height:1.5;font-family:var(--font-label);}
+  .gate-input{font-family:var(--font-mono);font-size:14px;padding:11px 12px;border-radius:2px;border:1px solid var(--border);background:var(--surface-2);color:var(--ink);text-align:center;}
+  .gate-input:focus{outline:1px solid var(--accent);outline-offset:1px;}
+  .gate-btn{font-family:var(--font-label);font-weight:600;font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:11px 12px;border-radius:2px;border:1px solid var(--accent);background:transparent;color:var(--accent);cursor:pointer;transition:background .15s,color .15s;}
+  .gate-btn:hover{background:var(--accent);color:var(--accent-ink);}
+  .gate-error{font-size:11px;color:var(--up);min-height:14px;font-family:var(--font-label);}
+</style>
+</head>
+<body>
+
+<div class="gate-screen" id="gateScreen">
+  <form class="gate-box" id="gateForm">
+    <div class="gate-icon">🔒</div>
+    <div class="gate-title">Business Overview 2026</div>
+    <div class="gate-sub">This report contains restaurant sales and cost figures. Enter the access word to continue.</div>
+    <input class="gate-input" id="gateInput" type="password" autocomplete="off" placeholder="Access word" autofocus>
+    <button class="gate-btn" type="submit">Unlock</button>
+    <div class="gate-error" id="gateError"></div>
+  </form>
+</div>
+<script>
+(function(){
+  "use strict";
+  var PASSWORD = "habibi";
+  try{ if (sessionStorage.getItem('sahan-unlocked') === '1') { document.body.classList.add('gate-open'); } }catch(e){}
+  var form = document.getElementById('gateForm'), input = document.getElementById('gateInput'), err = document.getElementById('gateError');
+  form.addEventListener('submit', function(ev){
+    ev.preventDefault();
+    if (input.value === PASSWORD) {
+      document.body.classList.add('gate-open');
+      try{ sessionStorage.setItem('sahan-unlocked', '1'); }catch(e){}
+      window.dispatchEvent(new Event('resize'));
+    } else { err.textContent = 'Incorrect — try again.'; input.value = ''; input.focus(); }
+  });
+})();
+</script>
+
+<div class="wrap">
+
+  <header class="report-head">
+    <span class="eyebrow">Shi · Moli · Mei · Business Overview</span>
+    <h1>2026 so far, restaurant by restaurant</h1>
+    <p class="report-sub">A management overview of January to October 2026, built from the monthly cost reports. It shows what each restaurant sold, what it cost to make and pour, how 2026 compares with the same months of 2025, and what is working and what is not.</p>
+    <div class="meta-row">
+      <span>Period <b>Jan 2026 – Oct 2026</b></span>
+      <span>Units <b>3 trading</b> (Shi, Moli by Shi, Mei)</span>
+      <span>Compared with <b>Jan – Oct 2025</b></span>
+      <span>Source <b>Cost Report Oct 26.xlsx</b></span>
+      <span>Currency <b>AED</b></span>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="section-head"><span class="section-num">01</span><span class="section-title">Group at a glance</span></div>
+    <div class="kpi-grid" id="kpi-group"></div>
+    <p class="section-lede" id="lede-group"></p>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><span class="section-num">02</span><span class="section-title">Monthly sales and cost, whole group</span></div>
+    <div class="card">
+      <div class="card-head"><span class="card-title">Gross sales by restaurant, with group cost of sales %</span><span class="card-tag">Monthly · AED</span></div>
+      <p class="card-note">Bars are stacked by restaurant. The line is the share of sales spent on food and drink consumed (right axis).</p>
+      <div class="chart-box tall"><canvas id="ch-group"></canvas></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><span class="section-num">03</span><span class="section-title">The three restaurants side by side</span></div>
+    <div class="row cols-2-wide">
+      <div class="card">
+        <div class="card-head"><span class="card-title">Jan–Oct 2026 by restaurant</span><span class="card-tag">vs Jan–Oct 2025</span></div>
+        <div class="table-scroll"><table id="tbl-units"></table></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">2026 against 2025</span><span class="card-tag">Gross sales · Jan–Oct</span></div>
+        <p class="card-note">Same ten months each year. Mei opened in October 2025, so it has only one month in 2025.</p>
+        <div class="chart-box"><canvas id="ch-yoy"></canvas></div>
+      </div>
+    </div>
+    <nav class="unit-nav" id="unit-nav" aria-label="Jump to restaurant"></nav>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><span class="section-num">04</span><span class="section-title">Restaurant by restaurant</span></div>
+    <div id="units"></div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><span class="section-num">05</span><span class="section-title">What the numbers say</span></div>
+    <div class="findings" id="findings"></div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><span class="section-num">06</span><span class="section-title">Recommended actions</span></div>
+    <div class="card"><ol class="rec-list" id="recs"></ol></div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><span class="section-num">07</span><span class="section-title">How to read this report</span></div>
+    <ul class="notes">
+      <li><b>Income</b> is gross sales as recorded in each monthly sheet (food, non-alcoholic drinks, alcohol).</li>
+      <li><b>Expenses</b> in this file are cost of goods only: consumption = opening stock + purchases + transfers in − transfers out − staff meals − closing stock. The file has no payroll, rent, utilities or marketing, so <b>"margin after cost of sales" is not profit</b>.</li>
+      <li><b>Cost of sales %</b> = consumption ÷ gross sales, the same ratio the source sheets use.</li>
+      <li>The "SC" column (about 9.1% of gross sales every month, consistent with a 10% service charge included in prices) is not deducted. All figures are gross sales.</li>
+      <li>"Typical" ranges are common rules of thumb for full-service restaurants (food 25–32%, alcohol 18–24%, non-alcoholic drinks 15–25%), not figures from this file.</li>
+    </ul>
+  </section>
+
+  <footer>
+    <span>Prepared from Cost Report Oct 26.xlsx</span>
+    <span>Figures recomputed from the monthly sheets</span>
+    <span>Period January – October 2026</span>
+  </footer>
+</div>
+
+<script>
+const DATA = {"rows":[{"ym":"2024-01","unit":"SHI RESTAURANT","gross":2461527.0,"disc":87223.0,"net":2374304.0,"purch":508126.61000000004,"cons":531122.1000000001,"open":480380.0,"close":487125.0,"tin":0.0,"tout":33913.51,"staff":0.0,"food_s":1616090.0,"food_c":340306.10000000003,"bev_s":191132.0,"bev_c":40662.0,"alc_s":526997.0,"alc_c":86500.0},{"ym":"2024-01","unit":"MOLI BY SHI RESTAURANT","gross":522152.3,"disc":214064.0,"net":308088.3,"purch":137974.0,"cons":107252.5,"open":317984.0,"close":354122.5,"tin":7100.0,"tout":1683.0,"staff":0.0,"food_s":343403.0,"food_c":78115.0,"bev_s":42063.0,"bev_c":8862.0,"alc_s":136452.0,"alc_c":20111.0},{"ym":"2024-01","unit":"JIXIANG - JBR","gross":131362.0,"disc":7266.0,"net":124096.0,"purch":2396.56,"cons":13187.27,"open":1027.0,"close":1570.0,"tin":12394.27,"tout":1060.56,"staff":0.0,"food_s":118637.0,"food_c":11594.0,"bev_s":12725.0,"bev_c":1593.27,"alc_s":0,"alc_c":0},{"ym":"2024-01","unit":"JIXIANG - LAST EXIT","gross":64479.23,"disc":9272.0,"net":55207.23,"purch":0.0,"cons":8379.86,"open":2211.71,"close":1743.0,"tin":7911.15,"tout":0.0,"staff":0.0,"food_s":61317.23,"food_c":6950.28,"bev_s":3162.0,"bev_c":1429.58,"alc_s":0,"alc_c":0},{"ym":"2024-02","unit":"SHI RESTAURANT","gross":2077159.78,"disc":54145.0,"net":2023014.78,"purch":430341.94,"cons":415204.68,"open":487125.0,"close":463549.0,"tin":1311.0,"tout":31381.260000000002,"staff":8643.0,"food_s":1433567.0,"food_c":284085.72,"bev_s":169864.87,"bev_c":39149.43,"alc_s":473727.91,"alc_c":91969.53000000003},{"ym":"2024-02","unit":"MOLI BY SHI RESTAURANT","gross":409721.63,"disc":54144.0,"net":355577.63,"purch":107645.4,"cons":79791.52000000002,"open":354030.0,"close":388691.0,"tin":12157.12,"tout":1311.0,"staff":4039.0,"food_s":283011.9,"food_c":63312.119999999995,"bev_s":34995.729999999996,"bev_c":13823.0,"alc_s":91714.0,"alc_c":2656.4000000000233},{"ym":"2024-02","unit":"JIXIANG - JBR","gross":95910.38,"disc":0.0,"net":95910.38,"purch":577.8,"cons":11990.24,"open":1570.0,"close":1426.56,"tin":11269.0,"tout":0.0,"staff":0.0,"food_s":87442.75,"food_c":10302.56,"bev_s":8467.63,"bev_c":1687.6799999999998,"alc_s":0,"alc_c":0},{"ym":"2024-02","unit":"JIXIANG - LAST EXIT","gross":61111.06,"disc":0.0,"net":61111.06,"purch":144.0,"cons":8446.189999999999,"open":1743.0,"close":1395.9499999999998,"tin":7955.14,"tout":0.0,"staff":0.0,"food_s":58112.0,"food_c":7607.719999999999,"bev_s":2999.06,"bev_c":838.47,"alc_s":0,"alc_c":0},{"ym":"2024-03","unit":"SHI RESTAURANT","gross":1958188.0,"disc":0.0,"net":1958188.0,"purch":465027.0,"cons":410910.32999999996,"open":463549.0,"close":474145.0,"tin":2252.8,"tout":39787.47,"staff":5986.0,"food_s":1321403.0,"food_c":280530.8,"bev_s":163609.0,"bev_c":43803.53,"alc_s":473176.0,"alc_c":86576.0},{"ym":"2024-03","unit":"MOLI BY SHI RESTAURANT","gross":475497.29,"disc":60251.29,"net":415246.0,"purch":138884.0,"cons":114276.67000000001,"open":388691.0,"close":421647.0,"tin":19421.47,"tout":7112.8,"staff":3960.0,"food_s":321238.29,"food_c":77389.20000000001,"bev_s":34895.0,"bev_c":9027.470000000001,"alc_s":119364.0,"alc_c":27860.0},{"ym":"2024-03","unit":"JIXIANG - JBR","gross":109887.0,"disc":8865.0,"net":101022.0,"purch":1979.0,"cons":15610.560000000001,"open":1426.56,"close":1144.0,"tin":13596.0,"tout":247.0,"staff":0.0,"food_s":101408.0,"food_c":12305.44,"bev_s":8479.0,"bev_c":3305.12,"alc_s":0,"alc_c":0},{"ym":"2024-03","unit":"JIXIANG - LAST EXIT","gross":51831.9,"disc":6013.0,"net":45818.9,"purch":0.0,"cons":6999.35,"open":1395.9499999999998,"close":1413.6599999999999,"tin":7017.06,"tout":0.0,"staff":0.0,"food_s":49570.9,"food_c":6324.4800000000005,"bev_s":2261.0,"bev_c":674.87,"alc_s":0,"alc_c":0},{"ym":"2024-04","unit":"SHI RESTAURANT","gross":1717110.0,"disc":0.0,"net":1717110.0,"purch":371350.86,"cons":350869.86,"open":457692.0,"close":448293.0,"tin":7209.0,"tout":32147.0,"staff":4942.0,"food_s":1176035.0,"food_c":243621.86,"bev_s":141612.0,"bev_c":45999.0,"alc_s":399463.0,"alc_c":61249.0},{"ym":"2024-04","unit":"MOLI BY SHI RESTAURANT","gross":363583.0,"disc":57001.0,"net":306582.0,"purch":120422.06,"cons":72377.06000000003,"open":421647.0,"close":475765.0,"tin":16245.0,"tout":7209.0,"staff":2963.0,"food_s":259589.0,"food_c":66202.28,"bev_s":34666.0,"bev_c":-718.1199999999953,"alc_s":69328.0,"alc_c":6892.900000000023},{"ym":"2024-04","unit":"JIXIANG - JBR","gross":91786.0,"disc":0.0,"net":91786.0,"purch":2250.28,"cons":11716.3,"open":1144.0,"close":1324.5,"tin":10456.0,"tout":809.48,"staff":0.0,"food_s":83692.0,"food_c":9532.5,"bev_s":8094.0,"bev_c":2183.8,"alc_s":0,"alc_c":0},{"ym":"2024-04","unit":"JIXIANG - LAST EXIT","gross":46138.81,"disc":0.0,"net":46138.81,"purch":0.0,"cons":6102.01,"open":1413.6599999999999,"close":1566.65,"tin":6255.0,"tout":0.0,"staff":0.0,"food_s":43959.81,"food_c":5149.35,"bev_s":2179.0,"bev_c":952.6599999999999,"alc_s":0,"alc_c":0},{"ym":"2024-05","unit":"SHI RESTAURANT","gross":1435193.0,"disc":0.0,"net":1435193.0,"purch":366376.29,"cons":298746.25999999995,"open":448293.0,"close":485436.0,"tin":14941.97,"tout":40191.0,"staff":5238.0,"food_s":939966.0,"food_c":200217.0,"bev_s":120552.0,"bev_c":24179.29,"alc_s":374675.0,"alc_c":74349.96999999997},{"ym":"2024-05","unit":"MOLI BY SHI RESTAURANT","gross":553646.0,"disc":73352.0,"net":480294.0,"purch":129013.0,"cons":149217.03000000003,"open":475765.0,"close":450852.0,"tin":13408.0,"tout":14940.97,"staff":3176.0,"food_s":373030.0,"food_c":84932.0,"bev_s":46070.0,"bev_c":33246.0,"alc_s":134546.0,"alc_c":31039.030000000028},{"ym":"2024-05","unit":"JIXIANG - JBR","gross":60983.0,"disc":0,"net":60983.0,"purch":2444.0,"cons":14239.98,"open":1324.5,"close":3107.0,"tin":14034.0,"tout":455.52,"staff":0.0,"food_s":56364.0,"food_c":11900.5,"bev_s":4619.0,"bev_c":2339.48,"alc_s":0,"alc_c":0},{"ym":"2024-05","unit":"JIXIANG - LAST EXIT","gross":59683.0,"disc":7693.0,"net":51990.0,"purch":0.0,"cons":13309.17,"open":1566.65,"close":1462.0,"tin":13204.52,"tout":0.0,"staff":0.0,"food_s":56701.0,"food_c":11890.65,"bev_s":2982.0,"bev_c":1418.52,"alc_s":0,"alc_c":0},{"ym":"2024-06","unit":"SHI RESTAURANT","gross":788469.0,"disc":0.0,"net":788469.0,"purch":206332.0,"cons":176213.41,"open":485436.0,"close":478619.0,"tin":5437.75,"tout":36359.34,"staff":6014.0,"food_s":497656.0,"food_c":113863.41,"bev_s":66859.0,"bev_c":24180.0,"alc_s":223954.0,"alc_c":38170.0},{"ym":"2024-06","unit":"MOLI BY SHI RESTAURANT","gross":366165.0,"disc":0.0,"net":366165.0,"purch":116278.0,"cons":99411.59,"open":450852.0,"close":470558.0,"tin":11929.34,"tout":5437.75,"staff":3652.0,"food_s":263906.0,"food_c":63105.59,"bev_s":28340.0,"bev_c":15486.0,"alc_s":73919.0,"alc_c":20820.0},{"ym":"2024-06","unit":"JIXIANG - JBR","gross":44138.0,"disc":0,"net":44138.0,"purch":1366.0,"cons":12866.3,"open":1324.5,"close":1576.0,"tin":12300.0,"tout":548.2,"staff":0.0,"food_s":41116.0,"food_c":11047.5,"bev_s":3022.0,"bev_c":1818.8000000000002,"alc_s":0,"alc_c":0},{"ym":"2024-06","unit":"JIXIANG - LAST EXIT","gross":55668.0,"disc":0.0,"net":55668.0,"purch":0.0,"cons":12289.2,"open":1462.0,"close":1850.0,"tin":12677.2,"tout":0.0,"staff":0.0,"food_s":52156.0,"food_c":10515.0,"bev_s":3512.0,"bev_c":1774.1999999999998,"alc_s":0,"alc_c":0},{"ym":"2024-07","unit":"SHI RESTAURANT","gross":556889.0,"disc":0.0,"net":556889.0,"purch":152214.0,"cons":156324.0,"open":478619.0,"close":467218.0,"tin":34101.0,"tout":35258.0,"staff":6134.0,"food_s":362362.0,"food_c":105290.0,"bev_s":49825.0,"bev_c":17705.0,"alc_s":144702.0,"alc_c":33329.0},{"ym":"2024-07","unit":"MOLI BY SHI RESTAURANT","gross":322153.0,"disc":0.0,"net":322153.0,"purch":75328.0,"cons":92491.0,"open":470558.0,"close":430239.0,"tin":15414.0,"tout":35246.0,"staff":3324.0,"food_s":251036.0,"food_c":50476.0,"bev_s":19647.0,"bev_c":13708.0,"alc_s":51470.0,"alc_c":28307.0},{"ym":"2024-07","unit":"JIXIANG - JBR","gross":40755.0,"disc":0,"net":40755.0,"purch":1060.0,"cons":9286.44,"open":1576.0,"close":2269.0,"tin":9308.0,"tout":388.56,"staff":0.0,"food_s":38352.0,"food_c":8605.0,"bev_s":2403.0,"bev_c":681.44,"alc_s":0,"alc_c":0},{"ym":"2024-07","unit":"JIXIANG - LAST EXIT","gross":48394.0,"disc":0.0,"net":48394.0,"purch":0.0,"cons":10823.56,"open":1850.0,"close":1951.0,"tin":10924.56,"tout":0.0,"staff":0.0,"food_s":46318.0,"food_c":9913.0,"bev_s":2076.0,"bev_c":910.56,"alc_s":0,"alc_c":0},{"ym":"2024-08","unit":"SHI RESTAURANT","gross":639179.6799999999,"disc":0.0,"net":639179.6799999999,"purch":134572.0,"cons":156785.54,"open":467218.0,"close":445191.0,"tin":24249.0,"tout":18650.46,"staff":5412.0,"food_s":417274.68,"food_c":95818.54000000001,"bev_s":56415.0,"bev_c":30238.0,"alc_s":165490.0,"alc_c":30729.0},{"ym":"2024-08","unit":"MOLI BY SHI RESTAURANT","gross":342059.18,"disc":0.0,"net":342059.18,"purch":89407.0,"cons":90730.24999999997,"open":430239.0,"close":411749.83,"tin":10094.470000000001,"tout":24249.0,"staff":3011.39,"food_s":244863.0,"food_c":59651.07999999999,"bev_s":23581.18,"bev_c":9938.0,"alc_s":73615.0,"alc_c":21141.169999999984},{"ym":"2024-08","unit":"JIXIANG - JBR","gross":37259.21,"disc":0,"net":37259.21,"purch":1163.0,"cons":5437.1,"open":2269.0,"close":1273.0,"tin":3658.3,"tout":380.2,"staff":0.0,"food_s":34956.21,"food_c":3978.17,"bev_s":2303.0,"bev_c":1458.9300000000003,"alc_s":0,"alc_c":0},{"ym":"2024-08","unit":"JIXIANG - LAST EXIT","gross":43556.0,"disc":0.0,"net":43556.0,"purch":0.0,"cons":5968.19,"open":1951.0,"close":1261.0,"tin":5278.19,"tout":0.0,"staff":0.0,"food_s":41405.0,"food_c":5336.99,"bev_s":2151.0,"bev_c":631.2,"alc_s":0,"alc_c":0},{"ym":"2024-09","unit":"SHI RESTAURANT","gross":1070556.91,"disc":0.0,"net":1070556.91,"purch":195057.29000000004,"cons":201153.71000000002,"open":445191.0,"close":428712.0,"tin":23532.45,"tout":27038.03,"staff":6877.0,"food_s":686109.82,"food_c":133836.91000000003,"bev_s":87484.15,"bev_c":23394.0,"alc_s":296962.94,"alc_c":43922.79999999999},{"ym":"2024-09","unit":"MOLI BY SHI RESTAURANT","gross":457841.91,"disc":0.0,"net":457841.91,"purch":108530.25,"cons":93000.66000000003,"open":411749.83,"close":409414.0,"tin":9525.029999999999,"tout":23532.45,"staff":3858.0,"food_s":321826.62,"food_c":55437.380000000005,"bev_s":35543.93,"bev_c":17616.25,"alc_s":100471.36,"alc_c":19947.030000000028},{"ym":"2024-09","unit":"JIXIANG - JBR","gross":43792.0,"disc":0,"net":43792.0,"purch":428.55,"cons":9088.252,"open":1273.0,"close":1906.0,"tin":9407.0,"tout":114.298,"staff":0.0,"food_s":41178.0,"food_c":8110.0,"bev_s":2614.0,"bev_c":978.252,"alc_s":0,"alc_c":0},{"ym":"2024-09","unit":"JIXIANG - LAST EXIT","gross":35882.850000000006,"disc":0.0,"net":35882.850000000006,"purch":0.0,"cons":8135.28,"open":1261.0,"close":1346.0,"tin":8220.28,"tout":0.0,"staff":0.0,"food_s":34297.16,"food_c":7554.0,"bev_s":1585.69,"bev_c":581.28,"alc_s":0,"alc_c":0},{"ym":"2024-10","unit":"SHI RESTAURANT","gross":1817123.04,"disc":0.0,"net":1817123.04,"purch":446888.0,"cons":384026.29000000004,"open":428712.0,"close":492700.66000000003,"tin":33970.95,"tout":25742.0,"staff":7102.0,"food_s":1194100.04,"food_c":243899.29,"bev_s":142064.0,"bev_c":37134.0,"alc_s":480959.0,"alc_c":102993.0},{"ym":"2024-10","unit":"MOLI BY SHI RESTAURANT","gross":576629.56,"disc":0.0,"net":576629.56,"purch":192057.0,"cons":155493.28999999998,"open":409414.0,"close":415201.66,"tin":5832.66,"tout":33970.95,"staff":2637.76,"food_s":413435.25,"food_c":89502.28999999998,"bev_s":39172.310000000005,"bev_c":21659.449999999997,"alc_s":124022.0,"alc_c":44331.54999999999},{"ym":"2024-10","unit":"JIXIANG - JBR","gross":61444.4,"disc":0,"net":61444.4,"purch":1109.75,"cons":12926.380000000001,"open":1906.0,"close":1218.59,"tin":11401.0,"tout":271.78,"staff":0.0,"food_s":56267.4,"food_c":11124.69,"bev_s":5177.0,"bev_c":1801.6900000000003,"alc_s":0,"alc_c":0},{"ym":"2024-10","unit":"JIXIANG - LAST EXIT","gross":35102.0,"disc":0.0,"net":35102.0,"purch":0.0,"cons":8836.78,"open":1346.0,"close":1289.0,"tin":8779.78,"tout":0.0,"staff":0.0,"food_s":33538.0,"food_c":8426.0,"bev_s":1564.0,"bev_c":410.78,"alc_s":0,"alc_c":0},{"ym":"2024-11","unit":"SHI RESTAURANT","gross":2232648.81,"disc":0.0,"net":2232648.81,"purch":492806.27999999997,"cons":445440.2699999999,"open":492700.66000000003,"close":528252.73,"tin":14888.0,"tout":20163.350000000002,"staff":6538.59,"food_s":1461150.05,"food_c":286802.6399999999,"bev_s":174646.46,"bev_c":43617.100000000006,"alc_s":596852.3,"alc_c":115020.53000000003},{"ym":"2024-11","unit":"MOLI BY SHI RESTAURANT","gross":555622.3099999999,"disc":0.0,"net":555622.3099999999,"purch":132577.73,"cons":143977.84999999995,"open":415201.36,"close":390511.08,"tin":4609.07,"tout":14887.6,"staff":3011.63,"food_s":385579.56999999995,"food_c":92665.84999999998,"bev_s":40898.15,"bev_c":11471.900000000001,"alc_s":129144.59,"alc_c":39840.09999999998},{"ym":"2024-11","unit":"JIXIANG - JBR","gross":77012.95999999999,"disc":0,"net":77012.95999999999,"purch":1248.0,"cons":11701.57,"open":1218.59,"close":1914.1799999999998,"tin":11254.16,"tout":105.0,"staff":0.0,"food_s":70548.95,"food_c":10175.31,"bev_s":6464.01,"bev_c":1526.2600000000002,"alc_s":0,"alc_c":0},{"ym":"2024-11","unit":"JIXIANG - LAST EXIT","gross":27743.08,"disc":0.0,"net":27743.08,"purch":0.0,"cons":4808.16,"open":1289.0,"close":886.12,"tin":4405.28,"tout":0.0,"staff":0.0,"food_s":26757.29,"food_c":3991.0,"bev_s":985.79,"bev_c":817.16,"alc_s":0,"alc_c":0},{"ym":"2024-12","unit":"SHI RESTAURANT","gross":2301737.524,"disc":0.0,"net":2249077.7800000003,"purch":496064.02999999997,"cons":445977.46,"open":528252.73,"close":553973.86,"tin":7505.76,"tout":25345.18,"staff":6526.02,"food_s":1550302.78,"food_c":295224.1699999999,"bev_s":172177.56,"bev_c":23268.949999999997,"alc_s":579257.184,"alc_c":127484.34000000008},{"ym":"2024-12","unit":"MOLI BY SHI RESTAURANT","gross":453776.04,"disc":0.0,"net":453776.04,"purch":116991.87,"cons":119634.7300000001,"open":390511.08,"close":385972.18,"tin":8507.380000000001,"tout":6874.76,"staff":3528.66,"food_s":333842.06,"food_c":70441.68000000002,"bev_s":32536.74,"bev_c":12074.599999999999,"alc_s":87397.24,"alc_c":37118.45000000007},{"ym":"2024-12","unit":"JIXIANG - JBR","gross":128542.47,"disc":0,"net":128542.47,"purch":1760.0,"cons":18827.839999999997,"open":1914.1799999999998,"close":1939.14,"tin":17092.8,"tout":0.0,"staff":0.0,"food_s":117009.92,"food_c":15874.119999999999,"bev_s":11532.55,"bev_c":2953.7199999999993,"alc_s":0,"alc_c":0},{"ym":"2025-01","unit":"SHI RESTAURANT","gross":2369257.2879999997,"disc":0.0,"net":2318291.47,"purch":446486.52,"cons":455067.2799999999,"open":553973.86,"close":524144.36,"tin":6293.1,"tout":20379.100000000002,"staff":7162.74,"food_s":1625711.18,"food_c":298544.7899999999,"bev_s":182922.11,"bev_c":64513.29000000001,"alc_s":560623.998,"alc_c":92009.20000000001},{"ym":"2025-01","unit":"MOLI BY SHI RESTAURANT","gross":556086.5,"disc":0.0,"net":556086.5,"purch":120684.33,"cons":129951.47,"open":385972.18,"close":375557.59,"tin":9150.34,"tout":6293.1,"staff":4004.69,"food_s":393962.27,"food_c":74738.56999999998,"bev_s":40555.88,"bev_c":18819.01000000001,"alc_s":121568.35,"alc_c":36393.890000000014},{"ym":"2025-01","unit":"JIXIANG - JBR","gross":104470.39,"disc":0,"net":104470.39,"purch":1226.94,"cons":12508.56,"open":1939.14,"close":1886.13,"tin":11228.61,"tout":0.0,"staff":0.0,"food_s":97398.81,"food_c":11032.66,"bev_s":7071.58,"bev_c":1475.9,"alc_s":0,"alc_c":0},{"ym":"2025-02","unit":"SHI RESTAURANT","gross":1940473.3209999998,"disc":160657.671,"net":1606576.71,"purch":366611.13,"cons":387083.30999999994,"open":524144.36,"close":486510.08,"tin":5381.11,"tout":15982.220000000001,"staff":6560.99,"food_s":1323494.4589999998,"food_c":244565.84000000003,"bev_s":156723.71300000002,"bev_c":36553.97,"alc_s":460255.149,"alc_c":105963.49999999994},{"ym":"2025-02","unit":"MOLI BY SHI RESTAURANT","gross":578224.63,"disc":0.0,"net":578224.63,"purch":121810.62,"cons":152274.58000000007,"open":375557.59,"close":343264.58999999997,"tin":7859.22,"tout":6319.4,"staff":3368.86,"food_s":393195.74,"food_c":90966.26000000004,"bev_s":48335.670000000006,"bev_c":19081.76,"alc_s":136693.22,"alc_c":42226.56000000003},{"ym":"2025-02","unit":"JIXIANG - JBR","gross":73468.75,"disc":0,"net":73468.75,"purch":1422.9,"cons":10500.61,"open":1886.13,"close":931.4200000000001,"tin":8123.0,"tout":0.0,"staff":0.0,"food_s":68468.65,"food_c":9073.41,"bev_s":5000.1,"bev_c":1427.2000000000003,"alc_s":0,"alc_c":0},{"ym":"2025-03","unit":"SHI RESTAURANT","gross":1805522.8510000003,"disc":164138.44100000002,"net":1641384.4100000001,"purch":316645.0,"cons":318118.9100000001,"open":486510.08,"close":487665.32999999996,"tin":29068.04,"tout":18375.73,"staff":8063.15,"food_s":1187249.6460000002,"food_c":218051.78000000003,"bev_s":157373.612,"bev_c":31924.32,"alc_s":460899.593,"alc_c":68142.81000000006},{"ym":"2025-03","unit":"MOLI BY SHI RESTAURANT","gross":409897.12,"disc":0.0,"net":409897.12,"purch":87563.0,"cons":98565.42000000001,"open":343264.58999999997,"close":306317.85,"tin":6824.72,"tout":29068.04,"staff":3701.0,"food_s":305233.23,"food_c":66322.5,"bev_s":30130.670000000002,"bev_c":13216.730000000003,"alc_s":74533.22,"alc_c":19026.190000000002},{"ym":"2025-03","unit":"JIXIANG - JBR","gross":84392.73,"disc":0,"net":84392.73,"purch":884.0,"cons":11744.060000000001,"open":931.4200000000001,"close":1622.3700000000001,"tin":11551.01,"tout":0.0,"staff":0.0,"food_s":79170.64,"food_c":10588.69,"bev_s":5222.09,"bev_c":1155.37,"alc_s":0,"alc_c":0},{"ym":"2025-04","unit":"SHI RESTAURANT","gross":2024362.5159999998,"disc":184032.956,"net":1840329.56,"purch":402359.3900000001,"cons":382749.9400000002,"open":487665.32999999996,"close":507025.57999999996,"tin":35800.46,"tout":28918.36,"staff":7131.3,"food_s":1370260.353,"food_c":267826.14000000013,"bev_s":181527.291,"bev_c":36058.83,"alc_s":472574.87200000003,"alc_c":78864.97000000003},{"ym":"2025-04","unit":"MOLI BY SHI RESTAURANT","gross":631516.32,"disc":0.0,"net":631516.32,"purch":151078.58,"cons":153542.27999999997,"open":306317.85,"close":276878.72000000003,"tin":17602.7,"tout":40848.7,"staff":3729.43,"food_s":487761.11,"food_c":92748.36999999998,"bev_s":49035.25,"bev_c":18638.830000000005,"alc_s":94719.96,"alc_c":42155.07999999999},{"ym":"2025-04","unit":"JIXIANG - JBR","gross":78638.91,"disc":0,"net":78638.91,"purch":1647.77,"cons":13070.369999999999,"open":1622.3700000000001,"close":1515.4299999999998,"tin":11315.66,"tout":0.0,"staff":0.0,"food_s":73212.89,"food_c":11521.439999999999,"bev_s":5426.02,"bev_c":1548.93,"alc_s":0,"alc_c":0},{"ym":"2025-04","unit":"BRIOCHE & BITE","gross":14854.279999999999,"disc":0,"net":14854.279999999999,"purch":0.0,"cons":6977.78,"open":9779.9,"close":7850.79,"tin":5048.67,"tout":0.0,"staff":0.0,"food_s":10559.99,"food_c":4416.43,"bev_s":4294.29,"bev_c":2561.3499999999995,"alc_s":0,"alc_c":0},{"ym":"2025-05","unit":"SHI RESTAURANT","gross":1566958.217,"disc":142450.747,"net":1424507.47,"purch":317272.51,"cons":310691.86999999994,"open":507025.57999999996,"close":496597.45,"tin":9395.84,"tout":19088.809999999998,"staff":7315.8,"food_s":1008250.628,"food_c":188935.82999999996,"bev_s":144086.261,"bev_c":31447.800000000003,"alc_s":414621.328,"alc_c":90308.23999999999},{"ym":"2025-05","unit":"MOLI BY SHI RESTAURANT","gross":691319.18,"disc":0.0,"net":691319.1799999999,"purch":181645.77,"cons":157084.51,"open":276878.72000000003,"close":295247.2,"tin":10323.81,"tout":12629.09,"staff":3887.5,"food_s":507876.68,"food_c":116166.52000000002,"bev_s":59219.780000000006,"bev_c":10894.989999999994,"alc_s":124222.72,"alc_c":30023.0},{"ym":"2025-05","unit":"JIXIANG - JBR","gross":50630.549999999996,"disc":0,"net":50630.549999999996,"purch":789.7,"cons":9331.85,"open":1515.4299999999998,"close":1738.28,"tin":8765.0,"tout":0.0,"staff":0.0,"food_s":47126.67,"food_c":8619.11,"bev_s":3503.88,"bev_c":712.74,"alc_s":0,"alc_c":0},{"ym":"2025-05","unit":"BRIOCHE & BITE","gross":20223.53,"disc":0,"net":20223.53,"purch":0.0,"cons":4801.139999999999,"open":7850.79,"close":6282.9,"tin":3233.25,"tout":0.0,"staff":0.0,"food_s":15627.33,"food_c":3932.0,"bev_s":4596.2,"bev_c":869.1399999999999,"alc_s":0,"alc_c":0},{"ym":"2025-06","unit":"SHI RESTAURANT","gross":900297.783,"disc":81845.25300000001,"net":818452.53,"purch":149140.86000000002,"cons":180880.34786900002,"open":496597.45,"close":448273.068131,"tin":13746.33,"tout":22620.784,"staff":7710.44,"food_s":587607.174,"food_c":140884.17912,"bev_s":79726.922,"bev_c":8452.753916999996,"alc_s":232963.687,"alc_c":31543.41483200004},{"ym":"2025-06","unit":"MOLI BY SHI RESTAURANT","gross":657355.99,"disc":0.0,"net":657355.99,"purch":133487.46,"cons":132270.37041899996,"open":295247.2,"close":290884.683581,"tin":14854.274,"tout":15923.15,"staff":4510.73,"food_s":469517.24,"food_c":83063.21399999998,"bev_s":42071.12,"bev_c":17106.99731,"alc_s":145767.63,"alc_c":32100.15910899997},{"ym":"2025-06","unit":"JIXIANG - JBR","gross":42532.719999999994,"disc":0,"net":42532.719999999994,"purch":599.97,"cons":7161.02,"open":1738.28,"close":2484.09,"tin":7306.86,"tout":0.0,"staff":0.0,"food_s":40108.84,"food_c":6820.27,"bev_s":2423.88,"bev_c":340.75,"alc_s":0,"alc_c":0},{"ym":"2025-06","unit":"BRIOCHE & BITE","gross":16251.98,"disc":0,"net":16251.98,"purch":0.0,"cons":4272.12282,"open":6282.9,"close":4647.24718,"tin":2636.47,"tout":0.0,"staff":0.0,"food_s":13002.08,"food_c":2123.38782,"bev_s":3249.9,"bev_c":2148.7349999999997,"alc_s":0,"alc_c":0},{"ym":"2025-07","unit":"SHI RESTAURANT","gross":616143.517,"disc":56013.04699999999,"net":560130.47,"purch":98540.74,"cons":124253.16658300003,"open":448273.068131,"close":419155.551548,"tin":18970.2,"tout":15019.2,"staff":7356.09,"food_s":404535.3729999999,"food_c":85594.84688000001,"bev_s":64889.44,"bev_c":13244.68627,"alc_s":146718.70400000003,"alc_c":25413.63343300001},{"ym":"2025-07","unit":"MOLI BY SHI RESTAURANT","gross":456621.27,"disc":0.0,"net":456621.27,"purch":98499.18000000001,"cons":116067.76587900006,"open":290884.683581,"close":256417.537702,"tin":8652.2,"tout":21541.2,"staff":4009.56,"food_s":349510.5,"food_c":75260.652298,"bev_s":38568.82,"bev_c":12884.962689999997,"alc_s":68541.95,"alc_c":27922.150891000056},{"ym":"2025-07","unit":"JIXIANG - JBR","gross":31955.020000000004,"disc":0,"net":31955.020000000004,"purch":178.5,"cons":7310.905000000001,"open":2484.09,"close":1718.539,"tin":6366.854,"tout":0.0,"staff":0.0,"food_s":30054.100000000002,"food_c":6833.6050000000005,"bev_s":1900.92,"bev_c":477.3,"alc_s":0,"alc_c":0},{"ym":"2025-07","unit":"BRIOCHE & BITE","gross":14908.752380952381,"disc":0,"net":14908.752380952381,"purch":0.0,"cons":4208.811180000001,"open":4647.24718,"close":3009.436,"tin":2571.0,"tout":0.0,"staff":0.0,"food_s":12167.609523809524,"food_c":2825.83868,"bev_s":2741.142857142857,"bev_c":1382.9725000000003,"alc_s":0,"alc_c":0},{"ym":"2025-08","unit":"SHI RESTAURANT","gross":687475.635,"disc":62497.785,"net":624977.8500000001,"purch":103822.58,"cons":134582.49854800003,"open":419155.551548,"close":386911.21,"tin":18470.527,"tout":12365.4,"staff":7589.55,"food_s":458797.911,"food_c":83194.01000000002,"bev_s":71656.981,"bev_c":15221.656812999998,"alc_s":157020.74300000002,"alc_c":36166.831735000014},{"ym":"2025-08","unit":"MOLI BY SHI RESTAURANT","gross":415056.33,"disc":0.0,"net":415056.3300000001,"purch":91345.68,"cons":96580.42070199996,"open":256417.537702,"close":232645.64,"tin":7770.27,"tout":21565.427,"staff":4742.0,"food_s":303943.04000000004,"food_c":59961.65770199998,"bev_s":35312.64,"bev_c":5993.1929999999975,"alc_s":75800.65,"alc_c":30625.569999999978},{"ym":"2025-08","unit":"JIXIANG - JBR","gross":23612.62,"disc":0,"net":23612.62,"purch":0.0,"cons":5473.289,"open":1718.539,"close":840.3800000000001,"tin":4595.13,"tout":0.0,"staff":0.0,"food_s":22039.77,"food_c":5089.509,"bev_s":1572.85,"bev_c":383.78000000000003,"alc_s":0,"alc_c":0},{"ym":"2025-08","unit":"BRIOCHE & BITE","gross":8032.21,"disc":0,"net":8032.21,"purch":0.0,"cons":2138.506312,"open":3009.436,"close":2344.92,"tin":1473.990312,"tout":0.0,"staff":0.0,"food_s":6401.72,"food_c":1804.063812,"bev_s":1630.49,"bev_c":334.4425,"alc_s":0,"alc_c":0},{"ym":"2025-09","unit":"SHI RESTAURANT","gross":1000032.9349999999,"disc":90912.085,"net":909120.85,"purch":253408.31999999998,"cons":202545.44,"open":386911.21,"close":399050.58,"tin":20905.99,"tout":51928.450000000004,"staff":7701.05,"food_s":663012.284,"food_c":149664.27999999997,"bev_s":88336.512,"bev_c":14587.55,"alc_s":248684.139,"alc_c":38293.610000000044},{"ym":"2025-09","unit":"MOLI BY SHI RESTAURANT","gross":490530.12,"disc":43657.33,"net":436573.3,"purch":158033.86000000002,"cons":120073.49000000002,"open":232645.64,"close":242082.56999999998,"tin":18701.33,"tout":42198.13,"staff":5026.64,"food_s":368555.036,"food_c":80947.36,"bev_s":38720.998999999996,"bev_c":10269.009999999998,"alc_s":83254.08499999999,"alc_c":28857.120000000024},{"ym":"2025-09","unit":"JIXIANG - JBR","gross":28991.65,"disc":0,"net":28991.65,"purch":315.0,"cons":6585.64,"open":840.3800000000001,"close":741.74,"tin":6172.0,"tout":0.0,"staff":0.0,"food_s":27272.79,"food_c":6184.22,"bev_s":1718.8600000000001,"bev_c":401.4200000000001,"alc_s":0,"alc_c":0},{"ym":"2025-10","unit":"SHI RESTAURANT","gross":1863428.567,"disc":169402.597,"net":1694025.9700000002,"purch":390051.07666666666,"cons":362838.0766666667,"open":399050.58,"close":429081.86,"tin":38569.31,"tout":28274.559999999998,"staff":7476.47,"food_s":1225751.494,"food_c":210996.89000000007,"bev_s":162035.00499999998,"bev_c":17539.976666666666,"alc_s":475642.068,"alc_c":134301.20999999996},{"ym":"2025-10","unit":"MOLI BY SHI RESTAURANT","gross":581123.312,"disc":52829.39200000001,"net":528293.9199999999,"purch":134268.28999999998,"cons":119860.00999999995,"open":242082.56999999998,"close":243490.53999999998,"tin":16226.12,"tout":24601.33,"staff":4625.1,"food_s":432298.559,"food_c":80334.16999999998,"bev_s":46145.462,"bev_c":11780.93,"alc_s":102679.291,"alc_c":27744.909999999974},{"ym":"2025-10","unit":"MEI RESTAURANT","gross":1659747.628,"disc":150886.14800000002,"net":1508861.48,"purch":421680.03,"cons":496878.8810781429,"open":857459.9328571429,"close":768565.5417790001,"tin":26732.91,"tout":39428.450000000004,"staff":1000.0,"food_s":1071035.5590000001,"food_c":281456.82,"bev_s":108182.844,"bev_c":37397.518221000006,"alc_s":480529.225,"alc_c":178024.54285714286},{"ym":"2025-10","unit":"JIXIANG - JBR","gross":56576.0,"disc":0,"net":56576.0,"purch":1124.26,"cons":11244.59,"open":741.74,"close":1397.41,"tin":10776.0,"tout":0.0,"staff":0.0,"food_s":52456.61,"food_c":10529.05,"bev_s":4119.389999999999,"bev_c":715.54,"alc_s":0,"alc_c":0},{"ym":"2025-11","unit":"SHI RESTAURANT","gross":2248519.526,"disc":204410.866,"net":2044108.66,"purch":493101.07,"cons":427317.30000000005,"open":429081.86,"close":459664.375,"tin":23233.145000000004,"tout":50579.36,"staff":7855.04,"food_s":1494294.648,"food_c":262605.86000000004,"bev_s":178315.698,"bev_c":29882.930000000008,"alc_s":575909.1799999999,"alc_c":134828.51},{"ym":"2025-11","unit":"MOLI BY SHI RESTAURANT","gross":657957.256,"disc":59814.296,"net":598142.96,"purch":131613.46,"cons":143623.915,"open":243490.53999999998,"close":221730.03999999998,"tin":9310.630000000001,"tout":14313.555,"staff":4747.12,"food_s":475944.98600000003,"food_c":90003.67500000002,"bev_s":47188.317,"bev_c":10820.719999999998,"alc_s":134823.953,"alc_c":42799.51999999999},{"ym":"2025-11","unit":"MEI RESTAURANT","gross":1925761.7389999998,"disc":175069.249,"net":1750692.4899999998,"purch":387736.98,"cons":416225.07967899996,"open":768565.5417790001,"close":759941.584,"tin":40944.7019,"tout":20014.56,"staff":1066.0,"food_s":1260453.612,"food_c":272905.8219,"bev_s":128889.123,"bev_c":33436.561778999996,"alc_s":536419.004,"alc_c":109882.696},{"ym":"2025-11","unit":"JIXIANG - JBR","gross":67045.01,"disc":0,"net":67045.01,"purch":0.0,"cons":11822.387600000002,"open":1397.41,"close":994.34,"tin":11419.3176,"tout":0.0,"staff":0.0,"food_s":62907.32,"food_c":11323.267600000001,"bev_s":4137.69,"bev_c":499.12,"alc_s":0,"alc_c":0},{"ym":"2025-12","unit":"SHI RESTAURANT","gross":2261533.6312857145,"disc":208745.18100000004,"net":2087451.81,"purch":491723.13,"cons":417183.325,"open":459664.375,"close":475440.45,"tin":4400.2300000000005,"tout":53634.96,"staff":9529.0,"food_s":1533871.4212857145,"food_c":261650.695,"bev_s":189629.693,"bev_c":35081.57,"alc_s":538032.517,"alc_c":120451.06},{"ym":"2025-12","unit":"MOLI BY SHI RESTAURANT","gross":489413.51800000004,"disc":44492.138000000006,"net":444921.38,"purch":147828.25,"cons":99613.88000000003,"open":221730.03999999998,"close":229297.25,"tin":8496.45,"tout":42870.11,"staff":6273.5,"food_s":377779.655,"food_c":67713.44000000003,"bev_s":38260.464,"bev_c":8233.04,"alc_s":73373.39899999999,"alc_c":23667.399999999994},{"ym":"2025-12","unit":"MEI RESTAURANT","gross":2098443.695952381,"disc":194984.407,"net":1949844.0699999998,"purch":391774.66,"cons":492127.484,"open":759941.584,"close":724112.72,"tin":75353.75,"tout":4121.0599999999995,"staff":6708.73,"food_s":1324588.4819523809,"food_c":263994.36,"bev_s":137823.642,"bev_c":36828.8,"alc_s":636031.5719999999,"alc_c":191304.32400000002},{"ym":"2025-12","unit":"JIXIANG - JBR","gross":84469.71,"disc":0,"net":84469.71,"purch":1343.52,"cons":13071.87,"open":994.34,"close":1641.63,"tin":12375.64,"tout":0.0,"staff":0.0,"food_s":78875.45000000001,"food_c":12072.34,"bev_s":5594.26,"bev_c":999.5299999999999,"alc_s":0,"alc_c":0},{"ym":"2026-01","unit":"SHI RESTAURANT","gross":1995275.172,"disc":181388.652,"net":1813886.52,"purch":388795.56,"cons":382798.47000000003,"open":475440.45,"close":451212.2,"tin":10191.51,"tout":31871.510000000002,"staff":8545.34,"food_s":1349928.371,"food_c":222150.52000000002,"bev_s":169436.45400000003,"bev_c":34425.99,"alc_s":475910.347,"alc_c":126221.96000000002},{"ym":"2026-01","unit":"MOLI BY SHI RESTAURANT","gross":567265.259,"disc":51569.569,"net":515695.68999999994,"purch":125859.72,"cons":117442.33999999994,"open":229297.25,"close":232159.44000000003,"tin":9429.92,"tout":9858.11,"staff":5127.0,"food_s":429643.81899999996,"food_c":81743.27999999997,"bev_s":43103.269,"bev_c":11481.4,"alc_s":94518.171,"alc_c":24217.659999999974},{"ym":"2026-01","unit":"MEI RESTAURANT","gross":1627877.5480000002,"disc":147988.86800000002,"net":1479888.6800000002,"purch":344177.26,"cons":359037.04000000015,"open":724112.72,"close":708641.08,"tin":23317.02,"tout":9471.880000000001,"staff":14457.0,"food_s":1123586.4200000002,"food_c":233263.92000000004,"bev_s":120680.13100000001,"bev_c":21948.39,"alc_s":383610.99700000003,"alc_c":103824.7300000001},{"ym":"2026-02","unit":"SHI RESTAURANT","gross":2042320.0050000001,"disc":185665.45500000002,"net":1856654.55,"purch":372097.07,"cons":370183.571902,"open":451212.2,"close":405383.476098,"tin":17582.41,"tout":55791.64199999999,"staff":9532.99,"food_s":1400532.8260000001,"food_c":232615.08800000005,"bev_s":174823.451,"bev_c":29279.839999999997,"alc_s":466963.728,"alc_c":108288.64390199998},{"ym":"2026-02","unit":"MOLI BY SHI RESTAURANT","gross":716314.555,"disc":65119.505000000005,"net":651195.05,"purch":143016.0,"cons":157206.51778400003,"open":232159.44000000003,"close":224987.37221600002,"tin":30030.85,"tout":18479.62,"staff":4532.78,"food_s":522490.397,"food_c":93983.97899999999,"bev_s":43348.503000000004,"bev_c":11128.230000000001,"alc_s":150475.655,"alc_c":52094.30878400002},{"ym":"2026-02","unit":"MEI RESTAURANT","gross":1738151.844,"disc":158013.804,"net":1580138.0400000003,"purch":311261.36,"cons":390272.0545430001,"open":708641.08,"close":639895.201457,"tin":48744.62,"tout":29110.620000000003,"staff":9369.184,"food_s":1170415.213,"food_c":221215.88600000003,"bev_s":115977.53199999999,"bev_c":29924.79,"alc_s":451759.09900000005,"alc_c":139131.3785430001},{"ym":"2026-03","unit":"SHI RESTAURANT","gross":597363.602,"disc":54305.78200000001,"net":543057.8200000001,"purch":78250.61,"cons":122169.70148799989,"open":405383.476098,"close":333677.96461,"tin":3989.28,"tout":23311.79,"staff":8463.91,"food_s":410433.232,"food_c":75379.26999999996,"bev_s":50921.695,"bev_c":10995.140105999997,"alc_s":136008.675,"alc_c":35795.29138199994},{"ym":"2026-03","unit":"MOLI BY SHI RESTAURANT","gross":392816.655,"disc":35710.60500000001,"net":357106.05000000005,"purch":61376.51,"cons":86107.04521600001,"open":224987.37221600002,"close":197102.4,"tin":8521.029999999999,"tout":6295.099999999999,"staff":5380.367,"food_s":293567.362,"food_c":63667.06400000001,"bev_s":26229.357,"bev_c":4095.51,"alc_s":73019.93599999999,"alc_c":18344.471216000005},{"ym":"2026-03","unit":"MEI RESTAURANT","gross":510666.706,"disc":46424.246,"net":464242.46,"purch":59872.21,"cons":122446.378899,"open":639895.201457,"close":583437.922558,"tin":13879.92,"tout":1247.5,"staff":6515.53,"food_s":347359.793,"food_c":80547.91,"bev_s":40883.909,"bev_c":9432.593938,"alc_s":122423.004,"alc_c":32465.874960999994},{"ym":"2026-04","unit":"SHI RESTAURANT","gross":651413.389,"disc":59219.399,"net":592193.99,"purch":131222.06,"cons":136641.677846,"open":333677.96461,"close":290329.755331,"tin":15170.008567,"tout":45187.06,"staff":7911.54,"food_s":441574.69399999996,"food_c":91566.32999999999,"bev_s":60469.057,"bev_c":16197.181458000005,"alc_s":149369.63799999998,"alc_c":28878.166388000012},{"ym":"2026-04","unit":"MOLI BY SHI RESTAURANT","gross":347723.475,"disc":31611.225000000002,"net":316112.25,"purch":72616.78,"cons":76071.62473299998,"open":197102.4,"close":179564.215267,"tin":14427.0,"tout":23742.0,"staff":4768.34,"food_s":256565.859,"food_c":50776.53,"bev_s":23818.982,"bev_c":5999.160358000001,"alc_s":67338.634,"alc_c":19295.934374999983},{"ym":"2026-04","unit":"MEI RESTAURANT","gross":607654.036,"disc":55241.276,"net":552412.76,"purch":55102.76,"cons":122684.66766399995,"open":583437.922558,"close":544058.151509,"tin":40943.0,"tout":5895.863385,"staff":6845.0,"food_s":419568.20399999997,"food_c":78540.06999999999,"bev_s":48081.979,"bev_c":14609.054342000001,"alc_s":140003.853,"alc_c":29535.543321999954},{"ym":"2026-05","unit":"SHI RESTAURANT","gross":893213.717,"disc":81201.247,"net":812012.47,"purch":243146.25,"cons":191854.08314700003,"open":290329.755331,"close":263419.760295,"tin":19606.0,"tout":89669.0,"staff":8139.161889,"food_s":618771.571,"food_c":115905.568111,"bev_s":79758.60200000001,"bev_c":17951.891163,"alc_s":194683.544,"alc_c":57996.62387300003},{"ym":"2026-05","unit":"MOLI BY SHI RESTAURANT","gross":536782.972,"disc":48798.452,"net":487984.51999999996,"purch":117762.74,"cons":115545.95306200004,"open":179564.215267,"close":164739.698942,"tin":18669.0,"tout":31263.0,"staff":4447.303263,"food_s":408552.826,"food_c":77018.68673700001,"bev_s":37490.617999999995,"bev_c":11927.573993999998,"alc_s":90739.52799999999,"alc_c":26599.692331000027},{"ym":"2026-05","unit":"MEI RESTAURANT","gross":927378.3750000001,"disc":84307.12500000001,"net":843071.25,"purch":116114.76000000001,"cons":191434.67400363594,"open":544058.151509,"close":541356.2375053641,"tin":86112.0,"tout":7236.0,"staff":6258.0,"food_s":654341.2370000001,"food_c":142358.59291963588,"bev_s":57383.248999999996,"bev_c":18495.060628,"alc_s":215653.889,"alc_c":30581.020456000057},{"ym":"2026-06","unit":"SHI RESTAURANT","gross":751756.6209999999,"disc":68341.511,"net":683415.1099999999,"purch":132376.76,"cons":152469.10165199998,"open":263419.760295,"close":248934.618643,"tin":31730.0,"tout":19155.0,"staff":6967.8,"food_s":498422.474,"food_c":94700.0,"bev_s":59488.373999999996,"bev_c":18258.758313,"alc_s":193845.773,"alc_c":39510.343338999985},{"ym":"2026-06","unit":"MOLI BY SHI RESTAURANT","gross":526480.317,"disc":47861.84700000001,"net":478618.47000000003,"purch":121486.20999999999,"cons":109581.01068899996,"open":164739.698942,"close":159596.991886,"tin":16626.0,"tout":29158.0,"staff":4515.906367,"food_s":392397.368,"food_c":71927.55363299999,"bev_s":35145.231,"bev_c":9197.674856999998,"alc_s":98937.71800000001,"alc_c":28455.78219899998},{"ym":"2026-06","unit":"MEI RESTAURANT","gross":660652.179,"disc":60059.289000000004,"net":600592.8899999999,"purch":151591.83000000002,"cons":161414.15127236402,"open":541356.2375053641,"close":519161.910258,"tin":17143.0,"tout":20473.0,"staff":9042.005975,"food_s":474443.28799999994,"food_c":92720.99110536408,"bev_s":41794.775,"bev_c":12526.741748,"alc_s":144414.116,"alc_c":56166.418418999936},{"ym":"2026-07","unit":"SHI RESTAURANT","gross":561461.637,"disc":51041.96700000001,"net":510419.67000000004,"purch":105993.65476190476,"cons":117076.63967690479,"open":248934.618643,"close":244476.209042,"tin":33374.0,"tout":18961.65,"staff":7787.774686,"food_s":379075.015,"food_c":75388.39531400002,"bev_s":52731.404,"bev_c":12381.598423,"alc_s":129655.21800000001,"alc_c":29306.64593990476},{"ym":"2026-07","unit":"MOLI BY SHI RESTAURANT","gross":441853.97299999994,"disc":40168.543,"net":401685.43,"purch":126275.81380952381,"cons":93403.84381352377,"open":159596.991886,"close":160056.520066,"tin":8879.0,"tout":35553.0,"staff":5738.441816,"food_s":346276.20499999996,"food_c":59222.41818399998,"bev_s":34175.515,"bev_c":11508.885199,"alc_s":61402.253000000004,"alc_c":22672.54043052379},{"ym":"2026-07","unit":"MEI RESTAURANT","gross":421388.99,"disc":38308.09,"net":383080.89999999997,"purch":96849.19904761904,"cons":109705.01985961907,"open":519161.910258,"close":504205.089446,"tin":17564.0,"tout":10264.0,"staff":9401.0,"food_s":271340.01399999997,"food_c":66267.91999999998,"bev_s":31610.601,"bev_c":12138.012538,"alc_s":118438.375,"alc_c":31299.087321619096},{"ym":"2026-08","unit":"SHI RESTAURANT","gross":559122.641,"disc":50829.331,"net":508293.30999999994,"purch":133810.98,"cons":123793.08482099997,"open":244476.209042,"close":246119.99936000002,"tin":38270.0,"tout":39186.3,"staff":7457.804861,"food_s":365436.016,"food_c":85098.35513899996,"bev_s":48867.687,"bev_c":12163.974263000004,"alc_s":144818.938,"alc_c":26530.755418999994},{"ym":"2026-08","unit":"MOLI BY SHI RESTAURANT","gross":480929.77900000004,"disc":43720.88900000001,"net":437208.89,"purch":133767.38,"cons":109688.76836899998,"open":160056.520066,"close":149196.929919,"tin":24469.0,"tout":53264.0,"staff":6143.201778,"food_s":364799.743,"food_c":76375.98822199999,"bev_s":40142.982,"bev_c":9120.397076,"alc_s":75987.054,"alc_c":24192.383071000004},{"ym":"2026-08","unit":"MEI RESTAURANT","gross":544475.932,"disc":49497.812,"net":494978.12,"purch":129954.38999999998,"cons":144406.6450116296,"open":504205.089446,"close":504050.5799393704,"tin":52262.0,"tout":27018.0,"staff":10946.254495,"food_s":391411.141,"food_c":87207.27823062963,"bev_s":36982.858,"bev_c":16556.987817999998,"alc_s":116081.933,"alc_c":40642.37896299997},{"ym":"2026-09","unit":"SHI RESTAURANT","gross":893813.162,"disc":81255.742,"net":812557.42,"purch":292949.42,"cons":200703.84559399998,"open":246119.99936000002,"close":283213.573766,"tin":36638.0,"tout":84601.0,"staff":7189.0,"food_s":592963.8,"food_c":124561.07,"bev_s":75730.22600000001,"bev_c":15055.955323999997,"alc_s":225119.136,"alc_c":61086.82026999997},{"ym":"2026-09","unit":"MOLI BY SHI RESTAURANT","gross":735272.978,"disc":66842.998,"net":668429.98,"purch":207890.77000000002,"cons":160592.10601000002,"open":149196.929919,"close":177491.043909,"tin":45073.0,"tout":57683.21,"staff":6394.34,"food_s":531144.768,"food_c":103737.31,"bev_s":57459.46799999999,"bev_c":12992.950532,"alc_s":146668.742,"alc_c":43861.84547800002},{"ym":"2026-09","unit":"MEI RESTAURANT","gross":699844.079,"disc":63622.189,"net":636221.89,"purch":157520.16,"cons":183112.55450237042,"open":504050.5799393704,"close":524023.39543699997,"tin":83403.20999999999,"tout":27330.0,"staff":10508.0,"food_s":470572.80600000004,"food_c":113044.32727437036,"bev_s":45746.282999999996,"bev_c":15706.897192999997,"alc_s":183524.99,"alc_c":54361.33003500005},{"ym":"2026-10","unit":"SHI RESTAURANT","gross":1406981.191,"disc":127907.381,"net":1279073.81,"purch":383524.47000000003,"cons":285924.92648400005,"open":283213.573766,"close":287909.647282,"tin":36915.53,"tout":121740.0,"staff":8079.0,"food_s":908231.995,"food_c":177597.83,"bev_s":115726.622,"bev_c":19062.263677000003,"alc_s":383022.574,"alc_c":89264.83280700006},{"ym":"2026-10","unit":"MOLI BY SHI RESTAURANT","gross":698863.121,"disc":63533.011,"net":635330.11,"purch":189607.43,"cons":156627.234788,"open":177491.043909,"close":184348.709121,"tin":35616.47,"tout":55343.0,"staff":6396.0,"food_s":534627.17,"food_c":102371.66,"bev_s":48052.015,"bev_c":11229.567983999998,"alc_s":116183.93599999999,"alc_c":43026.006804000004},{"ym":"2026-10","unit":"MEI RESTAURANT","gross":1563925.638,"disc":142175.05800000002,"net":1421750.58,"purch":344262.42,"cons":370790.10343699995,"open":524023.39543699997,"close":584810.712,"tin":113417.0,"tout":15366.0,"staff":10736.0,"food_s":1043304.9550000001,"food_c":205534.928,"bev_s":100309.891,"bev_c":29132.384989,"alc_s":420310.79199999996,"alc_c":136122.79044799996}],"alcStock":{"SHI RESTAURANT":188060.997282,"MOLI BY SHI RESTAURANT":105011.369121,"MEI RESTAURANT":469124.0}};
+const ALL = DATA.rows;
+const ROWS = ALL.filter(r=>r.ym>='2026-01');
+const PREV = ALL.filter(r=>r.ym>='2025-01' && r.ym<='2025-10');
+
+const UNITS = [
+  {key:'SHI RESTAURANT', name:'Shi', id:'shi', color:'#C3A570'},
+  {key:'MOLI BY SHI RESTAURANT', name:'Moli by Shi', id:'moli', color:'#8FC49E'},
+  {key:'MEI RESTAURANT', name:'Mei', id:'mei', color:'#D98F68'},
+];
+
+const STORY = {
+  'SHI RESTAURANT': {
+    summary: 'The flagship, and still the largest restaurant at <b>about 41% of group sales</b> in 2026. It runs the tightest cost in the group. Its problem is volume: sales are <b>about 30% below</b> the same months of 2025.',
+    good: [
+      '<b>Best cost control in the group.</b> Cost of sales 20.1% and food cost 18.6%, well below the 25–32% typical for full-service restaurants.',
+      '<b>Stable every month.</b> Cost of sales stayed between 18.1% and 22.5% in all ten months, even while sales swung by a factor of three.',
+      '<b>October is recovering.</b> AED 1.41M, the best month since February and more than double August.',
+      '<b>Supplies the other two.</b> AED 529K of stock transferred out to Moli and Mei, so they buy at Shi\'s scale.'
+    ],
+    bad: [
+      '<b>Sales down about 30%.</b> AED 10.35M for January–October 2026 against AED 14.77M a year earlier.',
+      '<b>Six weak months.</b> March to August each stayed under AED 0.9M. In the same months of 2025, March, April and May were each above AED 1.5M.',
+      '<b>October is still behind.</b> AED 1.41M against AED 1.86M in October 2025, about 24% lower.',
+      '<b>Alcohol cost at the top of the range.</b> 24.1% for the year, and 26–30% in January, March, May and September.',
+      '<b>Stock building.</b> September–October purchases were AED 676K against AED 487K consumed. That makes sense before high season, but needs watching.'
+    ]
+  },
+  'MOLI BY SHI RESTAURANT': {
+    summary: 'The steadiest restaurant in 2026: <b>sales level with 2025</b> while Shi fell, and its <b>best month on record</b> in September. The kitchen is efficient; the bar is not.',
+    good: [
+      '<b>Holding its sales.</b> AED 5.44M for January–October 2026 against AED 5.47M a year earlier, a change of under 1%.',
+      '<b>Record month.</b> September at AED 735K, the highest in the file since January 2024. October followed at AED 699K, 20% above October 2025.',
+      '<b>Food cost under control.</b> 19.1% for the year, between 17% and 22% every month.'
+    ],
+    bad: [
+      '<b>Alcohol cost is too high.</b> 31.0% for the year against an 18–24% norm, and 37% in July and October.',
+      '<b>Non-alcoholic drinks at 25.4%,</b> at the top of the typical range.',
+      '<b>The bar is the leak.</b> At Shi\'s alcohol cost (24.1%), Moli would have spent about AED 67K less on alcohol this year.',
+      '<b>Spring dip.</b> March and April fell to AED 393K and AED 348K.'
+    ]
+  },
+  'MEI RESTAURANT': {
+    summary: 'Opened in October 2025. In its first full year it is <b>the second-largest restaurant, at about 37% of group sales</b>, and the reason group sales are up. Its costs are the highest of the three and rose over the summer.',
+    good: [
+      '<b>Trading at scale from the start.</b> AED 1.63M in January and AED 1.74M in February, about 80–85% of Shi in the same months.',
+      '<b>Strong October.</b> AED 1.56M, back near the start-of-year level.',
+      '<b>Showed what is possible on cost.</b> April and May came in at 20.2% and 20.6%, as good as Shi.'
+    ],
+    bad: [
+      '<b>Highest cost of the three.</b> 23.2% for the year, and 26.0–26.5% from July to September.',
+      '<b>Alcohol cost swings.</b> Between 14% and 39% from month to month. That usually means stock-count or pouring-control problems, not supplier prices.',
+      '<b>Too much bar stock.</b> AED 469K of alcohol on hand at the end of October, about 3.4 months of use. Two months would be normal.',
+      '<b>Deep summer slump.</b> AED 421K in July, about a quarter of February.',
+      '<b>Non-alcoholic drinks at 28.2%,</b> above the typical 15–25%.'
+    ]
+  }
+};
+
+const MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const ymLabel = ym => MONTHS[+ym.slice(5)-1]+' '+ym.slice(2,4);
+const ymLong = ym => MONTHS[+ym.slice(5)-1]+' '+ym.slice(0,4);
+const fmtM = v => 'AED '+(v/1e6).toFixed(2)+'M';
+const fmtK = v => v>=1e6 ? fmtM(v) : 'AED '+Math.round(v/1e3)+'K';
+const fmtN = v => Math.round(v).toLocaleString('en-US');
+const pct = (a,b) => b ? a/b*100 : null;
+const fmtP = v => v==null ? '—' : v.toFixed(1)+'%';
+const fmtCh = v => (v>=0?'+':'')+v.toFixed(1)+'%';
+const sum = (arr,k) => arr.reduce((s,r)=>s+(r[k]||0),0);
+
+const allYM = [...new Set(ROWS.map(r=>r.ym))].sort();
+const byUnit = {}, prevUnit = {};
+UNITS.forEach(u=>{ byUnit[u.key]=ROWS.filter(r=>r.unit===u.key).sort((a,b)=>a.ym<b.ym?-1:1); prevUnit[u.key]=PREV.filter(r=>r.unit===u.key); });
+
+function costPill(p, lo, hi){
+  if(p==null) return '<span class="pill flat">—</span>';
+  const cls = p>hi ? 'up' : (p<lo ? 'down' : 'flat');
+  return `<span class="pill ${cls}">${fmtP(p)}</span>`;
+}
+function chPill(v){ if(v==null) return '<span class="pill flat">new</span>'; return `<span class="pill ${v>=0?'down':'up'}">${fmtCh(v)}</span>`; }
+const BENCH = {total:[18,24], food:[18,26], alc:[18,24], bev:[15,25]};
+
+/* 01 */
+const G = {gross:sum(ROWS,'gross'), cons:sum(ROWS,'cons')};
+const P = sum(PREV,'gross');
+const lflKeys=['SHI RESTAURANT','MOLI BY SHI RESTAURANT'];
+const lfl26 = sum(ROWS.filter(r=>lflKeys.includes(r.unit)),'gross'), lfl25 = sum(PREV.filter(r=>lflKeys.includes(r.unit)),'gross');
+const kpis = [
+  ['Gross sales', fmtM(G.gross), 'Jan–Oct 2026', ''],
+  ['Cost of sales', fmtM(G.cons), 'food & drink consumed', ''],
+  ['Cost of sales %', fmtP(pct(G.cons,G.gross)), 'typical 25–32%', 'down'],
+  ['Margin after cost of sales', fmtM(G.gross-G.cons), 'before staff, rent, utilities', ''],
+  ['vs Jan–Oct 2025', fmtCh(pct(G.gross-P,P)), `Shi + Moli only ${fmtCh(pct(lfl26-lfl25,lfl25))}`, G.gross>=P?'down':'up'],
+];
+document.getElementById('kpi-group').innerHTML = kpis.map(([l,v,s,c])=>`<div class="kpi"><span class="kpi-label">${l}</span><span class="kpi-value ${c}">${v}</span><span class="kpi-sub">${s}</span></div>`).join('');
+const mar26 = sum(ROWS.filter(r=>r.ym==='2026-03'),'gross'), feb26 = sum(ROWS.filter(r=>r.ym==='2026-02'),'gross'), mar25 = sum(PREV.filter(r=>r.ym==='2025-03'),'gross');
+document.getElementById('lede-group').innerHTML =
+  `The three restaurants sold <b>${fmtM(G.gross)}</b> from January to October 2026, against ${fmtM(P)} in the same months of 2025 (<b>${fmtCh(pct(G.gross-P,P))}</b>). All of that growth comes from Mei, which opened in October 2025. Shi and Moli together fell from ${fmtM(lfl25)} to ${fmtM(lfl26)} (<b>${fmtCh(pct(lfl26-lfl25,lfl25))}</b>). Cost of sales stayed at ${fmtP(pct(G.cons,G.gross))}, which is well run. The issue in 2026 is sales, not cost.`;
+
+/* charts */
+Chart.defaults.font.family = "'Jost','Segoe UI',sans-serif";
+Chart.defaults.font.size = 11;
+Chart.defaults.color = '#8AA18E';
+Chart.defaults.animation = false;
+const GRID = 'rgba(46,74,55,.6)';
+const tooltip = {backgroundColor:'#17301F',borderColor:'#2E4A37',borderWidth:1,titleColor:'#F2EFE6',bodyColor:'#B3BEB4',padding:10,titleFont:{weight:'600'},bodyFont:{family:"'IBM Plex Mono',monospace"}};
+const axM = {grid:{color:GRID},border:{display:false},ticks:{callback:v=>v>=1e6?(v/1e6)+'M':(v/1e3)+'K'}};
+const axP = (max)=>({position:'right',min:0,max,grid:{display:false},border:{display:false},ticks:{callback:v=>v+'%'}});
+
+new Chart(document.getElementById('ch-group'), {
+  type:'bar',
+  data:{labels:allYM.map(ymLabel), datasets:[
+    ...UNITS.map(u=>({type:'bar', label:u.name, stack:'s', backgroundColor:u.color, borderWidth:0, yAxisID:'y', order:2,
+      data:allYM.map(ym=>{const r=byUnit[u.key].find(x=>x.ym===ym); return r?r.gross:null;})})),
+    {type:'line', label:'Cost of sales %', yAxisID:'p', order:1, borderColor:'#F2EFE6', backgroundColor:'#F2EFE6', borderWidth:1.6, pointRadius:2.5, tension:.3,
+      data:allYM.map(ym=>{const rs=ROWS.filter(r=>r.ym===ym); return +(pct(sum(rs,'cons'),sum(rs,'gross'))).toFixed(1);})}
+  ]},
+  options:{maintainAspectRatio:false, interaction:{mode:'index',intersect:false},
+    plugins:{legend:{position:'bottom',labels:{boxWidth:10,boxHeight:10,padding:14,color:'#B3BEB4'}},
+      tooltip:{...tooltip, callbacks:{label:c=>c.dataset.yAxisID==='p'?` ${c.dataset.label}: ${c.parsed.y}%`:` ${c.dataset.label}: ${fmtK(c.parsed.y)}`}}},
+    scales:{x:{stacked:true,grid:{display:false},border:{display:false},ticks:{maxRotation:0}}, y:{...axM,stacked:true}, p:axP(40)}}
+});
+
+/* 03 */
+function unitStats(u){
+  const rs = byUnit[u.key], pv = prevUnit[u.key];
+  const g=sum(rs,'gross'), c=sum(rs,'cons'), pg=sum(pv,'gross');
+  const best = rs.reduce((a,b)=>b.gross>a.gross?b:a), worst = rs.reduce((a,b)=>b.gross<a.gross?b:a);
+  return {rs,g,c,pg,yoy: pv.length>=10 ? pct(g-pg,pg) : null, cp:pct(c,g),food:pct(sum(rs,'food_c'),sum(rs,'food_s')),alc:pct(sum(rs,'alc_c'),sum(rs,'alc_s')),bev:pct(sum(rs,'bev_c'),sum(rs,'bev_s')),
+    best,worst,purch:sum(rs,'purch'),tin:sum(rs,'tin'),tout:sum(rs,'tout')};
+}
+const STATS = {}; UNITS.forEach(u=>STATS[u.key]=unitStats(u));
+document.getElementById('tbl-units').innerHTML = `
+<thead><tr><th>Restaurant</th><th class="num">Gross sales</th><th class="num">Share</th><th class="num">vs 2025</th><th class="num">Cost %</th><th class="num">Food %</th><th class="num">Alcohol %</th></tr></thead>
+<tbody>${UNITS.map(u=>{const s=STATS[u.key];return `<tr>
+  <td class="item-name"><span class="dot" style="background:${u.color}"></span>${u.name}</td>
+  <td class="num">${fmtM(s.g)}</td><td class="num">${(s.g/G.gross*100).toFixed(1)}%</td><td class="num">${chPill(s.yoy)}</td>
+  <td class="num">${costPill(s.cp,...BENCH.total)}</td><td class="num">${costPill(s.food,...BENCH.food)}</td><td class="num">${costPill(s.alc,...BENCH.alc)}</td></tr>`}).join('')}</tbody>
+<tfoot><tr><td>Group</td><td class="num">${fmtM(G.gross)}</td><td class="num">100%</td><td class="num">${fmtCh(pct(G.gross-P,P))}</td><td class="num">${fmtP(pct(G.cons,G.gross))}</td><td class="num">${fmtP(pct(sum(ROWS,'food_c'),sum(ROWS,'food_s')))}</td><td class="num">${fmtP(pct(sum(ROWS,'alc_c'),sum(ROWS,'alc_s')))}</td></tr></tfoot>`;
+document.getElementById('unit-nav').innerHTML = UNITS.map(u=>`<a href="#${u.id}"><span class="dot" style="background:${u.color}"></span>${u.name}</a>`).join('');
+
+new Chart(document.getElementById('ch-yoy'), {
+  type:'bar',
+  data:{labels:UNITS.map(u=>u.name), datasets:[
+    {label:'Jan–Oct 2025', data:UNITS.map(u=>STATS[u.key].pg), backgroundColor:'rgba(242,239,230,.28)', borderWidth:0},
+    {label:'Jan–Oct 2026', data:UNITS.map(u=>STATS[u.key].g), backgroundColor:UNITS.map(u=>u.color), borderWidth:0}
+  ]},
+  options:{maintainAspectRatio:false, interaction:{mode:'index',intersect:false},
+    plugins:{legend:{position:'bottom',labels:{boxWidth:10,boxHeight:10,padding:12,color:'#B3BEB4'}}, tooltip:{...tooltip,callbacks:{label:c=>` ${c.dataset.label}: ${fmtM(c.parsed.y)}`}}},
+    scales:{x:{grid:{display:false},border:{display:false}}, y:axM}}
+});
+
+/* 04 */
+const host = document.getElementById('units');
+UNITS.forEach((u,i)=>{
+  const s=STATS[u.key], st=STORY[u.key], last=s.rs.at(-1);
+  const el=document.createElement('article'); el.className='unit'; el.id=u.id;
+  if(i>0) el.style.marginTop='34px';
+  el.innerHTML = `
+    <div class="unit-head">
+      <h2 class="unit-name"><span class="dot" style="background:${u.color};width:11px;height:11px"></span>${u.name}</h2>
+      <div class="unit-dates"><span>From <b>${ymLong(s.rs[0].ym)}</b></span><span>To <b>${ymLong(last.ym)}</b></span><span><b>${s.rs.length}</b> months</span><span class="status active">Trading</span></div>
+    </div>
+    <p class="unit-summary">${st.summary}</p>
+    <div class="kpi-grid">
+      <div class="kpi"><span class="kpi-label">Gross sales</span><span class="kpi-value">${fmtM(s.g)}</span><span class="kpi-sub">${(s.g/G.gross*100).toFixed(1)}% of group</span></div>
+      <div class="kpi"><span class="kpi-label">Cost of sales</span><span class="kpi-value">${fmtM(s.c)}</span><span class="kpi-sub">${fmtP(s.cp)} of sales</span></div>
+      <div class="kpi"><span class="kpi-label">Margin after COGS</span><span class="kpi-value">${fmtM(s.g-s.c)}</span><span class="kpi-sub">average ${fmtK((s.g-s.c)/s.rs.length)} a month</span></div>
+      <div class="kpi"><span class="kpi-label">Best / weakest month</span><span class="kpi-value">${fmtK(s.best.gross)}</span><span class="kpi-sub">${ymLabel(s.best.ym)} · low ${ymLabel(s.worst.ym)} ${fmtK(s.worst.gross)}</span></div>
+      <div class="kpi"><span class="kpi-label">vs Jan–Oct 2025</span><span class="kpi-value ${s.yoy==null?'':(s.yoy>=0?'down':'up')}">${s.yoy==null?'New':fmtCh(s.yoy)}</span><span class="kpi-sub">${s.yoy==null?'opened Oct 2025':'2025: '+fmtM(s.pg)}</span></div>
+    </div>
+    <div class="row cols-2-wide">
+      <div class="card">
+        <div class="card-head"><span class="card-title">Income and expenses by month</span><span class="card-tag">AED · 2026</span></div>
+        <p class="card-note">Gross sales against cost of sales (bars), with cost of sales % (line, right axis). The faint outline shows the same month of 2025.</p>
+        <div class="chart-box"><canvas id="ch-${u.id}"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">Where the cost sits</span><span class="card-tag">Jan–Oct 2026</span></div>
+        <p class="card-note">Cost as % of that category's own sales, against typical ranges.</p>
+        <div class="table-scroll"><table>
+          <thead><tr><th>Category</th><th class="num">Sales</th><th class="num">Cost</th><th class="num">Cost %</th><th class="num">Typical</th></tr></thead>
+          <tbody>
+            <tr><td>Food</td><td class="num">${fmtK(sum(s.rs,'food_s'))}</td><td class="num">${fmtK(sum(s.rs,'food_c'))}</td><td class="num">${costPill(s.food,...BENCH.food)}</td><td class="num">25–32%</td></tr>
+            <tr><td>Non-alcoholic</td><td class="num">${fmtK(sum(s.rs,'bev_s'))}</td><td class="num">${fmtK(sum(s.rs,'bev_c'))}</td><td class="num">${costPill(s.bev,...BENCH.bev)}</td><td class="num">15–25%</td></tr>
+            <tr><td>Alcohol</td><td class="num">${fmtK(sum(s.rs,'alc_s'))}</td><td class="num">${fmtK(sum(s.rs,'alc_c'))}</td><td class="num">${costPill(s.alc,...BENCH.alc)}</td><td class="num">18–24%</td></tr>
+          </tbody>
+        </table></div>
+        <div class="card-head" style="margin-top:16px"><span class="card-title">Stock movement</span><span class="card-tag">Jan–Oct 2026</span></div>
+        <div class="table-scroll"><table><tbody>
+          <tr><td>Purchases</td><td class="num">${fmtK(s.purch)}</td></tr>
+          <tr><td>Transfers in / out</td><td class="num">${fmtK(s.tin)} / ${fmtK(s.tout)}</td></tr>
+          <tr><td>Closing stock, Oct 26</td><td class="num">${fmtK(last.close)}</td></tr>
+        </tbody></table></div>
+      </div>
+    </div>
+    <div class="row cols-2">
+      <div class="card"><div class="card-head"><span class="card-title" style="color:var(--down)">What is working</span></div><ul class="verdict good">${st.good.map(t=>`<li><span class="mark">+</span><span>${t}</span></li>`).join('')}</ul></div>
+      <div class="card"><div class="card-head"><span class="card-title" style="color:var(--up)">What needs attention</span></div><ul class="verdict bad">${st.bad.map(t=>`<li><span class="mark">!</span><span>${t}</span></li>`).join('')}</ul></div>
+    </div>
+    <div class="card">
+      <details class="months"><summary>Month-by-month detail (${s.rs.length} months)</summary>
+        <div class="table-scroll" style="margin-top:8px"><table>
+          <thead><tr><th>Month</th><th class="num">Gross sales</th><th class="num">Same month 2025</th><th class="num">Purchases</th><th class="num">Cost of sales</th><th class="num">Margin after COGS</th><th class="num">Cost %</th><th class="num">Food %</th><th class="num">Alcohol %</th></tr></thead>
+          <tbody>${s.rs.map(r=>{const pr=prevUnit[u.key].find(x=>x.ym.slice(5)===r.ym.slice(5));return `<tr><td>${ymLong(r.ym)}</td><td class="num">${fmtN(r.gross)}</td><td class="num">${pr?fmtN(pr.gross):'—'}</td><td class="num">${fmtN(r.purch)}</td><td class="num">${fmtN(r.cons)}</td><td class="num">${fmtN(r.gross-r.cons)}</td><td class="num">${costPill(pct(r.cons,r.gross),...BENCH.total)}</td><td class="num">${costPill(pct(r.food_c,r.food_s),...BENCH.food)}</td><td class="num">${costPill(pct(r.alc_c,r.alc_s),...BENCH.alc)}</td></tr>`}).join('')}</tbody>
+          <tfoot><tr><td>Total</td><td class="num">${fmtN(s.g)}</td><td class="num">${fmtN(s.pg)}</td><td class="num">${fmtN(s.purch)}</td><td class="num">${fmtN(s.c)}</td><td class="num">${fmtN(s.g-s.c)}</td><td class="num">${fmtP(s.cp)}</td><td class="num">${fmtP(s.food)}</td><td class="num">${fmtP(s.alc)}</td></tr></tfoot>
+        </table></div>
+      </details>
+    </div>`;
+  host.appendChild(el);
+
+  new Chart(document.getElementById('ch-'+u.id), {
+    type:'bar',
+    data:{labels:s.rs.map(r=>ymLabel(r.ym)), datasets:[
+      {type:'bar',label:'Gross sales',data:s.rs.map(r=>r.gross),backgroundColor:u.color,borderWidth:0,yAxisID:'y',order:2,barPercentage:.9,categoryPercentage:.8},
+      {type:'bar',label:'Cost of sales',data:s.rs.map(r=>r.cons),backgroundColor:'rgba(242,239,230,.28)',borderWidth:0,yAxisID:'y',order:2,barPercentage:.9,categoryPercentage:.8},
+      {type:'line',label:'Sales, same month 2025',data:s.rs.map(r=>{const pr=prevUnit[u.key].find(x=>x.ym.slice(5)===r.ym.slice(5));return pr?pr.gross:null;}),borderColor:'rgba(242,239,230,.45)',borderDash:[4,4],borderWidth:1.2,pointRadius:0,tension:0,yAxisID:'y',order:1,spanGaps:false},
+      {type:'line',label:'Cost %',data:s.rs.map(r=>+pct(r.cons,r.gross).toFixed(1)),borderColor:'#F2EFE6',backgroundColor:'#F2EFE6',borderWidth:1.5,pointRadius:2.5,tension:.3,yAxisID:'p',order:0}
+    ]},
+    options:{maintainAspectRatio:false, interaction:{mode:'index',intersect:false},
+      plugins:{legend:{position:'bottom',labels:{boxWidth:10,boxHeight:10,padding:12,color:'#B3BEB4'}},
+        tooltip:{...tooltip,callbacks:{label:c=>c.parsed.y==null?null:(c.dataset.yAxisID==='p'?` Cost %: ${c.parsed.y}%`:` ${c.dataset.label}: ${fmtK(c.parsed.y)}`)}}},
+      scales:{x:{grid:{display:false},border:{display:false},ticks:{maxRotation:0}}, y:axM, p:axP(40)}}
+  });
+});
+
+/* 05 */
+const shiAlc = STATS['SHI RESTAURANT'].alc/100;
+const save = k => sum(byUnit[k],'alc_c') - sum(byUnit[k],'alc_s')*shiAlc;
+const barSave = save('MOLI BY SHI RESTAURANT') + save('MEI RESTAURANT');
+const meiLast = byUnit['MEI RESTAURANT'].at(-1), meiAlcStock = DATA.alcStock['MEI RESTAURANT'];
+const FINDINGS = [
+  ['Cost is not the problem',
+   `Group cost of sales was <b>${fmtP(pct(G.cons,G.gross))}</b> in 2026, below the usual 25–32% for full-service dining, and Shi held between 18% and 22.5% every month. The kitchens are buying and portioning well.`],
+  ['Sales are the problem',
+   `Shi and Moli together sold <b>${fmtM(lfl26)}</b> against <b>${fmtM(lfl25)}</b> a year earlier. Group sales grew only because Mei opened. In March the group sold ${fmtM(mar26)}, against ${fmtM(feb26)} in February and ${fmtM(mar25)} in March 2025. Management should explain that drop.`],
+  ['The bar leaks',
+   `Alcohol cost was ${fmtP(STATS['MOLI BY SHI RESTAURANT'].alc)} at Moli and ${fmtP(STATS['MEI RESTAURANT'].alc)} at Mei, against ${fmtP(STATS['SHI RESTAURANT'].alc)} at Shi. At Shi's rate, the two would have spent about <b>${fmtK(barSave)}</b> less on alcohol this year. Mei also holds <b>${fmtK(meiAlcStock)}</b> of alcohol, about ${(meiAlcStock/meiLast.alc_c).toFixed(1)} months of use.`],
+];
+document.getElementById('findings').innerHTML = FINDINGS.map(([h,p],i)=>`<div class="card finding"><span class="n">FINDING ${String(i+1).padStart(2,'0')}</span><h3>${h}</h3><p>${p}</p></div>`).join('');
+
+/* 06 */
+const RECS = [
+  '<b>Find the cause of Shi\'s 30% drop.</b> Split March–October 2026 against 2025 into covers and average spend, and check whether Mei is drawing the same guests.',
+  '<b>Run a bar control programme at Moli and Mei.</b> Weekly counts of the top 30 lines, sales checked against POS for each bottle, and a single pour standard. Target alcohol cost of 22–24% within two quarters.',
+  '<b>Cut Mei\'s alcohol stock to about two months of use</b> by reducing reorders. That frees up to about AED 200K of cash.',
+  '<b>Use Q4 to make up ground.</b> October recovered at all three restaurants. Push November–February hard, when Shi has historically sold AED 2.0–2.4M a month.',
+  '<b>Plan next summer now.</b> June–August 2026 sat at a quarter to a half of peak months. Set staffing, opening hours and a promotion calendar before May.',
+  '<b>Complete the P&amp;L.</b> Add payroll, rent, utilities and marketing per restaurant so the next report shows real profit, not just margin after cost of sales.'
+];
+document.getElementById('recs').innerHTML = RECS.map(r=>`<li><span>${r}</span></li>`).join('');
+</script>
+</body>
+</html>
